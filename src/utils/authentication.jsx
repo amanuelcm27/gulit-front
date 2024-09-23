@@ -49,3 +49,17 @@ export async function signWithGoogle(googleToken) {
     }
   );
 }
+export async function register(registerInfo) {
+  const csrfToken = await getCsrfToken();
+  return api.post(
+    "register/",
+    {
+      registerInfo: registerInfo,
+    },
+    {
+      headers: {
+        "X-CSRFToken": csrfToken,
+      },
+    }
+  );
+}
