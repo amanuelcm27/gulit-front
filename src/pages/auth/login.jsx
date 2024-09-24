@@ -28,7 +28,7 @@ const Login = () => {
     if (!loading && IsLoggedIn) {
       navigate("/");
     }
-  }, [IsLoggedIn, navigate, loading]);
+  }, [IsLoggedIn, loading]);
   const handleSubmit = async () => {
     try {
       if (!formData.email.trim() || !formData.password) {

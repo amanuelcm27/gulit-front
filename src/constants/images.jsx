@@ -8,6 +8,24 @@ import hidden from "../assets/images/hidden.png";
 import user from "../assets/images/user.png"
 import logout from "../assets/images/logout.png"
 import header from "../assets/images/header.png"
+import globe from "../assets/images/globe.svg"
+import globeIcon from "../assets/images/globeicon.png"
+import increase from "../assets/images/increase.png"
+import price from "../assets/images/Low Price.png"
+import perf from "../assets/images/Sales Performance.png"
+import store from "../assets/images/store.png"
+import card from "../assets/images/card.png"
+import coin from "../assets/images/coin.png"
+import add from "../assets/images/add.png"
+import eyeVector from "../assets/images/vector.png"
+import cart from "../assets/images/cart.png"
+import tech from "../assets/images/tech.png"
+import health from "../assets/images/health.png"
+import circleLeft from "../assets/images/circleLeft.png"
+import circleRight from "../assets/images/circleRight.png"
+import buyer from "../assets/images/buyer.svg"
+import saler from "../assets/images/saler.svg"
+
 export default {
   logo,
   googleLogo,
@@ -19,4 +37,22 @@ export default {
   user,
   logout,
   header,
+  globe,
+  globeIcon,
+  increase,
+  price,
+  perf,
+  store,
+  cart,
+  card,
+  coin,
+  add,
+  eyeVector,
+  tech,
+  health ,
+  circleLeft,
+  circleRight,
+  saler,
+  buyer,
 };
+

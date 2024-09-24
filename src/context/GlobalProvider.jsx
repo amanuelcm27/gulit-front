@@ -1,6 +1,5 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { getAuthUser } from "../utils/authentication";
-import { Navigate, useNavigate } from "react-router-dom";
 
 const GlobalContext = createContext();
 export const useGlobalContext = () => useContext(GlobalContext);
@@ -21,21 +20,23 @@ const GlobalProvider = ({ children }) => {
       }
     } catch (error) {
       setIsLoggedIn(false);
-    }
-    finally  {
-      setIsLoading ( false )
+    } finally {
+      setIsLoading(false);
     }
   };
   let context = {
-    userInfo, IsLoggedIn, setIsLoggedIn , loading , setIsLoading , setUserInfo
-  }
+    userInfo,
+    IsLoggedIn,
+    setIsLoggedIn,
+    loading,
+    setIsLoading,
+    setUserInfo,
+  };
   useEffect(() => {
     get_user();
   }, []);
   return (
-    <GlobalContext.Provider value={context}>
-      {children}
-    </GlobalContext.Provider>
+    <GlobalContext.Provider value={context}>{children}</GlobalContext.Provider>
   );
 };
 export default GlobalProvider;

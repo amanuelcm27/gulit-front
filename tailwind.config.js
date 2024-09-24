@@ -14,7 +14,6 @@ export default {
       width: {
         '80%': '80%',
         '90%': '90%',
-
         
       },
       height: {

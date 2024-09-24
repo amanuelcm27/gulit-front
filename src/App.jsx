@@ -6,6 +6,8 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import GlobalProvider from "./context/GlobalProvider";
 import Login from "./pages/auth/login";
 import Register from "./pages/auth/register";
+import Role from "./pages/OnBoarding/role";
+import Home from "./pages/store/Home";
 function App() {
   const [count, setCount] = useState(0);
   const OauthId = import.meta.env.VITE_OAUTH_CLIENT_ID;
@@ -17,6 +19,9 @@ function App() {
             <Routes>
               <Route path="/" element={<PrivateRoute />}>``
                 <Route path="/" element={<OnBoarding />} />
+                <Route path="/role" element={<Role />} />
+                <Route path="/home" element={<Home />} />
+
               </Route>
               <Route path="/login" element={<Login />}></Route>
               <Route path="/register" element={<Register />}></Route>
