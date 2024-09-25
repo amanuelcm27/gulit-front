@@ -6,7 +6,7 @@ const Role = () => {
   const navigate = useNavigate();
   return (
     <div className="w-full h-screen flex flex-col justify-center items-center bg-orange-400">
-      <div className="w-80% h-80% max-sm:h-auto flex flex-col p-10 bg-white rounded-lg">
+      <div className="w-80% h-80% max-sm:h-auto flex flex-col p-10 max-sm:items-center bg-white rounded-lg">
         <img src={images.logo} className="w-24" />
         <div className="m-4 max-sm:m-0 max-sm:p-1  max-sm:flex-col  h-full flex cursor-pointer">
           <div className="  max-sm:w-full max-sm:text-center w-1/2 rounded-lg hover:bg-gray-300 flex flex-col justify-center items-center">

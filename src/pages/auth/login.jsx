@@ -80,7 +80,7 @@ const Login = () => {
               type={`password`}
               name={`password`}
             />
-            <SubmitButton otherStyles={'w-80%'} handleSubmit={handleSubmit} name={`Sign In`} />
+            <SubmitButton otherStyles={'w-80% bg-orange-400'} handleSubmit={handleSubmit} name={`Sign In`} />
             <div className="max-sm:w-full w-80% m-2 ">
               <span>
                 Don't have an account ?{" "}

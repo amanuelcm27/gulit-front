@@ -99,7 +99,7 @@ const Register = () => {
               type={`password`}
               name={`password`}
             />
-            <SubmitButton otherStyles={'w-80%'} handleSubmit={handleSubmit} name={`Sign Up`} />
+            <SubmitButton otherStyles={'w-80% bg-orange-400'} handleSubmit={handleSubmit} name={`Sign Up`} />
             <div className="max-sm:w-full w-80% m-2 ">
               <span>
                 Already have an account?
