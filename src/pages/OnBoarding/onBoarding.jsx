@@ -108,7 +108,7 @@ const OnBoarding = () => {
               otherStyles={"w-1/2  mt-16 text-lg bg-orange-400 "}
             />
           </div>
-          <div className="max-sm:hidden">
+          <div className="max-sm:hidden w-1/2">
             <img src={images.store} className="w-full object-contain" />
           </div>
         </div>

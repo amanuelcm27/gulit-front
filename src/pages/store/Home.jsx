@@ -3,11 +3,11 @@ import NavItem from "../../components/NavItem";
 import DropDownItem from "../../components/DropDownItem";
 import { useGlobalContext } from "../../context/GlobalProvider";
 import images from "../../constants/images";
-import FeaturedProduct from "../../components/FeaturedProduct";
+import Product from "../../components/Product";
 import StoreNavBar from "../../components/StoreNavBar";
+import StoreFooter from "../../components/StoreFooter";
 
 const Home = () => {
-
   return (
     <div>
       <StoreNavBar />
@@ -19,7 +19,7 @@ const Home = () => {
           >
             <div className="max-sm:h-full flex flex-col justify-center max-sm:p-4 max-sm:bg-black max-sm:bg-opacity-40 ">
               <span className="max-sm:text-4xl max-sm:text-white text-7xl font-extrabold">
-                Coffee Beans you would die for
+                Prime a drink you would die for
               </span>
               <button className="group active:bg-slate-700 text-left text-white p-5 mt-5 font-extrabold bg-black w-1/2 max-sm:w-full">
                 Start Shopping
@@ -37,12 +37,14 @@ const Home = () => {
       </div>
       <div className="w-full h-[600px] max-sm:h-full">
         <div className="text-center m-12">
-          <span className="max-sm:text-4xl text-5xl font-extrabold">Featured products</span>
+          <span className="max-sm:text-4xl text-5xl font-extrabold">
+            Featured products
+          </span>
         </div>
         <div className=" flex max-sm:flex-col max-sm:m-4 m-12 justify-center items-center ">
-          <FeaturedProduct />
-          <FeaturedProduct />
-          <FeaturedProduct />
+          <Product />
+          <Product />
+          <Product />
         </div>
       </div>
       <div className=" max-sm:w-full  h-[100px] bg-black hover:bg-gray-900 max-sm:m-0 m-10 mx-16">
@@ -57,7 +59,7 @@ const Home = () => {
       </div>
       <div
         style={{ backgroundImage: `url(${images.tech})` }}
-        className=" bg-cover max-sm:h-[] h-[550px] rounded-xl max-sm:m-4   m-24 mx-16"
+        className=" bg-cover h-[550px] rounded-xl max-sm:m-4   m-24 mx-16"
       >
         <div className="w-full h-full flex flex-col justify-end rounded-xl bg-black bg-opacity-60">
           <div className="max-sm:text-4xl text-7xl font-bold text-white mx-10">
@@ -77,29 +79,7 @@ const Home = () => {
           </div>
         </div>
       </div>
-      <div className="max-sm:h-auto h-[250px] flex max-sm:flex-col bg-gray-300">
-        <div className="m-10 max-sm:m-auto">
-          <img src={images.logo} className="w-24" />
-        </div>
-        <div className="flex flex-col max-sm:m-5 m-10 cursor-pointer">
-          <span className="text-xl p-2 hover:underline font-bold ">Home</span>
-          <span className="text-xl p-2 hover:underline font-bold ">
-            Products
-          </span>
-          <span className="text-xl p-2 hover:underline font-bold ">
-            My account
-          </span>
-          <span className="text-xl p-2 hover:underline font-bold ">About</span>
-        </div>
-        <div className="ml-auto max-sm:mx-7 mt-auto m-10 flex flex-col text-lg  ">
-          <span>Follow us</span>
-          <span >
-            <i className="fa-brands p-1 fa-facebook"></i>
-            <i className="fa-brands p-1 fa-instagram"></i>
-            <i className="fa-brands p-1 fa-telegram "></i>
-          </span>
-        </div>
-      </div>
+      <StoreFooter />
     </div>
   );
 };

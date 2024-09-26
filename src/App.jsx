@@ -9,6 +9,8 @@ import Register from "./pages/auth/register";
 import Role from "./pages/OnBoarding/role";
 import Home from "./pages/store/Home";
 import Products from "./pages/store/Products";
+import ProductDetail from "./pages/store/ProductDetail";
+import Cart from "./pages/store/Cart";
 function App() {
   const [count, setCount] = useState(0);
   const OauthId = import.meta.env.VITE_OAUTH_CLIENT_ID;
@@ -23,6 +25,10 @@ function App() {
                 <Route path="/role" element={<Role />} />
                 <Route path="/home" element={<Home />} />
                 <Route path="/products" element={<Products />}></Route>
+                <Route path="/product/" element={<ProductDetail />} ></Route>
+                <Route path="/cart" element={<Cart />} ></Route>
+
+                
               </Route>
               <Route path="/login" element={<Login />}></Route>
               <Route path="/register" element={<Register />}></Route>
