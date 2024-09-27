@@ -25,7 +25,7 @@ import circleLeft from "../assets/images/circleLeft.png"
 import circleRight from "../assets/images/circleRight.png"
 import buyer from "../assets/images/buyer.svg"
 import saler from "../assets/images/saler.svg"
-
+import welcome  from "../assets/images/welcome.svg"
 export default {
   logo,
   googleLogo,
@@ -54,5 +54,6 @@ export default {
   circleRight,
   saler,
   buyer,
+  welcome ,
 };
 

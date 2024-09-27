@@ -29,7 +29,7 @@ const StoreNavBar = () => {
           handleClick={() => navigate("/products")}
           name="All Products"
         />
-        <NavItem name="About Gulit" />
+        <NavItem name="About Us" />
 
         <div className="relative group">
           <NavItem name="Account" />

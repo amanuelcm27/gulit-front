@@ -13,8 +13,6 @@ const FormField = ({ placeholder, type, name, handleChange, otherStyles }) => {
         name={name}
         onFocus={() => setBorderColor("")}
         onChange={(e) => handleChange(e)}
-        alt={showPassword ? "Hide password" : "Show password"}
-        aria-label={showPassword ? "Hide password" : "Show password"}
       />
       {type === "password" && (
         <img

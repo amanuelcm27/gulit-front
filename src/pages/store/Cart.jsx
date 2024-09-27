@@ -4,8 +4,10 @@ import StoreFooter from "../../components/StoreFooter";
 import images from "../../constants/images";
 import QuantityCounter from "../../components/QuantityCounter";
 import SubmitButton from "../../components/SubmitButton";
+import { useNavigate } from "react-router-dom";
 
 const Cart = () => {
+  const navigate = useNavigate()
   return (
     <div>
       <StoreNavBar />
@@ -102,6 +104,7 @@ const Cart = () => {
               <SubmitButton
                 name={`Proceed to Checkout`}
                 otherStyles="bg-black"
+                handleSubmit={()=>navigate('/checkout')}
               />
             </div>
           </div>

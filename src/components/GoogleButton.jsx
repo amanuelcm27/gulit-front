@@ -4,7 +4,7 @@ import { useGoogleLogin } from "@react-oauth/google";
 import { getAuthUser, signWithGoogle } from "../utils/authentication";
 import { useGlobalContext } from "../context/GlobalProvider";
 
-const GoogleButton = ({ name , setAuthError }) => {
+const GoogleButton = ({ name, setAuthError }) => {
   const { IsLoggedIn, loading, setIsLoggedIn, setUserInfo } =
     useGlobalContext();
 
@@ -17,12 +17,12 @@ const GoogleButton = ({ name , setAuthError }) => {
         setIsLoggedIn(true);
       }
     } catch (error) {
-      console.log(error);
       setAuthError("Unable to login with google. ");
     }
   };
   const login = useGoogleLogin({
     onSuccess: (googleToken) => loginGoogle(googleToken),
+    onError: () => setAuthError("Google Sign in Failed"),
   });
   return (
     <div

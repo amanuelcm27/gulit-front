@@ -19,7 +19,7 @@ const NavBar = () => {
     }
   };
   return (
-    <div className="w-full h-[80px] flex items-center bg-orange-400 shadow-custom">
+    <div className="w-full h-[80px] flex items-center bg-orange-400 shadow-xl">
       <div className="flex-1">
         <img src={images.logo} className="w-[80px]" />
       </div>

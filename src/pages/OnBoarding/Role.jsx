@@ -9,7 +9,7 @@ const Role = () => {
       <div className="w-80% h-80% max-sm:h-auto flex flex-col p-10 max-sm:items-center bg-white rounded-lg">
         <img src={images.logo} className="w-24" />
         <div className="m-4 max-sm:m-0 max-sm:p-1  max-sm:flex-col  h-full flex cursor-pointer">
-          <div className="  max-sm:w-full max-sm:text-center w-1/2 rounded-lg hover:bg-gray-300 flex flex-col justify-center items-center">
+          <div onClick={()=>navigate('/admin')}  className="  max-sm:w-full max-sm:text-center w-1/2 rounded-lg hover:bg-gray-300 flex flex-col justify-center items-center">
             <img src={images.saler} className="w-1/2 " />
             <span className="font-bold text-lg">I am Business owner</span>
             <span>Create your store and start selling</span>
