@@ -2,7 +2,7 @@ import { useState } from "react";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import OnBoarding from "./pages/OnBoarding/onBoarding";
 import PrivateRoute from "./utils/PrivateRoute";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom";
 import GlobalProvider from "./context/GlobalProvider";
 import Login from "./pages/auth/login";
 import Register from "./pages/auth/register";
@@ -13,6 +13,13 @@ import ProductDetail from "./pages/store/ProductDetail";
 import Cart from "./pages/store/Cart";
 import Checkout from "./pages/store/Checkout";
 import StoreOnBoarding from "./pages/admin/StoreOnBoarding";
+import Theme from "./pages/admin/Theme";
+import StoreProducts from "./pages/admin/StoreProducts";
+import Analytics from "./pages/admin/Analytics";
+import Orders from "./pages/admin/Orders";
+import Coupon from "./pages/admin/Coupon";
+
+import AdminDashboard from "./pages/admin/AdminDashboard";
 function App() {
   const [count, setCount] = useState(0);
   const OauthId = import.meta.env.VITE_OAUTH_CLIENT_ID;
@@ -22,20 +29,30 @@ function App() {
         <GlobalProvider>
           <GoogleOAuthProvider clientId={OauthId}>
             <Routes>
-              <Route path="/" element={<PrivateRoute />}>``
+              <Route path="/" element={<PrivateRoute />}>
                 <Route path="/" element={<OnBoarding />} />
                 <Route path="/role" element={<Role />} />
                 <Route path="/home" element={<Home />} />
                 <Route path="/products" element={<Products />}></Route>
-                <Route path="/product/" element={<ProductDetail />} ></Route>
-                <Route path="/cart" element={<Cart />} ></Route>
-                <Route path="/checkout" element={<Checkout />} ></Route>
-                <Route path="/admin" element={<StoreOnBoarding />} ></Route>                
+                <Route path="/product/" element={<ProductDetail />}></Route>
+                <Route path="/cart" element={<Cart />}></Route>
+                <Route path="/checkout" element={<Checkout />}></Route>
+                <Route path="/admin" element={<AdminDashboard />}>
+                  <Route index element={<Navigate to="/admin/products" />} />
+                  <Route
+                    path="onboarding"
+                    element={<StoreOnBoarding />}
+                  ></Route>
+                  <Route path="theme" element={<Theme />}></Route>
+                  <Route path="products" element={<StoreProducts />}></Route>
+                  <Route path="coupon" element={<Coupon />}></Route>
+                  <Route path="orders" element={<Orders />}></Route>
+                  <Route path="analytics" element={<Analytics />}></Route>
 
+                </Route>
               </Route>
               <Route path="/login" element={<Login />}></Route>
               <Route path="/register" element={<Register />}></Route>
-
             </Routes>
           </GoogleOAuthProvider>
         </GlobalProvider>

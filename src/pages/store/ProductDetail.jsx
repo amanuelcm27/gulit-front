@@ -37,7 +37,7 @@ const ProductDetail = () => {
           <div className="w-1/2 max-sm:w-full max-sm:h-[400px] h-full">
             <div
               ref={imageRef} // Set the ref to the div
-              style={{ "--image-url": `url(${images.tech})` }}
+              style={{ "--image-url": `url(${images.brand})` }}
               className="w-full h-full  bg-[length:100%] bg-no-repeat hover:bg-[length:175%] bg-[image:var(--image-url)]"
             ></div>
           </div>

@@ -1,13 +1,14 @@
 import React from "react";
+import { NavLink } from "react-router-dom";
 
-const AdminSideBarItem = ({name , icon , hide ,active}) => {
+const AdminSideBarItem = ({name , title ,icon , hide ,to }) => {
   return (
-    <div className="flex mt-4 hover:cursor-pointer items-center hover:bg-gray-200 p-2">
-      <span className={` ${hide ? "hidden" : 'flex-1'}`}>{name}</span>
-      <span>
+    <NavLink to={to}  className={({ isActive }) => `flex mt-4 items-center p-2 hover:cursor-pointer ${isActive ? 'bg-gray-200' : ''}`}>
+      <span className={`${hide ? "hidden" : 'flex-1'}`}>{name}</span>
+      <span title={title}>
         <i className={icon}></i>
       </span>
-    </div>
+    </NavLink>
   );
 };
 

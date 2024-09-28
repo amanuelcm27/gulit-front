@@ -1,7 +1,7 @@
 import React from "react";
 import images from "../constants/images";
 
-const Product = ({handleClick}) => {
+const Product = ({handleClick , edit}) => {
   return (
     <div onClick={handleClick} className=" max-sm:w-full w-1/4 h-[450px]  m-2 border-[1px] rounded-t-lg flex flex-col items-center transition-all duration-200 cursor-pointer hover:bg-gray-200 overflow-hidden">
       <img
@@ -22,6 +22,7 @@ const Product = ({handleClick}) => {
           <span className="text-gray-400 line-through ">$46.99</span>
           <span className="text-gray-600 px-2">$25.99</span>
         </span>
+        <span className={`${!edit ? 'hidden': "ml-auto m-2 hover:text-red-500"}`}><i class="fa-regular fa-pen-to-square"></i></span>
       </div>
     </div>
   );

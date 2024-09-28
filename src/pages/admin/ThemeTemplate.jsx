@@ -18,7 +18,7 @@ const ThemeTemplate = ({ logo, slogan, header, otherImage }) => {
               <span className="max-sm:text-4xl max-sm:text-white text-2xl font-extrabold">
                 {slogan || "your business slogan"}
               </span>
-              <button className="group active:bg-slate-700 text-left text-white p-2 mt-4 font-extrabold bg-black max-sm:w-full">
+              <button className="group w-[200px] active:bg-slate-700 text-left text-white p-2 mt-4 font-extrabold bg-black max-sm:w-full">
                 Start Shopping
                 <i className="fa-solid fa-cart-shopping opacity-0 group-hover:translate-x-2 group-hover:opacity-100  transition-all duration-300 transform translate-x-[-10px]"></i>
               </button>
@@ -26,7 +26,7 @@ const ThemeTemplate = ({ logo, slogan, header, otherImage }) => {
           </div>
           <div className="max-sm:hidden w-1/2 h-full overflow-hidden rounded-xl ">
             <img
-              src={header || images.tech}
+              src={header || images.brand}
               className="hover:scale-105 transition-all duration-300 object-cover w-full h-full "
             />
           </div>
@@ -55,7 +55,7 @@ const ThemeTemplate = ({ logo, slogan, header, otherImage }) => {
         </div>
       </div>
       <div
-        style={{ backgroundImage: `url(${otherImage || images.tech})` }}
+        style={{ backgroundImage: `url(${otherImage || images.brand})` }}
         className=" bg-cover h-[550px] rounded-xl max-sm:m-4   m-24 mx-16"
       >
         <div className="w-full h-full flex flex-col justify-end rounded-xl bg-black bg-opacity-60">

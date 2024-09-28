@@ -11,7 +11,7 @@ const Home = () => {
       <div className="w-full h-[550px]">
         <div className="max-sm:block flex h-full items-center  max-sm:m-0 m-10 ">
           <div
-            style={{ "--image-url": `url(${images.tech})` }}
+            style={{ "--image-url": `url(${images.brand})` }}
             className="max-sm:w-full w-1/2  flex flex-col bg-[image:var(--image-url)] bg-cover sm:bg-none  max-sm:h-full  "
           >
             <div className="max-sm:h-full flex flex-col justify-center max-sm:p-4 max-sm:bg-black max-sm:bg-opacity-40 ">
@@ -26,7 +26,7 @@ const Home = () => {
           </div>
           <div className="max-sm:hidden w-1/2 h-full overflow-hidden rounded-xl ">
             <img
-              src={images.tech}
+              src={images.brand}
               className="hover:scale-105 transition-all duration-300 object-cover w-full h-full "
             />
           </div>
