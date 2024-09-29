@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import images from "../constants/images";
 import NavItem from "./NavItem";
 import DropDownItem from "./DropDownItem";
@@ -18,11 +18,57 @@ const StoreNavBar = () => {
       console.log(error);
     }
   };
+  const [menuOpen, setMenuOpen] = useState(false);
+  useEffect(() => {
+    document.body.style.overflow = menuOpen ? "hidden" : "auto";
+  }, [menuOpen]);
   return (
     <div className="w-full h-[80px] flex items-center shadow-lg  ">
       <div className="flex-1">
         <img src={images.logo} className="w-[80px]" />
       </div>
+      <div className="sm:hidden m-4 text-2xl">
+        <span onClick={() => setMenuOpen(!menuOpen)}>
+          <i className={`fa-solid ${menuOpen ? "fa-xmark" : "fa-list"}`}></i>
+        </span>
+      </div>
+      {menuOpen && (
+        <div className="sm:hidden fixed inset-0 top-20  bg-white bg-opacity-95  z-50">
+          <div className="flex flex-col  m-2  h-full">
+            <DropDownItem
+              handleClick={() => {setMenuOpen(false),navigate("/home")}}
+              icon={`fa-solid fa-home`}
+              name="Home"
+            />
+            <DropDownItem
+              handleClick={() => navigate("/products")}
+              icon={`fa-solid fa-box-archive`}
+              name="All products"
+            />
+            <DropDownItem
+              handleClick={() => navigate("/cart")}
+              icon={`fa-solid fa-cart-shopping`}
+              name="My Cart"
+            />
+            <DropDownItem
+              handleClick={() => navigate("/account")}
+              icon={`fa-solid fa-gear`}
+              name="My Account"
+            />
+            <DropDownItem
+              handleClick={() => navigate("/about")}
+              icon={`fa-solid fa-info-circle`}
+              name="About Us"
+            />
+
+            <DropDownItem
+              handleClick={logout_user}
+              icon={`fa-solid fa-right-from-bracket`}
+              name="Logout"
+            />
+          </div>
+        </div>
+      )}
       <div className="max-sm:hidden flex items-center m-5">
         <NavItem handleClick={() => navigate("/home")} name="Home" />
         <NavItem
@@ -48,13 +94,8 @@ const StoreNavBar = () => {
           </div>
         </div>
         <div onClick={() => navigate("/cart")}>
-          <i class="text-4xl fa-solid fa-cart-shopping"></i>
+          <i class="text-4xl hover:text-orange-500 cursor-pointer fa-solid fa-cart-shopping"></i>
         </div>
-      </div>
-      <div className="sm:hidden m-4 text-2xl">
-        <span>
-          <i className="fa-solid fa-list"></i>
-        </span>
       </div>
     </div>
   );
