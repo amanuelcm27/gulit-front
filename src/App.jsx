@@ -2,7 +2,12 @@ import { useState } from "react";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import OnBoarding from "./pages/OnBoarding/onBoarding";
 import PrivateRoute from "./utils/PrivateRoute";
-import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  Navigate,
+} from "react-router-dom";
 import GlobalProvider from "./context/GlobalProvider";
 import Login from "./pages/auth/login";
 import Register from "./pages/auth/register";
@@ -20,6 +25,8 @@ import Orders from "./pages/admin/Orders";
 import Coupon from "./pages/admin/Coupon";
 
 import AdminDashboard from "./pages/admin/AdminDashboard";
+import About from "./pages/store/about";
+import StoreLayout from "./pages/store/storeLayout";
 function App() {
   const [count, setCount] = useState(0);
   const OauthId = import.meta.env.VITE_OAUTH_CLIENT_ID;
@@ -32,11 +39,15 @@ function App() {
               <Route path="/" element={<PrivateRoute />}>
                 <Route path="/" element={<OnBoarding />} />
                 <Route path="/role" element={<Role />} />
-                <Route path="/home" element={<Home />} />
-                <Route path="/products" element={<Products />}></Route>
-                <Route path="/product/" element={<ProductDetail />}></Route>
-                <Route path="/cart" element={<Cart />}></Route>
-                <Route path="/checkout" element={<Checkout />}></Route>
+                <Route path="/store" element={<StoreLayout />}>
+                  <Route path="home" element={<Home />} />
+                  <Route path="products" element={<Products />}></Route>
+                  <Route path="product" element={<ProductDetail />}></Route>
+                  <Route path="cart" element={<Cart />}></Route>
+                  <Route path="checkout" element={<Checkout />}></Route>
+                  <Route path="about" element={<About />} />
+                </Route>
+
                 <Route path="/admin" element={<AdminDashboard />}>
                   <Route index element={<Navigate to="/admin/products" />} />
                   <Route
@@ -48,7 +59,6 @@ function App() {
                   <Route path="coupon" element={<Coupon />}></Route>
                   <Route path="orders" element={<Orders />}></Route>
                   <Route path="analytics" element={<Analytics />}></Route>
-
                 </Route>
               </Route>
               <Route path="/login" element={<Login />}></Route>

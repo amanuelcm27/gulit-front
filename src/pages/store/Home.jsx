@@ -7,7 +7,6 @@ import StoreFooter from "../../components/StoreFooter";
 const Home = () => {
   return (
     <div>
-      <StoreNavBar />
       <div className="w-full h-[550px]">
         <div className="max-sm:block flex h-full items-center  max-sm:m-0 m-10 ">
           <div
@@ -76,7 +75,6 @@ const Home = () => {
           </div>
         </div>
       </div>
-      <StoreFooter />
     </div>
   );
 };

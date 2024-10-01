@@ -56,7 +56,7 @@ const StoreNavBar = () => {
               name="My Account"
             />
             <DropDownItem
-              handleClick={() => navigate("/about")}
+              handleClick={() => navigate("/store/about")}
               icon={`fa-solid fa-info-circle`}
               name="About Us"
             />
@@ -75,7 +75,7 @@ const StoreNavBar = () => {
           handleClick={() => navigate("/products")}
           name="All Products"
         />
-        <NavItem name="About Us" />
+        <NavItem handleClick={()=> navigate('/store/about')} name="About Us" />
 
         <div className="relative group">
           <NavItem name="Account" />

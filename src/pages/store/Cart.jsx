@@ -10,7 +10,6 @@ const Cart = () => {
   const navigate = useNavigate()
   return (
     <div>
-      <StoreNavBar />
       <div className=" m-10 max-sm:m-4 ">
         <div className="flex max-sm:w-full max-sm:flex-col max-sm:h-auto h-[550px] ">
           <div className="w-[65%] max-sm:w-full overflow-y-scroll  ">
@@ -110,7 +109,6 @@ const Cart = () => {
           </div>
         </div>
       </div>
-      <StoreFooter />
     </div>
   );
 };

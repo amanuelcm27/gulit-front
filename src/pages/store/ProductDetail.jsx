@@ -31,7 +31,6 @@ const ProductDetail = () => {
 
   return (
     <div>
-      <StoreNavBar />
       <div className=" m-10 max-sm:m-4">
         <div className="flex max-sm:flex-col max-sm:h-auto h-[550px]">
           <div className="w-1/2 max-sm:w-full max-sm:h-[400px] h-full">
@@ -95,7 +94,6 @@ const ProductDetail = () => {
           </div>
         </div>
       </div>
-      <StoreFooter />
     </div>
   );
 };

@@ -10,7 +10,6 @@ const Products = () => {
 
   return (
     <div>
-      <StoreNavBar />
       <div className=" max-sm:m-1 m-10 relative">
         <div className={`absolute z-10 bg-white bg-opacity-95 max-sm:w-full w-1/4 h-full transition-transform duration-500 ${showFilterSideBar ? 'translate-x-0' : '-translate-x-[500px]'}`}>
           <div className="flex flex-col m-8">
@@ -60,7 +59,6 @@ const Products = () => {
           </div>
         </div>
       </div>
-      <StoreFooter />
     </div>
   );
 };

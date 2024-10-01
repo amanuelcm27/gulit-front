@@ -4,8 +4,6 @@ import { useGlobalContext } from "../../context/GlobalProvider";
 import {
   getAuthUser,
   login,
-  logout,
-  signWithGoogle,
 } from "../../utils/authentication";
 import Loading from "../OnBoarding/loading";
 import images from "../../constants/images";

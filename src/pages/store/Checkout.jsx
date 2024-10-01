@@ -8,7 +8,6 @@ import SubmitButton from "../../components/SubmitButton";
 const Checkout = () => {
   return (
     <div>
-      <StoreNavBar />
       <div className="border-2 max-sm:h-auto h-[600px]">
         <div className="flex max-sm:flex-col m-8 max-sm:m-2">
           <div className="w-[50%] max-sm:w-full ">
@@ -127,7 +126,6 @@ const Checkout = () => {
           </div>
         </div>
       </div>
-      <StoreFooter />
     </div>
   );
 };

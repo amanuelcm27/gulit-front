@@ -5,7 +5,7 @@ import { getAuthUser, signWithGoogle } from "../utils/authentication";
 import { useGlobalContext } from "../context/GlobalProvider";
 
 const GoogleButton = ({ name, setAuthError }) => {
-  const { IsLoggedIn, loading, setIsLoggedIn, setUserInfo } =
+  const {  setIsLoggedIn, setUserInfo } =
     useGlobalContext();
 
   const loginGoogle = async (googleTokens) => {
