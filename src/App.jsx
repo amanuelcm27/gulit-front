@@ -27,6 +27,10 @@ import Coupon from "./pages/admin/Coupon";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import About from "./pages/store/about";
 import StoreLayout from "./pages/store/storeLayout";
+import CustomerDashBoard from "./pages/Customer/CustomerDashBoard";
+import CustomerOrders from "./pages/Customer/CustomerOrders";
+import CustomerDetails from "./pages/Customer/CustomerDetails";
+import Stores from "./pages/OnBoarding/Stores";
 function App() {
   const [count, setCount] = useState(0);
   const OauthId = import.meta.env.VITE_OAUTH_CLIENT_ID;
@@ -39,6 +43,8 @@ function App() {
               <Route path="/" element={<PrivateRoute />}>
                 <Route path="/" element={<OnBoarding />} />
                 <Route path="/role" element={<Role />} />
+                <Route path="/stores" element={<Stores />} />
+
                 <Route path="/store" element={<StoreLayout />}>
                   <Route path="home" element={<Home />} />
                   <Route path="products" element={<Products />}></Route>
@@ -46,6 +52,13 @@ function App() {
                   <Route path="cart" element={<Cart />}></Route>
                   <Route path="checkout" element={<Checkout />}></Route>
                   <Route path="about" element={<About />} />
+                </Route>
+                
+                <Route element={<CustomerDashBoard />} path="/customer">
+                  <Route index element={<Navigate to="/customer/orders" />} />
+                  <Route path="orders" element={<CustomerOrders />} />
+                  <Route path="details" element={<CustomerDetails />} />
+
                 </Route>
 
                 <Route path="/admin" element={<AdminDashboard />}>

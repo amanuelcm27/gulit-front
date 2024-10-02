@@ -3,7 +3,7 @@ import images from "../constants/images";
 
 const AdminProductCard = ({ title, icon, status, handleClick, styles }) => {
   return (
-    <div className="m-4 flex flex-col overflow-y-scroll">
+    <div className="m-4 flex flex-col ">
       <div className="flex items-center h-[100px] border-2 hover:bg-gray-50 ">
         <img src={images.tech} className="w-24 h-full" />
         <div className="flex flex-col">

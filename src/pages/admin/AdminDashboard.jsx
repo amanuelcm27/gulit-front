@@ -7,7 +7,7 @@ const AdminDashboard = () => {
   return (
     <div>
       <NavBar />
-      <div className="m-4 h-full flex">
+      <div className="m-4  flex">
         <AdminSideBar />
         {/* <div className="w-[45%] h-[600px] overflow-y-scroll"></div>
         <div className="w-[40%] h-[600px] overflow-y-scroll"></div> */}

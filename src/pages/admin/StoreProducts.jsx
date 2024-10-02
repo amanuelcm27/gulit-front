@@ -64,7 +64,7 @@ const StoreProducts = () => {
                 otherStyles={`bg-black mt-2 w-full`}
               />
               <SubmitButton
-              handleSubmit={()=>setProductForm(false)}
+                handleSubmit={() => setProductForm(false)}
                 name="Finish"
                 otherStyles={`bg-orange-400 w-full mt-2`}
               />
@@ -96,26 +96,28 @@ const StoreProducts = () => {
           </div>
         </div>
       )}
-      {!showProductForm && <div className=" h-full">
-        <div className=" border-b-2 flex m-8 items-center">
-          <span className="flex-1 font-bold text-2xl">
-            Availabe products in your store
-          </span>
-          <span
-            onClick={() => setProductForm(true)}
-            className="hover:bg-gray-200 rounded-lg m-2 cursor-pointer p-2"
-          >
-            <i className="fa-solid fa-plus"></i> New Product
-          </span>
+      {!showProductForm && (
+        <div className=" h-full">
+          <div className=" border-b-2 flex m-8 items-center">
+            <span className="flex-1 font-bold text-2xl">
+              Availabe products in your store
+            </span>
+            <span
+              onClick={() => setProductForm(true)}
+              className="hover:bg-gray-200 rounded-lg m-2 cursor-pointer p-2"
+            >
+              <i className="fa-solid fa-plus"></i> New Product
+            </span>
+          </div>
+          <div className="flex flex-wrap justify-center h-full overflow-y-scroll">
+            <Product edit={true} />
+            <Product edit={true} />
+            <Product edit={true} />
+            <Product edit={true} />
+            <Product edit={true} />
+          </div>
         </div>
-        <div className="flex flex-wrap justify-center h-full overflow-y-scroll">
-          <Product edit={true} />
-          <Product edit={true} />
-          <Product edit={true} />
-          <Product edit={true} />
-          <Product edit={true} />
-        </div>
-      </div>}
+      )}
     </div>
   );
 };

@@ -18,7 +18,7 @@ const Theme = () => {
         <div className="text-center m-2">
           <span className="font-bold text-4xl"> Theme of your store</span>
         </div>
-        <div className="flex flex-col h-full  items-center mt-8 ">
+        <div className="flex flex-col  items-center mt-8 ">
           <div className="flex flex-col h-full  items-center ">
             <span
               className="text-7xl  text-orange-400 cursor-pointer hover:text-orange-200"
@@ -47,7 +47,7 @@ const Theme = () => {
           </div>
         </div>
 
-        <div className="flex flex-col h-full  items-center mt-8">
+        <div className="flex flex-col   items-center ">
           <div className="flex flex-col h-full  items-center ">
             <div className="flex items-center">
               <div className="flex flex-col items-center m-4">
@@ -96,7 +96,19 @@ const Theme = () => {
             />
           </div>
         </div>
-        <div className="flex flex-col h-full  items-center mt-8">
+        <div className="flex flex-col   items-center ">
+          <div className="flex flex-col h-full  items-center mx-4 ">
+            <span className="text-md font-light m-4 ">Right brief description about your business / store , this will be used in your about us page</span>
+            <textarea className="h-[200px] p-2 resize-none outline-none w-full border-2 " name="store_description" placeholder="description of your store">
+
+            </textarea>
+            <SubmitButton
+              name="Continue"
+              otherStyles="bg-orange-400 w-full mt-2"
+            />
+          </div>
+        </div>
+        <div className="flex flex-col   items-center ">
           <div className="text-7xl text-orange-400">
             <i class="fa-solid fa-circle-check"></i>
           </div>

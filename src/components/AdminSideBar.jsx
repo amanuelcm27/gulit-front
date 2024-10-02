@@ -8,7 +8,7 @@ const AdminSideBar = () => {
   const navigate = useNavigate();
 
   return (
-    <div className={`w-[15%] h-[600px] ${minimize && "w-auto"}  `}>
+    <div className={`w-[15%] h-[600px]  sticky top-0  ${minimize && "w-auto"}  `}>
       <div
         onClick={() => setMinimize(!minimize)}
         className="text-xl cursor-pointer hover:text-gray-700"
@@ -19,7 +19,7 @@ const AdminSideBar = () => {
           }`}
         ></i>
       </div>
-      <div className="flex-1 flex flex-col m-2  ">
+      <div className="flex-1 flex flex-col m-2 shadow-md  ">
         <AdminSideBarItem
           to="/home"
           hide={minimize}

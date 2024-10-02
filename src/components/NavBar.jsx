@@ -68,7 +68,7 @@ const NavBar = () => {
       {/* Desktop Menu */}
       <div className="flex max-sm:hidden items-center m-5 text-white">
         <NavItem  name="Home" />
-        <NavItem name="Stores" />
+        <NavItem handleClick={()=>navigate('/stores')} name="Stores" />
         <div className="relative text-black group">
           <img src={images.user} className="w-10 cursor-pointer" />
           <div className="absolute right-0 w-[250px] rounded-md bg-gray-200 shadow-custom opacity-0 pointer-events-none transition-opacity duration-300 group-hover:opacity-100 group-hover:pointer-events-auto">

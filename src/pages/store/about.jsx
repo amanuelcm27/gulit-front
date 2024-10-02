@@ -8,7 +8,7 @@ const About = ({ styles }) => {
   const navigate = useNavigate();
   return (
     <div>
-      <div className="h- m-4">
+      <div className="m-4">
         <div className="flex flex-col items-center  max-sm:m-2 m-10 h-full">
           <div className="flex flex-col justify-center items-center">
             <span className="text-7xl max-sm:text-4xl font-extrabold">
