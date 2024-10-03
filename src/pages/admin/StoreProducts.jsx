@@ -97,7 +97,7 @@ const StoreProducts = () => {
         </div>
       )}
       {!showProductForm && (
-        <div className=" h-full">
+        <div className=" h-full overflow-y-scroll">
           <div className=" border-b-2 flex m-8 items-center">
             <span className="flex-1 font-bold text-2xl">
               Availabe products in your store
@@ -109,7 +109,7 @@ const StoreProducts = () => {
               <i className="fa-solid fa-plus"></i> New Product
             </span>
           </div>
-          <div className="flex flex-wrap justify-center h-full overflow-y-scroll">
+          <div className="flex flex-wrap justify-center h-full ">
             <Product edit={true} />
             <Product edit={true} />
             <Product edit={true} />

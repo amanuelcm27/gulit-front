@@ -23,7 +23,6 @@ import StoreProducts from "./pages/admin/StoreProducts";
 import Analytics from "./pages/admin/Analytics";
 import Orders from "./pages/admin/Orders";
 import Coupon from "./pages/admin/Coupon";
-
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import About from "./pages/store/about";
 import StoreLayout from "./pages/store/storeLayout";
@@ -41,9 +40,7 @@ function App() {
           <GoogleOAuthProvider clientId={OauthId}>
             <Routes>
               <Route path="/" element={<PrivateRoute />}>
-                <Route path="/" element={<OnBoarding />} />
                 <Route path="/role" element={<Role />} />
-                <Route path="/stores" element={<Stores />} />
 
                 <Route path="/store" element={<StoreLayout />}>
                   <Route path="home" element={<Home />} />
@@ -53,12 +50,11 @@ function App() {
                   <Route path="checkout" element={<Checkout />}></Route>
                   <Route path="about" element={<About />} />
                 </Route>
-                
+
                 <Route element={<CustomerDashBoard />} path="/customer">
                   <Route index element={<Navigate to="/customer/orders" />} />
                   <Route path="orders" element={<CustomerOrders />} />
                   <Route path="details" element={<CustomerDetails />} />
-
                 </Route>
 
                 <Route path="/admin" element={<AdminDashboard />}>
@@ -74,6 +70,8 @@ function App() {
                   <Route path="analytics" element={<Analytics />}></Route>
                 </Route>
               </Route>
+              <Route index path="/" element={<OnBoarding />} />
+              <Route path="/stores" element={<Stores />} />
               <Route path="/login" element={<Login />}></Route>
               <Route path="/register" element={<Register />}></Route>
             </Routes>

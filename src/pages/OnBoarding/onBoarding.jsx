@@ -4,9 +4,26 @@ import images from "../../constants/images";
 import SubmitButton from "../../components/SubmitButton";
 import { useNavigate } from "react-router-dom";
 import NavBar from "../../components/NavBar";
+import Footer from "../../components/Footer";
+import { useEffect, useState } from "react";
 const OnBoarding = () => {
-  const { userInfo, setIsLoggedIn, setUserInfo } = useGlobalContext();
+  const { userInfo, setIsLoggedIn, IsLoggedIn } = useGlobalContext();
+  const [hasRole, setHasRole] = useState(false);
+  useEffect(() => { 
+    if (userInfo) {
+      if (userInfo.role) {
+        setHasRole(true);
+      }
+    }
+  }, [userInfo]);
+  
   const navigate = useNavigate();
+  const getStarted = () => {
+    if (!hasRole) {
+      return navigate("/role");
+    }
+    return userInfo.role === "seller" ? navigate("/admin") : navigate("/stores");
+  };
   return (
     <div className="w-full items-center ">
       <NavBar />
@@ -20,9 +37,9 @@ const OnBoarding = () => {
               Turn Clicks into Customers Build Your Online Store Now
             </span>
             <SubmitButton
-              handleSubmit={() => navigate("/role")}
+              handleSubmit={getStarted}
               otherStyles="mt-10 bg-orange-400 text-4xl text-left max-sm:text-xl font-bold  w-1/2 "
-              name="Start Selling"
+              name="Get Started"
             />
           </div>
         </div>
@@ -242,38 +259,7 @@ const OnBoarding = () => {
           otherStyles={`w-1/2 bg-orange-400 font-extrabold rounded-xl`}
         />
       </div>
-      <div className="flex max-sm:flex-col h-[400px] max-sm:h-auto  bg-orange-400">
-        <div className="flex flex-col">
-          <img src={images.logo} className="w-[40%] max-sm:w-[30%]" />
-          <div className="m-10 flex-col flex text-white font-bold max-sm:text-xl max-sm:m-4 text-2xl cursor-pointer">
-            <span className=" hover:underline p-2">Stores</span>
-            <span className=" hover:underline p-2">Products</span>
-            <span className=" hover:underline p-2">About</span>
-          </div>
-        </div>
-        <div className="flex sm:hidden m-4 ">
-          <span className="text-white text-xl p-2">
-            <i className="fa-brands fa-youtube"></i>
-          </span>
-          <span className="text-white text-xl p-2">
-            <i className="fa-brands fa-linkedin"></i> 
-          </span>
-          <span className="text-white text-xl p-2">
-            <i className="fa-brands fa-tiktok"></i> 
-          </span>
-        </div>
-        <div className="flex flex-col max-sm:hidden  m-10 mt-auto ml-auto">
-          <span className="text-white text-xl p-2">
-            <i className="fa-brands fa-youtube"></i> YouTube
-          </span>
-          <span className="text-white text-xl p-2">
-            <i className="fa-brands fa-linkedin"></i> LinkedIn
-          </span>
-          <span className="text-white text-xl p-2">
-            <i className="fa-brands fa-tiktok"></i> Tiktok
-          </span>
-        </div>
-      </div>
+      <Footer />
     </div>
   );
 };

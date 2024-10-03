@@ -7,7 +7,7 @@ import DropDownItem from "./DropDownItem";
 import { logout } from "../utils/authentication";
 import SubmitButton from "../components/SubmitButton";
 const NavBar = () => {
-  const { userInfo, setIsLoggedIn, setUserInfo } = useGlobalContext();
+  const { userInfo, IsLoggedIn , setIsLoggedIn, setUserInfo } = useGlobalContext();
   const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -46,7 +46,7 @@ const NavBar = () => {
               name="Home"
             />
             <DropDownItem
-              handleClick={()=>navigate('/')}
+              handleClick={()=>navigate('/stores')}
               icon={`fa-solid fa-store`}
               name="Stores"
             />
@@ -67,12 +67,14 @@ const NavBar = () => {
 
       {/* Desktop Menu */}
       <div className="flex max-sm:hidden items-center m-5 text-white">
-        <NavItem  name="Home" />
+        <NavItem handleClick={()=>navigate('/')} name="Home" />
         <NavItem handleClick={()=>navigate('/stores')} name="Stores" />
+        <NavItem handleClick={()=>navigate('/customer/orders')} name="My Orders" />
+
         <div className="relative text-black group">
           <img src={images.user} className="w-10 cursor-pointer" />
-          <div className="absolute right-0 w-[250px] rounded-md bg-gray-200 shadow-custom opacity-0 pointer-events-none transition-opacity duration-300 group-hover:opacity-100 group-hover:pointer-events-auto">
-            <DropDownItem icon={`fa-solid fa-user`} name={userInfo.username} />
+          <div className="absolute right-0 w-[250px] rounded-md z-30 bg-gray-200 shadow-custom opacity-0 pointer-events-none transition-opacity duration-300 group-hover:opacity-100 group-hover:pointer-events-auto">
+            <DropDownItem handleClick={()=>navigate('/customer/')} icon={`fa-solid fa-user`} name={`My Account`} />
             <DropDownItem
               handleClick={logout_user}
               icon={`fa-solid fa-right-from-bracket`}

@@ -7,7 +7,6 @@ const GlobalProvider = ({ children }) => {
   const [userInfo, setUserInfo] = useState(null);
   const [IsLoggedIn, setIsLoggedIn] = useState(false);
   const [loading, setIsLoading] = useState(true);
-
   const get_user = async () => {
     try {
       const response = await getAuthUser();

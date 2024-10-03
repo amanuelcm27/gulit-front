@@ -108,7 +108,7 @@ const Stores = () => {
                 className="w-full h-full bg-cover   bg-opacity-50 rounded-xl"
               >
                 <div className="opacity-35 hover:opacity-100  transition-all duration-300 w-full h-full flex flex-col justify-end ">
-                  <div className="bg-black flex flex-col rounded-xl  bg-opacity-70 p-8 text-center">
+                  <div className="bg-black flex flex-col rounded-b-xl  bg-opacity-70 p-8 text-center">
                     <span className="w-full truncate text-white font-extrabold text-4xl">
                       Store name
                     </span>

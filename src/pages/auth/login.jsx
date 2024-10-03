@@ -1,10 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useGlobalContext } from "../../context/GlobalProvider";
-import {
-  getAuthUser,
-  login,
-} from "../../utils/authentication";
+import { getAuthUser, login } from "../../utils/authentication";
 import Loading from "../OnBoarding/loading";
 import images from "../../constants/images";
 import FormField from "../../components/FormField";
@@ -17,6 +14,8 @@ const Login = () => {
   const navigate = useNavigate();
   const { IsLoggedIn, loading, setIsLoggedIn, setUserInfo } =
     useGlobalContext();
+  const location = useLocation()
+  const from = location.state?.from?.pathname || "/";
   const [formData, handleChange] = useFormHandler({
     email: "",
     password: "",
@@ -37,6 +36,7 @@ const Login = () => {
       const response = await getAuthUser();
       setUserInfo(response.data);
       setIsLoggedIn(true);
+      navigate(from, { replace: true });
     } catch (error) {
       if (error.response && error.response.status === 400) {
         setAuthError("Invalid Email or Password");
@@ -56,10 +56,13 @@ const Login = () => {
         <div className="max-sm:bg-orange-400 max-sm:w-full w-1/2 h-full flex flex-col justify-center items-center ">
           <div className="max-sm:w-90%  w-80%  shadow-custom  max-sm:bg-white flex flex-col jus items-center   rounded-md p-5">
             <img src={images.logo} className="w-24" />
-            <GoogleButton setAuthError={setAuthError} name={`Sign in with google`} />
+            <GoogleButton
+              setAuthError={setAuthError}
+              name={`Sign in with google`}
+            />
             {authError && (
               <ErrorCard
-              setAuthError={setAuthError}
+                setAuthError={setAuthError}
                 otherStyles={`w-80% m-3 p-4 rounded-md`}
                 error={authError}
               />
@@ -78,7 +81,11 @@ const Login = () => {
               type={`password`}
               name={`password`}
             />
-            <SubmitButton otherStyles={'w-80% bg-orange-400'} handleSubmit={handleSubmit} name={`Sign In`} />
+            <SubmitButton
+              otherStyles={"w-80% bg-orange-400"}
+              handleSubmit={handleSubmit}
+              name={`Sign In`}
+            />
             <div className="max-sm:w-full w-80% m-2 ">
               <span>
                 Don't have an account ?{" "}

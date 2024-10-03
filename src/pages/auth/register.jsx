@@ -4,7 +4,7 @@ import images from "../../constants/images";
 import GoogleButton from "../../components/GoogleButton";
 import FormField from "../../components/FormField";
 import SubmitButton from "../../components/SubmitButton";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import ErrorCard from "../../components/ErrorCard";
 import { getAuthUser, register } from "../../utils/authentication";
 import { useGlobalContext } from "../../context/GlobalProvider";
@@ -17,6 +17,8 @@ const Register = () => {
     email: "",
     password: "",
   });
+  const location = useLocation();
+  const from = location.state?.from?.pathname || "/";
   const [authError, setAuthError] = useState(null);
   const { IsLoggedIn, loading, setIsLoggedIn, setUserInfo } =
     useGlobalContext();
@@ -40,7 +42,8 @@ const Register = () => {
       const response = await getAuthUser();
       setUserInfo(response.data);
       setIsLoggedIn(true);
-      console.log(response);
+      navigate(from, { replace: true });
+
     } catch (error) {
       if (error.response) {
         if (error.response.data.email || error.response.data.username) {
