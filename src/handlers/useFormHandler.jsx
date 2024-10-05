@@ -10,8 +10,10 @@ const useFormHandler = (initialValue) => {
       [name]: type === "file" ? files[0] : value,
     });
   };
-
-  return [formData, handleChange];
+  const clearForm = () => {
+    setFormData(initialValue);
+  };
+  return [formData, handleChange , clearForm ,setFormData];
 };
 
 export default useFormHandler;

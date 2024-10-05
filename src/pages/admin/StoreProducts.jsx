@@ -17,7 +17,7 @@ const StoreProducts = () => {
   const [info, setInfo] = useState(null);
   const [error, setError] = useState(false);
 
-  const [formData, handleChange] = useFormHandler({
+  const [formData, handleChange , clearForm] = useFormHandler({
     name: "",
     price: "",
     discount: "",
@@ -26,7 +26,7 @@ const StoreProducts = () => {
     quantity: "",
     image: null,
   });
-  const clearForm = () => {};
+
   const formValid = () => {
     const requiredFields = [
       "name",
@@ -89,6 +89,7 @@ const StoreProducts = () => {
       },
     });
   }
+  
   useEffect(() => {
     fetchCategories();
   }, []);
@@ -158,6 +159,7 @@ const StoreProducts = () => {
                 <SubmitButton
                   name="Save & Add another"
                   otherStyles={`bg-black mx-2 mt-2 w-full`}
+                  handleSubmit={clearForm}
                 />
                 <SubmitButton
                   handleSubmit={createProduct}

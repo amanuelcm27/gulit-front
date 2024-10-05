@@ -28,6 +28,7 @@ import saler from "../assets/images/saler.svg"
 import welcome  from "../assets/images/welcome.svg"
 import brand from "../assets/images/brand.png"
 import empty from "../assets/images/empty.svg"
+import loading from "../assets/images/loading.gif"  
 export default {
   logo,
   googleLogo,
@@ -58,6 +59,7 @@ export default {
   buyer,
   welcome ,
   brand, 
-  empty
+  empty ,
+  loading
 };
 

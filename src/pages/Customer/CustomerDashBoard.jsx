@@ -1,10 +1,15 @@
 import React from "react";
 import NavBar from "../../components/NavBar";
 import CustomerDashBoardSideBar from "../../components/CustomerDashBoardSideBar";
-import { Outlet, useNavigate } from "react-router-dom";
+import { Navigate, Outlet, useNavigate } from "react-router-dom";
 import Footer from "../../components/Footer";
+import { useGlobalContext } from "../../context/GlobalProvider";
 const CustomerDashBoard = () => {
   const naviagte = useNavigate()
+  const { userInfo} = useGlobalContext()
+  // if ( userInfo?.role === 'seller') { // prevents buyer from accessing admin dashboard
+  //   return <Navigate to="/admin" />
+  // }
   return (
     <div>
       <NavBar />

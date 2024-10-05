@@ -1,10 +1,20 @@
 import React from "react";
-import { Outlet } from "react-router-dom";
+import { Navigate, Outlet, useLocation } from "react-router-dom";
 import NavBar from "../../components/NavBar";
 import AdminSideBar from "../../components/AdminSideBar";
 import Footer from "../../components/Footer";
+import { useGlobalContext } from "../../context/GlobalProvider";
 
 const AdminDashboard = () => {
+  const { userInfo } = useGlobalContext()
+  const location = useLocation()
+  if ( userInfo?.role === 'buyer') { // prevents buyer from accessing admin dashboard
+    return <Navigate to="/stores" />
+  }
+
+  else if (!userInfo?.role ) { // prevents non-enrolled users from accessing admin dashboard
+    return <Navigate to="/role" />
+  }
   return (
     <div>
       <NavBar />

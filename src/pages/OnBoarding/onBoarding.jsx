@@ -9,20 +9,18 @@ import { useEffect, useState } from "react";
 const OnBoarding = () => {
   const { userInfo, setIsLoggedIn, IsLoggedIn } = useGlobalContext();
   const [hasRole, setHasRole] = useState(false);
-  useEffect(() => { 
-    if (userInfo) {
-      if (userInfo.role) {
-        setHasRole(true);
-      }
-    }
-  }, [userInfo]);
-  
+  useEffect(() => {
+    setHasRole(!!userInfo?.role);
+  }, [userInfo, IsLoggedIn]);
+
   const navigate = useNavigate();
   const getStarted = () => {
     if (!hasRole) {
       return navigate("/role");
     }
-    return userInfo.role === "seller" ? navigate("/admin") : navigate("/stores");
+    return userInfo.role === "seller"
+      ? navigate("/admin/products")
+      : navigate("/stores");
   };
   return (
     <div className="w-full items-center ">

@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import SubmitButton from "../../components/SubmitButton";
 import FormField from "../../components/FormField";
 import ThemeTemplate from "./ThemeTemplate";
@@ -6,6 +6,8 @@ import useFormHandler from "../../handlers/useFormHandler";
 import { Form, useNavigate } from "react-router-dom";
 import { apiRequest } from "../../handlers/apiHandler";
 import InfoCard from "../../components/InfoCard";
+import images from "../../constants/images";
+import LoadingCard from "../../components/LoadingCard";
 const Theme = () => {
   const logoInputRef = useRef(null);
   const pimage1Ref = useRef(null);
@@ -13,13 +15,16 @@ const Theme = () => {
   const [currentStep, setCurrentStep] = useState(1);
   const [info, setInfo] = useState(null);
   const [error, setError] = useState(false);
-  const [formData, handleChange] = useFormHandler({
-    name: "",
-    logo: null,
-    slogan: "",
-    p_image_1: null,
-    p_image_2: null,
-    description: "",
+  const [ownsStore, setOwnsStore] = useState(false);
+  const [store, setStore] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [formData, handleChange, setFormData] = useFormHandler({
+    name: store?.name || "",
+    logo: store?.logo || null,
+    slogan: store?.slogan || "",
+    p_image_1: store?.p_image_1 || null,
+    p_image_2: store?.p_image_2 || null,
+    description: store?.description || "",
   });
   const navigate = useNavigate();
   const handleImageClick = (inputRef) => {
@@ -43,7 +48,17 @@ const Theme = () => {
     }
 
     const data = new FormData();
-    requiredFields.forEach((field) => data.append(field, formData[field]));
+    requiredFields.forEach((field) => {
+      const value = formData[field];
+      if (["logo", "p_image_1", "p_image_2"].includes(field)) {
+        if (typeof value !== "string") {
+          data.append(field, value); // only add it to the returned data if it's a file
+        }
+      } else {
+        // Append all other fields
+        data.append(field, value);
+      }
+    });
 
     return data;
   };
@@ -52,18 +67,68 @@ const Theme = () => {
     if (validatedData) {
       const response = await apiRequest("post", "store_create/", validatedData);
       if (response.success === false) {
-        console.log(response.error);
         setInfo("Error in creating store");
       } else {
         setInfo("Store has been created");
-        setTimeout(()=> {
-          handleNextStep()
-        },2000)
-        console.log(response);
+        setTimeout(() => {
+          handleNextStep();
+        }, 2000);
+      }
+    }
+  };
+  const checkStoreOwnership = async () => {
+    const response = await apiRequest("get", "store_by_user/");
+    if (response.success === false) {
+      setInfo("Cannot fetch store data");
+      setError(true);
+    } else {
+      setLoading(false);
+      if (response.length >= 1) {
+        setOwnsStore(true);
+        const storeData = response[0];
+        setStore(storeData);
       }
     }
   };
 
+  const updateStore = async () => {
+    const validatedData = formValid();
+
+    const response = await apiRequest(
+      "patch",
+      `update_store/${store?.id}/`,
+      validatedData
+    );
+    if (response.success === false) {
+      setInfo("Cannot update store data");
+      setError(true);
+    } else {
+      setInfo("Store has been updated");
+      setError(false);
+    
+    }
+  };
+  const createObjectURLIfObject = (value) => {
+    if (value && typeof value === "object") {
+      return URL.createObjectURL(value);
+    }
+    return value;
+  };
+  useEffect(() => {
+    checkStoreOwnership();
+  }, []);
+  useEffect(() => {
+    if (store) {
+      setFormData({
+        name: store.name || "",
+        logo: store.logo || null,
+        slogan: store.slogan || "",
+        p_image_1: store.p_image_1 || null,
+        p_image_2: store.p_image_2 || null,
+        description: store.description || "",
+      });
+    }
+  }, [store]);
   const handleNextStep = () => {
     setCurrentStep((prevStep) => prevStep + 1);
   };
@@ -73,9 +138,12 @@ const Theme = () => {
   return (
     <>
       <InfoCard info={info} iserror={error} />
-      <div className="w-[45%] h-[600px] overflow-y-scroll">
+      <div className="w-[45%] h-[600px] overflow-y-scroll relative">
+        <LoadingCard show={loading} />
         <div className="text-center m-2">
-          <span className="font-bold text-4xl">Setup your store</span>
+          <span className="font-bold text-4xl">
+            {ownsStore ? "Edit" : "Setup"} your store
+          </span>
         </div>
         {currentStep === 1 && (
           <div className="flex flex-col  mt-8 ">
@@ -97,7 +165,9 @@ const Theme = () => {
                   hidden
                 />
                 <span className="text-xl font-light ">upload store logo </span>
-                <span className="font-extralight">(better if you upload logo with background removed)</span>
+                <span className="font-extralight">
+                  (better if you upload logo with background removed)
+                </span>
               </div>
               <FormField
                 type="text"
@@ -125,7 +195,7 @@ const Theme = () => {
                     className="text-7xl  text-orange-400 cursor-pointer hover:text-orange-200"
                     onClick={() => handleImageClick(pimage1Ref)}
                   >
-                    <i class="fa-solid fa-image"></i>
+                    <i className="fa-solid fa-image"></i>
                   </span>
                   <input
                     type="file"
@@ -142,7 +212,7 @@ const Theme = () => {
                     className="text-7xl  text-orange-400 cursor-pointer hover:text-orange-200"
                     onClick={() => handleImageClick(pimage2Ref)}
                   >
-                    <i class="fa-solid fa-image"></i>
+                    <i className="fa-solid fa-image"></i>
                   </span>
                   <input
                     type="file"
@@ -203,9 +273,9 @@ const Theme = () => {
                   handleSubmit={handlePrevioustStep}
                 />
                 <SubmitButton
-                  name="Finish"
+                  name={`${ownsStore ? "Update" : "Create"} Store`}
                   otherStyles="bg-orange-400 w-[60%] mx-2"
-                  handleSubmit={createStore}
+                  handleSubmit={ownsStore ? updateStore : createStore}
                 />
               </div>
             </div>
@@ -214,7 +284,7 @@ const Theme = () => {
         {currentStep === 4 && (
           <div className="flex flex-col mt-12   items-center ">
             <div className="text-7xl text-orange-400">
-              <i class="fa-solid fa-circle-check"></i>
+              <i className="fa-solid fa-circle-check"></i>
             </div>
             <div className="flex flex-col items-center mt-8">
               <span className="text-2xl font-extrabold">
@@ -232,17 +302,18 @@ const Theme = () => {
           </div>
         )}
       </div>
-      <div className="w-[40%] h-[600px] overflow-y-scroll">
-        <div className="text-center m-2">
-          <span className="font-light text-xl">your store theme</span>
+      <div className="w-[40%] h-[600px] overflow-y-scroll relative">
+        <LoadingCard show={loading} />
+
+        <div className="text-center m-2 flex flex-col">
+          <span className="font-light text-xl">your store theme </span>
+          <span className="font-extralight">scroll to see more </span>
         </div>
         <ThemeTemplate
-          logo={formData.logo && URL.createObjectURL(formData.logo)}
+          logo={createObjectURLIfObject(formData.logo)}
           slogan={formData.slogan}
-          header={formData.p_image_1 && URL.createObjectURL(formData.p_image_1)}
-          bottomImage={
-            formData.p_image_2 && URL.createObjectURL(formData.p_image_2)
-          }
+          header={createObjectURLIfObject(formData.p_image_1)}
+          bottomImage={createObjectURLIfObject(formData.p_image_2)}
         />
       </div>
     </>

@@ -1,9 +1,18 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import images from "../../constants/images";
 import SubmitButton from "../../components/SubmitButton";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useLocation, useNavigate } from "react-router-dom";
+import { useGlobalContext } from "../../context/GlobalProvider";
 const StoreOnBoarding = () => {
   const navigate = useNavigate();
+  const { userInfo } = useGlobalContext();
+  const location = useLocation();
+  const isFirstVisit = location.state?.isFirstVisit ?? false;
+
+  if (userInfo?.role === "seller" && !isFirstVisit) {
+    // prevents a user who already is seller from onboarding again
+    return <Navigate to="/admin/products" />;
+  }
 
   const [storeData, setStoreData] = useState();
   return (

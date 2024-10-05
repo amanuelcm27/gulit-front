@@ -7,10 +7,9 @@ import InfoCard from "../../components/InfoCard";
 
 const Role = () => {
   const navigate = useNavigate();
-  const { userInfo } = useGlobalContext();
+  const { userInfo , setUserInfo } = useGlobalContext();
   const [info, setInfo] = useState(null);
   const [error, setError] = useState(false);
-
   const updateUserRole = async (userRole) => {
     const response = await apiRequest("patch", `set_role/${userInfo.id}/`, {
       role: userRole,
@@ -19,11 +18,13 @@ const Role = () => {
       setInfo("Error In setting your role");
       setError(true);
     } else {
+      console.log(response);
       setInfo(`you have become a ${userRole}`);
       setError(false);
       setTimeout(() => {
         if (userRole === "seller") {
-          navigate("/admin/onboarding");
+          setUserInfo(response)
+          navigate("/admin/onboarding", { state: { isFirstVisit: true } });
         } else {
           navigate("/stores");
         }
@@ -33,7 +34,7 @@ const Role = () => {
   useEffect(() => {
     if (userInfo?.role) {
       if (userInfo.role === "seller") {
-        navigate("/admin/onboarding");
+        navigate("/admin/products");
       } else {
         navigate("/stores");
       }
