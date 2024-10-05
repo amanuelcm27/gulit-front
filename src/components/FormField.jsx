@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import images from "../constants/images";
 
-const FormField = ({ placeholder, type, name, handleChange, otherStyles }) => {
+const FormField = ({ placeholder, type, value , name, handleChange, otherStyles }) => {
   const [borderColor, setBorderColor] = useState();
   const [showPassword, setShowPassword] = useState(false);
   return (
@@ -11,6 +11,7 @@ const FormField = ({ placeholder, type, name, handleChange, otherStyles }) => {
         placeholder={placeholder}
         type={type === "password" ? (showPassword ? "text" : "password") : type}
         name={name}
+        value={value}
         onFocus={() => setBorderColor("")}
         onChange={(e) => handleChange(e)}
       />

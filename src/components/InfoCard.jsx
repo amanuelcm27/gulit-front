@@ -17,7 +17,7 @@ const InfoCard = ({ info, iserror }) => {
 
   return (
     <div
-      className={`absolute w-full h-[100px] z-50 flex items-center justify-center transition-transform duration-500 transform ${
+      className={`absolute w-full h-[100px] top-0 left-0 z-50 flex items-center justify-center transition-transform duration-500 transform ${
         visible ? "translate-y-0" : "-translate-y-full"
       }`}
     >

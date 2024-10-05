@@ -6,7 +6,7 @@ export const apiRequest = async (method, url, data = null) => {
     return response.data;
   } catch (error) {
     if (error.response) {
-      return { success: false, error: error.response.data };
+      return { success: false, error: error.response };
     }
     return { success: false, error: error.message };
   }

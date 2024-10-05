@@ -16,7 +16,7 @@ const StoreOnBoarding = () => {
           business
         </span>
         <SubmitButton
-          handleSubmit={() => navigate("/")}
+          handleSubmit={() => navigate("/admin/theme")}
           name="Let's Begin"
           otherStyles="bg-orange-400 w-1/2 mt-2"
         />

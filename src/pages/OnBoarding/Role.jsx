@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import images from "../../constants/images";
 import { useNavigate } from "react-router-dom";
-import { api } from "../../utils/api";
 import { useGlobalContext } from "../../context/GlobalProvider";
 import { apiRequest } from "../../handlers/apiHandler";
 import InfoCard from "../../components/InfoCard";

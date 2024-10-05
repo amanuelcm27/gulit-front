@@ -3,15 +3,32 @@ import images from "../../constants/images";
 import Product from "../../components/Product";
 import StoreNavBar from "../../components/StoreNavBar";
 import StoreFooter from "../../components/StoreFooter";
+import NavItem from "../../components/NavItem";
 
-const ThemeTemplate = ({ logo, slogan, header, otherImage }) => {
+const ThemeTemplate = ({ logo, slogan, header, bottomImage }) => {
   return (
     <>
-      <StoreNavBar />
+      <div className="w-full h-[80px] flex items-center shadow-lg  ">
+        <div className="flex-1">
+          <img src={logo  || images.logo} className="w-[80px]" />
+        </div>
+
+        <div className="max-sm:hidden flex items-center m-5">
+          <NavItem name="Home" />
+          <NavItem name="All Products" />
+          <NavItem name="About Us" />
+
+          <div className="relative group">
+            <NavItem name="Account" />
+          </div>
+          <div>
+            <i class="text-4xl hover:text-orange-500 cursor-pointer fa-solid fa-cart-shopping"></i>
+          </div>
+        </div>
+      </div>
       <div className="w-full h-[300px]">
         <div className="max-sm:block flex h-full items-center  max-sm:m-0 m-10 ">
           <div
-            style={{ "--image-url": `url(${logo || images.tech})` }}
             className="max-sm:w-full w-1/2  flex flex-col bg-[image:var(--image-url)] bg-cover sm:bg-none  max-sm:h-full  "
           >
             <div className="max-sm:h-full flex flex-col justify-center max-sm:p-4 max-sm:bg-black max-sm:bg-opacity-40 ">
@@ -55,7 +72,7 @@ const ThemeTemplate = ({ logo, slogan, header, otherImage }) => {
         </div>
       </div>
       <div
-        style={{ backgroundImage: `url(${otherImage || images.brand})` }}
+        style={{ backgroundImage: `url(${bottomImage || images.brand})` }}
         className=" bg-cover h-[550px] rounded-xl max-sm:m-4   m-24 mx-16"
       >
         <div className="w-full h-full flex flex-col justify-end rounded-xl bg-black bg-opacity-60">
