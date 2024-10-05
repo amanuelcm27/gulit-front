@@ -56,9 +56,9 @@ const ThemeTemplate = ({ logo, slogan, header, bottomImage }) => {
           </span>
         </div>
         <div className=" flex max-sm:flex-col max-sm:m-4 justify-center items-center ">
+          {/* <Product />
           <Product />
-          <Product />
-          <Product />
+          <Product /> */}
         </div>
       </div>
       <div className=" max-sm:w-full  h-[100px] bg-black hover:bg-gray-900 max-sm:m-0 m-10 mx-16">

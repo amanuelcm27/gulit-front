@@ -1,13 +1,13 @@
 import React from "react";
 import images from "../constants/images";
 
-const LoadingCard = ({ show }) => {
+const LoadingCard = ({ show , styles  , text }) => {
   return (
     <>
       {show && (
-        <div className="absolute w-full h-full z-50 bg-white bg-opacity-85 flex flex-col  items-center justify-center enter">
+        <div className={` absolute ${styles} w-full h-full z-50 bg-white  flex flex-col  items-center justify-center `}>
           <img src={images.loading} className="w-[200px]" />
-          <span className="text-2xl  font-bold">Loading Theme</span>
+          <span className="text-2xl  font-bold">Loading {text}</span>
         </div>
       )}
     </>
