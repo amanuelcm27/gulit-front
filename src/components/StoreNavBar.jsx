@@ -5,9 +5,11 @@ import DropDownItem from "./DropDownItem";
 import { useGlobalContext } from "../context/GlobalProvider";
 import { useNavigate } from "react-router-dom";
 import { logout } from "../utils/authentication";
+import { useStoreContext } from "../context/StoreContext";
 
 const StoreNavBar = () => {
   const { userInfo, setIsLoggedIn, setUserInfo } = useGlobalContext();
+  const {id, name,  logo } = useStoreContext();
   const navigate = useNavigate();
   const logout_user = async () => {
     try {
@@ -25,7 +27,7 @@ const StoreNavBar = () => {
   return (
     <div className="w-full h-[80px] flex items-center shadow-lg  ">
       <div className="flex-1">
-        <img src={images.logo} className="w-[80px]" />
+        <img src={logo} className="w-[80px]" />
       </div>
       <div className="sm:hidden m-4 text-2xl">
         <span onClick={() => setMenuOpen(!menuOpen)}>
@@ -36,17 +38,17 @@ const StoreNavBar = () => {
         <div className="sm:hidden fixed inset-0 top-20  bg-white bg-opacity-95  z-50">
           <div className="flex flex-col  m-2  h-full">
             <DropDownItem
-              handleClick={() => {setMenuOpen(false),navigate("/home")}}
+              handleClick={() => {setMenuOpen(false),navigate(`/${id}/${name}/home`)}}
               icon={`fa-solid fa-home`}
               name="Home"
             />
             <DropDownItem
-              handleClick={() => navigate("/products")}
+              handleClick={() => navigate(`/${id}/${name}/products`)}
               icon={`fa-solid fa-box-archive`}
               name="All products"
             />
             <DropDownItem
-              handleClick={() => navigate("/cart")}
+              handleClick={() => navigate(`/${id}/${name}/cart`)}
               icon={`fa-solid fa-cart-shopping`}
               name="My Cart"
             />
@@ -56,7 +58,7 @@ const StoreNavBar = () => {
               name="My Account"
             />
             <DropDownItem
-              handleClick={() => navigate("/store/about")}
+              handleClick={() => navigate(`/${id}/${name}/about`)}
               icon={`fa-solid fa-info-circle`}
               name="About Us"
             />
@@ -70,12 +72,12 @@ const StoreNavBar = () => {
         </div>
       )}
       <div className="max-sm:hidden flex items-center m-5">
-        <NavItem handleClick={() => navigate("/home")} name="Home" />
+        <NavItem handleClick={() => navigate(`/${id}/${name}/home`)} name="Home" />
         <NavItem
-          handleClick={() => navigate("/products")}
+          handleClick={() => navigate(`/${id}/${name}/products`)}
           name="All Products"
         />
-        <NavItem handleClick={()=> navigate('/store/about')} name="About Us" />
+        <NavItem handleClick={()=> navigate(`/${id}/${name}/about`)} name="About Us" />
 
         <div className="relative group">
           <NavItem name="Account" />
@@ -93,7 +95,7 @@ const StoreNavBar = () => {
             />
           </div>
         </div>
-        <div onClick={() => navigate("/cart")}>
+        <div onClick={() => navigate(`/${id}/${name}/cart`)}>
           <i class="text-4xl hover:text-orange-500 cursor-pointer fa-solid fa-cart-shopping"></i>
         </div>
       </div>

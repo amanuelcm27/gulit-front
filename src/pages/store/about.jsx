@@ -3,9 +3,11 @@ import NavBar from "../../components/NavBar";
 import images from "../../constants/images";
 import SubmitButton from "../../components/SubmitButton";
 import { useNavigate } from "react-router-dom";
+import { useStoreContext } from "../../context/StoreContext";
 
 const About = ({ styles }) => {
   const navigate = useNavigate();
+  const  { id  , name } = useStoreContext()
   return (
     <div>
       <div className="m-4">
@@ -46,7 +48,7 @@ const About = ({ styles }) => {
           <div>
             <SubmitButton
               name="Visit our Store"
-              handleSubmit={() => navigate("/store/products")}
+              handleSubmit={() => navigate(`/${id}/${name}/products`)}
               otherStyles={`bg-black text-white w-full px-12`}
             />
           </div>

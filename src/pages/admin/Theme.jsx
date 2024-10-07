@@ -8,16 +8,13 @@ import { apiRequest } from "../../handlers/apiHandler";
 import InfoCard from "../../components/InfoCard";
 import images from "../../constants/images";
 import LoadingCard from "../../components/LoadingCard";
+import { usecheckStoreOwnership } from "../../handlers/checkOwnership";
 const Theme = () => {
   const logoInputRef = useRef(null);
   const pimage1Ref = useRef(null);
   const pimage2Ref = useRef(null);
   const [currentStep, setCurrentStep] = useState(1);
-  const [info, setInfo] = useState(null);
-  const [error, setError] = useState(false);
-  const [ownsStore, setOwnsStore] = useState(false);
   const [store, setStore] = useState(null);
-  const [loading, setLoading] = useState(true);
   const [formData, handleChange, setFormData] = useFormHandler({
     name: store?.name || "",
     logo: store?.logo || null,
@@ -76,20 +73,6 @@ const Theme = () => {
       }
     }
   };
-  const checkStoreOwnership = async () => {
-    const response = await apiRequest("get", "store_by_user/");
-    if (response.success === false) {
-      setInfo("Cannot fetch store data");
-      setError(true);
-    } else {
-      setLoading(false);
-      if (response.length >= 1) {
-        setOwnsStore(true);
-        const storeData = response[0];
-        setStore(storeData);
-      }
-    }
-  };
 
   const updateStore = async () => {
     const validatedData = formValid();
@@ -105,7 +88,6 @@ const Theme = () => {
     } else {
       setInfo("Store has been updated");
       setError(false);
-    
     }
   };
   const createObjectURLIfObject = (value) => {
@@ -114,9 +96,17 @@ const Theme = () => {
     }
     return value;
   };
-  useEffect(() => {
-    checkStoreOwnership();
-  }, []);
+  const [
+    ownsStore,
+    loading,
+    error,
+    info,
+    setInfo,
+    setError,
+    setLoading,
+    setOwnsStore,
+  ] = usecheckStoreOwnership(setStore);
+
   useEffect(() => {
     if (store) {
       setFormData({
@@ -291,7 +281,7 @@ const Theme = () => {
                 Store has been setup successfully
               </span>
               <span className="text-xl font-light">
-                Add at least 3 products to you store before publishing it
+                Add at least 3 products to your store to activate it
               </span>
               <SubmitButton
                 handleSubmit={() => navigate("/admin/products")}
@@ -306,7 +296,7 @@ const Theme = () => {
         <LoadingCard text="theme" show={loading} />
 
         <div className="text-center m-2 flex flex-col">
-          <span className="font-light text-xl">your store theme </span>
+          <span className="font-light text-lg">your store theme </span>
           <span className="font-extralight">scroll to see more </span>
         </div>
         <ThemeTemplate

@@ -7,7 +7,9 @@ import useFormHandler from "../../handlers/useFormHandler";
 import InfoCard from "../../components/InfoCard";
 import { apiRequest } from "../../handlers/apiHandler";
 import LoadingCard from "../../components/LoadingCard";
-
+import EmptyCard from "../../components/EmptyCard";
+import { usecheckStoreOwnership } from "../../handlers/checkOwnership";
+import { useNavigate } from "react-router-dom";
 const StoreProducts = () => {
   const fileInputRef = useRef(null);
   const handleImageClick = () => {
@@ -15,10 +17,10 @@ const StoreProducts = () => {
   };
   const [categories, setCategories] = useState([]);
   const [showProductForm, setProductForm] = useState(false);
-  const [info, setInfo] = useState(null);
-  const [error, setError] = useState(false);
+
   const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(true);
+
+  const navigate = useNavigate(); 
   const [formData, handleChange, clearForm] = useFormHandler({
     name: "",
     price: "",
@@ -66,10 +68,10 @@ const StoreProducts = () => {
         setError(true);
       } else {
         setInfo("Product has been created");
-        flag === 'save&add' && clearForm() 
+        flag === "save&add" && clearForm();
         setError(false);
         setTimeout(() => {
-          setProductForm(flag === 'save&add' ? true : false);
+          setProductForm(flag === "save&add" ? true : false);
         }, 2000);
       }
     }
@@ -92,8 +94,9 @@ const StoreProducts = () => {
       },
     });
   };
+
   const fetchProducts = async () => {
-    setLoading(true)
+    setLoading(true);
     const response = await apiRequest("get", "list_products/");
     if (response.success === false) {
       setInfo("Network Error Try again later");
@@ -101,12 +104,22 @@ const StoreProducts = () => {
     } else {
       setLoading(false);
       setProducts(response);
+      
     }
   };
-
+  const [
+    ownsStore,
+    loading,
+    error,
+    info,
+    setInfo,
+    setError,
+    setLoading,
+    setOwnsStore,
+  ] = usecheckStoreOwnership(fetchProducts);
   useEffect(() => {
     fetchCategories();
-    fetchProducts();
+    
   }, []);
   return (
     <>
@@ -120,7 +133,7 @@ const StoreProducts = () => {
             <div className="flex">
               <div className="w-1/2 h-full flex-col m-10">
                 <button
-                  onClick={()=>setProductForm(false)}
+                  onClick={() => setProductForm(false)}
                   className="mx-4 p-2 rounded-xl active:bg-gray-200 bg-gray-100"
                 >
                   <i className="fa-solid fa-angles-left"></i> <span>Back</span>
@@ -189,7 +202,7 @@ const StoreProducts = () => {
                   <SubmitButton
                     name="Save & Add another"
                     otherStyles={`bg-black mx-2 mt-2 w-full`}
-                    handleSubmit={()=>createProduct('save&add')}
+                    handleSubmit={() => createProduct("save&add")}
                   />
                   <SubmitButton
                     handleSubmit={createProduct}
@@ -198,7 +211,7 @@ const StoreProducts = () => {
                   />
                 </div>
               </div>
-              <div className="w-1/2 h-full">
+              <div className="w-1/2 h-[600px]">
                 <div className="flex flex-col justify-center items-center">
                   <span
                     className="text-7xl  text-orange-400 cursor-pointer hover:text-orange-200"
@@ -233,31 +246,49 @@ const StoreProducts = () => {
             </div>
           </div>
         )}
-        {!showProductForm && (
-          <div className=" h-full overflow-y-scroll">
-            <div className=" border-b-2 flex m-8 items-center">
-              <span className="flex-1 font-bold text-2xl">
-                Availabe products in your store
-              </span>
-              <span
-                onClick={() => setProductForm(true)}
-                className="hover:bg-gray-200 rounded-lg m-2 cursor-pointer p-2"
+        {ownsStore ? (
+          !showProductForm && (
+            <div className=" h-full overflow-y-scroll">
+              <div className=" border-b-2 flex m-8 items-center">
+                <span className="flex-1 font-bold text-2xl">
+                  Availabe products in your store
+                </span>
+                <span
+                  onClick={() => setProductForm(true)}
+                  className="hover:bg-gray-200 rounded-lg m-2 cursor-pointer p-2"
+                >
+                  <i className="fa-solid fa-plus"></i> New Product
+                </span>
+              </div>
+              <button
+                onClick={fetchProducts}
+                className="mx-4 p-2 rounded-xl active:bg-gray-200 bg-gray-100"
               >
-                <i className="fa-solid fa-plus"></i> New Product
-              </span>
+                <i class="fa-solid fa-arrows-rotate"></i> <span>Refresh</span>
+              </button>
+              <div className="flex flex-wrap justify-center h-full ">
+                {products.length >= 1 ? (
+                  products.map((product) => (
+                    <Product key={product.id} product={product} edit={true} />
+                  ))
+                ) : (
+                  <EmptyCard
+                    styles=" w-full h-[50%] "
+                    text="You don't have any products in your store"
+                    btext="Add Products"
+                    handleClick={()=>setProductForm(true)}
+                  />
+                )}
+              </div>
             </div>
-            <button
-              onClick={fetchProducts}
-              className="mx-4 p-2 rounded-xl active:bg-gray-200 bg-gray-100"
-            >
-              <i class="fa-solid fa-arrows-rotate"></i> <span>Refresh</span>
-            </button>
-            <div className="flex flex-wrap justify-center h-full ">
-              {products.map((product) => (
-                <Product product={product} edit={true} />
-              ))}
-            </div>
-          </div>
+          )
+        ) : (
+          <EmptyCard
+            styles=" w-full h-full "
+            text="You don't own a store yet"
+            btext="Create Store"
+            handleClick={()=>navigate('/admin/theme')}
+          />
         )}
       </div>
     </>

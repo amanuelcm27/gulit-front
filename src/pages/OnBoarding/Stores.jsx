@@ -1,18 +1,40 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import NavBar from "../../components/NavBar";
 import { useNavigate } from "react-router-dom";
 import SubmitButton from "../../components/SubmitButton";
 import images from "../../constants/images";
+import { apiRequest } from "../../handlers/apiHandler";
+import LoadingCard from "../../components/LoadingCard";
+import InfoCard from "../../components/InfoCard";
 
 const Stores = () => {
   const navigate = useNavigate();
   const [showFilterSideBar, setShowFilterSideBar] = useState(false);
-
+  const [stores, setStores] = useState([]);
+  const [info, setInfo] = useState(false);
+  const [error, setError] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const fetchStores = async () => {
+    const response = await apiRequest("get", "all_stores/");
+    if (response.success === false) {
+      setInfo("No stores found");
+      setError(true);
+    } else {
+      setLoading(false);
+      setStores(response);
+    }
+  };
+  useEffect(() => {
+    fetchStores();
+  }, []);
   return (
     <div>
+      <InfoCard info={info} iserror={error} />
       <NavBar />
       <div className="flex max-sm:m-1 m-10 relative">
-        <div className="flex flex-col w-[80%]">
+      <LoadingCard text="Stores" show={loading} />
+
+        <div className="flex flex-col w-[80%] ">
           <div
             className={`absolute z-10  bg-white bg-opacity-95 max-sm:w-full w-1/4 h-full transition-transform duration-500 ${
               showFilterSideBar ? "translate-x-0" : "-translate-x-[500px]"
@@ -51,90 +73,29 @@ const Stores = () => {
           </div>
 
           <div className="flex  flex-wrap  p-2 overflow-y-scroll cursor-pointer">
-            <div className=" w-[30%] h-[350px]  border-2 m-2  rounded-xl shadow-lg">
+            {stores.map((store) => (
               <div
-                style={{ backgroundImage: `url(${images.brand})` }}
-                className="w-full h-full bg-cover  bg-opacity-50 rounded-xl"
+                onClick={() => navigate(`/${store.id}/${store.name}/home`)}
+                key={store.id}
+                className=" w-[30%] h-[350px]  border-2 m-2  rounded-xl shadow-lg"
               >
-                <div className="opacity-35 hover:opacity-100  transition-all duration-300 w-full h-full flex flex-col justify-end ">
-                  <div className="bg-black flex flex-col rounded-xl  bg-opacity-70 p-8 text-center">
-                    <span className="w-full truncate text-white font-extrabold text-4xl">
-                      Store name
-                    </span>
-                    <span className="text-orange-400 hover:text-yellow-300 font-bold text-lg">
-                      Visit Store
-                    </span>
+                <div
+                  style={{ backgroundImage: `url(${store.logo})` }}
+                  className="w-full h-full bg-cover  bg-opacity-50 rounded-xl"
+                >
+                  <div className="opacity-35 hover:opacity-100  transition-all duration-300 w-full h-full flex flex-col justify-end ">
+                    <div className="bg-black flex flex-col rounded-xl  bg-opacity-70 p-8 text-center">
+                      <span className="w-full truncate text-white font-extrabold text-4xl">
+                        {store.name}
+                      </span>
+                      <span className="text-orange-400 hover:text-yellow-300 font-bold text-lg">
+                        Visit Store
+                      </span>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-            <div className=" w-[30%] h-[350px]  border-2 m-2  rounded-xl shadow-lg">
-              <div
-                style={{ backgroundImage: `url(${images.header})` }}
-                className="w-full h-full bg-contain bg-no-repeat  bg-opacity-50 rounded-xl"
-              >
-                <div className="opacity-35 hover:opacity-100  transition-all duration-300 w-full h-full flex flex-col justify-end ">
-                  <div className="bg-black flex flex-col  rounded-xl bg-opacity-70 p-8 text-center">
-                    <span className="w-full truncate text-white font-extrabold text-4xl">
-                      Store name
-                    </span>
-                    <span className="text-orange-400 hover:text-yellow-300 font-bold text-lg">
-                      Visit Store
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className=" w-[30%] h-[350px]  border-2 m-2  rounded-xl shadow-lg">
-              <div
-                style={{ backgroundImage: `url(${images.health})` }}
-                className="w-full h-full bg-cover  bg-opacity-50 rounded-xl"
-              >
-                <div className="opacity-35 hover:opacity-100  transition-all duration-300 w-full h-full flex flex-col justify-end ">
-                  <div className="bg-black flex flex-col  rounded-xl bg-opacity-70 p-8 text-center">
-                    <span className="w-full truncate text-white font-extrabold text-4xl">
-                      Store name
-                    </span>
-                    <span className="text-orange-400 hover:text-yellow-300 font-bold text-lg">
-                      Visit Store
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className=" w-[30%] h-[350px]  border-2 m-2  rounded-xl shadow-lg">
-              <div
-                style={{ backgroundImage: `url(${images.tech})` }}
-                className="w-full h-full bg-cover   bg-opacity-50 rounded-xl"
-              >
-                <div className="opacity-35 hover:opacity-100  transition-all duration-300 w-full h-full flex flex-col justify-end ">
-                  <div className="bg-black flex flex-col rounded-b-xl  bg-opacity-70 p-8 text-center">
-                    <span className="w-full truncate text-white font-extrabold text-4xl">
-                      Store name
-                    </span>
-                    <span className="text-orange-400 hover:text-yellow-300 font-bold text-lg">
-                      Visit Store
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </div><div className=" w-[30%] h-[350px]  border-2 m-2  rounded-xl shadow-lg">
-              <div
-                style={{ backgroundImage: `url(${images.tech})` }}
-                className="w-full h-full bg-cover   bg-opacity-50 rounded-xl"
-              >
-                <div className="opacity-35 hover:opacity-100  transition-all duration-300 w-full h-full flex flex-col justify-end ">
-                  <div className="bg-black flex flex-col rounded-xl  bg-opacity-70 p-8 text-center">
-                    <span className="w-full truncate text-white font-extrabold text-4xl">
-                      Store name
-                    </span>
-                    <span className="text-orange-400 hover:text-yellow-300 font-bold text-lg">
-                      Visit Store
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </div>
+            ))}
           </div>
         </div>
         <div

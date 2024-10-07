@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import AdminSideBarItem from "./AdminSideBarItem";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import { useGlobalContext } from "../context/GlobalProvider";
 
 const AdminSideBar = () => {
   const [minimize, setMinimize] = useState(false);
   const [active, setActive] = useState();
   const navigate = useNavigate();
-
+  const {userInfo} = useGlobalContext();
   return (
     <div className={`w-[15%] h-[600px]  sticky top-0  ${minimize && "w-auto"}  `}>
       <div

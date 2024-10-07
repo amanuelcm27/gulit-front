@@ -75,7 +75,7 @@ const NavBar = () => {
           handleClick={() => navigate("/customer/orders")}
           name="My Orders"
         />
-
+        {userInfo && <NavItem name={userInfo.email} />}
         <div className="relative text-black group">
           <img src={images.user} className="w-10 cursor-pointer" />
           <div className="absolute right-0 w-[250px] rounded-md z-30 bg-gray-200 shadow-custom opacity-0 pointer-events-none transition-opacity duration-300 group-hover:opacity-100 group-hover:pointer-events-auto">

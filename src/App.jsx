@@ -30,6 +30,7 @@ import CustomerDashBoard from "./pages/Customer/CustomerDashBoard";
 import CustomerOrders from "./pages/Customer/CustomerOrders";
 import CustomerDetails from "./pages/Customer/CustomerDetails";
 import Stores from "./pages/OnBoarding/Stores";
+import NotFound from "./pages/default/NotFound";
 function App() {
   const [count, setCount] = useState(0);
   const OauthId = import.meta.env.VITE_OAUTH_CLIENT_ID;
@@ -42,7 +43,7 @@ function App() {
               <Route path="/" element={<PrivateRoute />}>
                 <Route path="/role" element={<Role />} />
 
-                <Route path="/store" element={<StoreLayout />}>
+                <Route path="/:storeid/:store_name/" element={<StoreLayout />}>
                   <Route path="home" element={<Home />} />
                   <Route path="products" element={<Products />}></Route>
                   <Route path="product" element={<ProductDetail />}></Route>
@@ -74,6 +75,7 @@ function App() {
               <Route path="/stores" element={<Stores />} />
               <Route path="/login" element={<Login />}></Route>
               <Route path="/register" element={<Register />}></Route>
+              <Route path="*" element={<NotFound />} />
             </Routes>
           </GoogleOAuthProvider>
         </GlobalProvider>

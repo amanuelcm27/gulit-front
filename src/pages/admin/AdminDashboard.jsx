@@ -9,7 +9,7 @@ const AdminDashboard = () => {
   const { userInfo } = useGlobalContext()
   const location = useLocation()
   if ( userInfo?.role === 'buyer') { // prevents buyer from accessing admin dashboard
-    return <Navigate to="/stores" />
+    return <Navigate to="/customer" />
   }
 
   else if (!userInfo?.role ) { // prevents non-enrolled users from accessing admin dashboard
