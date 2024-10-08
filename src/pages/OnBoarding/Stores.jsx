@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import NavBar from "../../components/NavBar";
 import { useNavigate } from "react-router-dom";
 import SubmitButton from "../../components/SubmitButton";
@@ -6,6 +6,7 @@ import images from "../../constants/images";
 import { apiRequest } from "../../handlers/apiHandler";
 import LoadingCard from "../../components/LoadingCard";
 import InfoCard from "../../components/InfoCard";
+import EmptyCard from "../../components/EmptyCard";
 
 const Stores = () => {
   const navigate = useNavigate();
@@ -24,15 +25,35 @@ const Stores = () => {
       setStores(response);
     }
   };
+  const [searchTerm, setSearchTerm] = useState("");
+  const submitSearch = async () => {
+    const response = await apiRequest(
+      "get",
+      `stores/search?name=${searchTerm}`
+    );
+    if (response.success === false) {
+      setInfo("Error in Searching for stores");
+      setError(true);
+    } else {
+      setStores(response);
+      setShowFilterSideBar(false);
+    }
+  };
+  const inputRef = useRef(null);
   useEffect(() => {
     fetchStores();
   }, []);
+  useEffect(() => {
+    if (showFilterSideBar) {
+      inputRef.current.focus();
+    }
+  }, [showFilterSideBar]);
   return (
     <div>
       <InfoCard info={info} iserror={error} />
       <NavBar />
       <div className="flex max-sm:m-1 m-10 relative">
-      <LoadingCard text="Stores" show={loading} />
+        <LoadingCard text="Stores" show={loading} />
 
         <div className="flex flex-col w-[80%] ">
           <div
@@ -48,15 +69,27 @@ const Stores = () => {
                 <i className="fa-solid fa-close"></i>
               </span>
               <span className="font-bold">Search for stores </span>
+              <div className="relative flex   mt-4">
+                <input
+                  ref={inputRef}
+                  type="text"
+                  className="p-4 pr-10 flex-1 border-2 border-black"
+                  placeholder="store name ..."
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  value={searchTerm}
+                />
+                <div
+                  onClick={() => setSearchTerm("")}
+                  className="absolute z-50 bg-white cursor-pointer  right-3 text-gray-400 mt-4"
+                >
+                  <i className="fa-solid fa-xmark"></i>
+                </div>
+              </div>
 
-              <input
-                type="text"
-                className="p-4 border-2 border-black"
-                placeholder="store name ..."
-              />
               <SubmitButton
                 otherStyles={`bg-orange-400 mt-2`}
                 name={`Search`}
+                handleSubmit={submitSearch}
               />
             </div>
           </div>
@@ -73,29 +106,38 @@ const Stores = () => {
           </div>
 
           <div className="flex  flex-wrap  p-2 overflow-y-scroll cursor-pointer">
-            {stores.map((store) => (
-              <div
-                onClick={() => navigate(`/${store.id}/${store.name}/home`)}
-                key={store.id}
-                className=" w-[30%] h-[350px]  border-2 m-2  rounded-xl shadow-lg"
-              >
+            {stores.length >= 1 ? (
+              stores.map((store) => (
                 <div
-                  style={{ backgroundImage: `url(${store.logo})` }}
-                  className="w-full h-full bg-cover  bg-opacity-50 rounded-xl"
+                  onClick={() => navigate(`/${store.id}/${store.name}/home`)}
+                  key={store.id}
+                  className=" w-[30%] h-[350px]  border-2 m-2  rounded-xl shadow-lg"
                 >
-                  <div className="opacity-35 hover:opacity-100  transition-all duration-300 w-full h-full flex flex-col justify-end ">
-                    <div className="bg-black flex flex-col rounded-xl  bg-opacity-70 p-8 text-center">
-                      <span className="w-full truncate text-white font-extrabold text-4xl">
-                        {store.name}
-                      </span>
-                      <span className="text-orange-400 hover:text-yellow-300 font-bold text-lg">
-                        Visit Store
-                      </span>
+                  <div
+                    style={{ backgroundImage: `url(${store.logo})` }}
+                    className="w-full h-full bg-cover  bg-opacity-50 rounded-xl"
+                  >
+                    <div className="opacity-35 hover:opacity-100  transition-all duration-300 w-full h-full flex flex-col justify-end ">
+                      <div className="bg-black flex flex-col rounded-xl  bg-opacity-70 p-8 text-center">
+                        <span className="w-full truncate text-white font-extrabold text-4xl">
+                          {store.name}
+                        </span>
+                        <span className="text-orange-400 hover:text-yellow-300 font-bold text-lg">
+                          Visit Store
+                        </span>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              ))
+            ) : (
+              <EmptyCard
+                styles="w-full "
+                text="No stores have been found ! "
+                btext="Search for stores"
+                handleClick={() => setShowFilterSideBar(true)}
+              />
+            )}
           </div>
         </div>
         <div
