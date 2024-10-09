@@ -11,12 +11,18 @@ import useFormHandler from "../../handlers/useFormHandler";
 
 const Products = () => {
   const navigate = useNavigate();
-  const { id } = useStoreContext();
+  const { id, name } = useStoreContext();
   const [showFilterSideBar, setShowFilterSideBar] = useState(false);
   const [products, setProducts] = useState([]);
   const [info, setInfo] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [priceRange, setPriceRange] = useState(0);
+  const [formData, handleChange, setFormData] = useFormHandler({
+    price: priceRange?.max_price || 0,
+    rating: 0,
+  });
   const fetchProducts = async () => {
     const response = await apiRequest("get", `store/${id}/products/`);
     if (response.success === false) {
@@ -27,12 +33,6 @@ const Products = () => {
       setProducts(response);
     }
   };
-  const [searchTerm, setSearchTerm] = useState("");
-  const [priceRange, setPriceRange] = useState(0);
-  const [formData, handleChange , setFormData] = useFormHandler({
-    price: priceRange?.max_price || 0,
-    rating: 0,
-  });
   const submitSearch = async () => {
     const response = await apiRequest(
       "get",
@@ -66,16 +66,15 @@ const Products = () => {
     } else {
       setProducts(response);
       setShowFilterSideBar(false);
-
     }
   };
   useEffect(() => {
     fetchProducts();
     min_max_price_in_store();
   }, []);
-  useEffect( () => {
-    setFormData({...formData, price:priceRange?.max_price})
-  },[priceRange])
+  useEffect(() => {
+    setFormData({ ...formData, price: priceRange?.max_price });
+  }, [priceRange]);
   return (
     <div>
       {loading ? (
@@ -167,7 +166,15 @@ const Products = () => {
               <div className="flex flex-wrap justify-center">
                 {products.length >= 1 ? (
                   products.map((product) => (
-                    <Product key={product.id} product={product} />
+                    <Product
+                      handleClick={() =>
+                        navigate(`/${id}/${name}/product`, {
+                          state: { productId: product.id },
+                        })
+                      }
+                      key={product.id}
+                      product={product}
+                    />
                   ))
                 ) : (
                   <EmptyCard
