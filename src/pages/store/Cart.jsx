@@ -8,17 +8,35 @@ import { useNavigate, useParams } from "react-router-dom";
 import { apiRequest } from "../../handlers/apiHandler";
 import InfoCard from "../../components/InfoCard";
 import LoadingCard from "../../components/LoadingCard";
+import EmptyCard from "../../components/EmptyCard";
 
 const Cart = () => {
   const navigate = useNavigate();
-  const { storeid } = useParams();
+  const { storeid, store_name } = useParams();
   const [loading, setLoading] = useState(true);
   const [info, setInfo] = useState(null);
+  const [infokey, setInfoKey] = useState(0); // re-trigger effect for infocard
   const [error, setError] = useState(false);
   const [quantity, setQuantity] = useState(1);
   const [cart, setCart] = useState({});
   const updateCart = async () => {};
-  const removeFromCart = async () => {};
+  const removeFromCart = async (productId) => {
+    setLoading(true);
+    const response = await apiRequest(
+      "delete",
+      `delete_cart_item/${productId}/`
+    );
+    if (response.success === false) {
+      setInfo("Error in removing item from cart");
+      setError(true);
+      setLoading(false);
+    } else {
+      setLoading(false);
+      setInfo("Item removed from cart");
+      fetchCart();
+    }
+    setInfoKey(infokey + 1);
+  };
   const fetchCart = async () => {
     const response = await apiRequest("get", `cart_items/${storeid}`);
     if (response.success === false) {
@@ -34,7 +52,7 @@ const Cart = () => {
   }, []);
   return (
     <div>
-      <InfoCard info={info} iserror={error} />
+      <InfoCard info={info} iserror={error} infokey={infokey} />
       <div className=" m-10 max-sm:m-4 relative ">
         <LoadingCard text="Cart" show={loading} />
         <div className="flex max-sm:w-full max-sm:flex-col max-sm:h-auto h-[550px] ">
@@ -50,65 +68,93 @@ const Cart = () => {
               </div>
             </div>
 
-            {cart.items?.map((item) => (
-              <div
-                key={item.product.id}
-                className="max-sm:hidden flex items-center cursor-pointer h-[100px] mx-4  bg-gray-50 hover:bg-gray-100 p-2 rounded-md "
-              >
-                <div className="flex-1  flex items-center ">
-                  <i class="hover:text-red-500 hover:scale-110 text-xl fa-solid fa-circle-xmark"></i>
-                  <img src={item.product.image} className="w-16 h-full m-2" />
-                  <div className="font-bold w-1/2 truncate">
-                    {item.product.name}
-                  </div>
-                </div>
-                <div className="flex items-center gap-10 b ">
-                  <span className="">{item.product.price}</span>
-                  <div className="flex">
-                    <div className="bg-gray-200 hover:bg-gray-400 cursor-pointer p-2">
-                      <i class="fa-solid fa-minus"></i>
-                    </div>
-                    <div className="bg-gray-100 p-2">
-                      <span>{item.quantity}</span>
-                    </div>
-                    <div className="bg-gray-200 hover:bg-gray-400 cursor-pointer p-2">
-                      <i class="fa-solid fa-plus"></i>
+            {cart.items?.length >= 1 ? (
+              cart.items?.map((item) => (
+                <div
+                  key={item.product.id}
+                  className="max-sm:hidden flex items-center cursor-pointer h-[100px] mx-4  bg-gray-50 hover:bg-gray-100 p-2 rounded-md "
+                >
+                  <div className="flex-1  flex items-center ">
+                    <i
+                      onClick={() => removeFromCart(item.id)}
+                      class="hover:text-red-500 hover:scale-110 text-xl fa-solid fa-circle-xmark"
+                    ></i>
+                    <img src={item.product.image} className="w-16 h-full m-2" />
+                    <div  onClick={()=>navigate(`/${storeid}/${store_name}/product/${item.product.id}`)} className="font-bold w-1/2 truncate">
+                      {item.product.name}
                     </div>
                   </div>
-                  <span className="font-light">{item.sub_total}</span>
+                  <div className="flex items-center gap-10 b ">
+                    <span className="">{item.product.price}</span>
+                    <div className="flex">
+                      <div className="bg-gray-200 hover:bg-gray-400 cursor-pointer p-2">
+                        <i class="fa-solid fa-minus"></i>
+                      </div>
+                      <div className="bg-gray-100 p-2">
+                        <span>{item.quantity}</span>
+                      </div>
+                      <div className="bg-gray-200 hover:bg-gray-400 cursor-pointer p-2">
+                        <i class="fa-solid fa-plus"></i>
+                      </div>
+                    </div>
+                    <span className="font-light">{item.sub_total}</span>
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))
+            ) : (
+              <EmptyCard
+                styles="h-[70%] max-sm:hidden"
+                text="Your Cart is empty"
+                btext="Add products"
+                handleClick={() =>
+                  navigate(`/${storeid}/${store_name}/products`)
+                }
+              />
+            )}
 
-            {cart.items?.map((item) => (
-              <div
-                key={item.product.id}
-                className="sm:hidden flex flex-col items-center w-full p-2 "
-              >
-                <span className="ml-auto">
-                  <i class="  text-xl fa-solid fa-circle-xmark"></i>
-                </span>
-                <img src={item.product.image} className="w-28" />
-                <span className="text-xl w-1/2 truncate text-center">
-                  {item.product.name}
-                </span>
-                <div className="flex w-full m-4">
-                  <span>{item.product.price}</span>
-                  <span className="ml-auto">Price</span>
+            {cart.items?.length >= 1 ? (
+              cart.items?.map((item) => (
+                <div
+                  key={item.product.id}
+                  className="sm:hidden flex flex-col items-center w-full p-2 "
+                >
+                  <span className="ml-auto">
+                    <i
+                      onClick={() => removeFromCart(item.id)}
+                      class="  text-xl fa-solid fa-circle-xmark"
+                    ></i>
+                  </span>
+                  <img src={item.product.image} className="w-28" />
+                  <span className="text-xl w-1/2 truncate text-center">
+                    {item.product.name}
+                  </span>
+                  <div className="flex w-full m-4">
+                    <span>{item.product.price}</span>
+                    <span className="ml-auto">Price</span>
+                  </div>
+                  <div className="flex w-full m-4">
+                    <QuantityCounter
+                      quantity={item.quantity}
+                      otherStyles={`p-2`}
+                    />
+                    <span className="ml-auto">Quantity</span>
+                  </div>
+                  <div className="flex w-full m-4">
+                    <span>{item.sub_total}</span>
+                    <span className="ml-auto">Sub-Total</span>
+                  </div>
                 </div>
-                <div className="flex w-full m-4">
-                  <QuantityCounter
-                    quantity={item.quantity}
-                    otherStyles={`p-2`}
-                  />
-                  <span className="ml-auto">Quantity</span>
-                </div>
-                <div className="flex w-full m-4">
-                  <span>{item.sub_total}</span>
-                  <span className="ml-auto">Sub-Total</span>
-                </div>
-              </div>
-            ))}
+              ))
+            ) : (
+              <EmptyCard
+                styles={`sm:hidden`}
+                text="Your Cart is empty"
+                btext="Add products"
+                handleClick={() =>
+                  navigate(`/${storeid}/${store_name}/products`)
+                }
+              />
+            )}
           </div>
           <div className="w-[35%] max-sm:w-full">
             <div className="flex flex-col m-4 ">

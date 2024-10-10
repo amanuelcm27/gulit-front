@@ -3,13 +3,16 @@ import images from "../../constants/images";
 import SubmitButton from "../../components/SubmitButton";
 import Product from "../../components/Product";
 import QuantityCounter from "../../components/QuantityCounter";
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { apiRequest } from "../../handlers/apiHandler";
 import InfoCard from "../../components/InfoCard";
 import LoadingCard from "../../components/LoadingCard";
+import { useGlobalContext } from "../../context/GlobalProvider";
 
 const ProductDetail = () => {
   const imageRef = useRef(null);
+  const navigate = useNavigate()
+  const { IsLoggedIn } = useGlobalContext();
   const [info, setInfo] = useState(null);
   const [ infokey , setInfoKey ] = useState(0) // re-trigger effect for infocard
   const [loading, setLoading] = useState(true);
@@ -100,13 +103,14 @@ const ProductDetail = () => {
                 <div className="flex mt-auto max-sm:mt-12 ">
                   <QuantityCounter
                     quantity={quantity}
+                    max_quantity={product.quantity}
                     setQuantity={setQuantity}
                     otherStyles={`p-4`}
                   />
                   <SubmitButton
                     name="Add to cart"
                     otherStyles={`bg-black mx-2`}
-                    handleSubmit={addtocart}
+                    handleSubmit={IsLoggedIn ? addtocart : () => Navigate('/login')}
                   />
                 </div>
               </div>

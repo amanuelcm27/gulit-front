@@ -9,7 +9,7 @@ const InfoCard = ({ info, iserror , infokey }) => {
 
       const timer = setTimeout(() => {
         setVisible(false);
-      }, 4000); 
+      }, 3000); 
 
       return () => clearTimeout(timer);
     }
@@ -17,7 +17,7 @@ const InfoCard = ({ info, iserror , infokey }) => {
 
   return (
     <div
-      className={`absolute w-full h-[100px] top-0 left-0 z-50 flex items-center justify-center transition-transform duration-500 transform ${
+      className={`fixed w-full h-[100px] top-0 left-0 bg-white bg-opacity-85 z-50 flex items-center justify-center transition-transform duration-500 transform ${
         visible ? "translate-y-0" : "-translate-y-full"
       }`}
     >
