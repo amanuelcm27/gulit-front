@@ -8,8 +8,9 @@ import { logout } from "../utils/authentication";
 import { useStoreContext } from "../context/StoreContext";
 
 const StoreNavBar = () => {
-  const { userInfo, setIsLoggedIn, setUserInfo } = useGlobalContext();
-  const {id, name,  logo } = useStoreContext();
+  const { userInfo, IsLoggedIn, setIsLoggedIn, setUserInfo } =
+    useGlobalContext();
+  const { id, name, logo } = useStoreContext();
   const navigate = useNavigate();
   const logout_user = async () => {
     try {
@@ -38,7 +39,9 @@ const StoreNavBar = () => {
         <div className="sm:hidden fixed inset-0 top-20  bg-white bg-opacity-95  z-50">
           <div className="flex flex-col  m-2  h-full">
             <DropDownItem
-              handleClick={() => {setMenuOpen(false),navigate(`/${id}/${name}/home`)}}
+              handleClick={() => {
+                setMenuOpen(false), navigate(`/${id}/${name}/home`);
+              }}
               icon={`fa-solid fa-home`}
               name="Home"
             />
@@ -72,27 +75,43 @@ const StoreNavBar = () => {
         </div>
       )}
       <div className="max-sm:hidden flex items-center m-5">
-        <NavItem handleClick={() => navigate(`/${id}/${name}/home`)} name="Home" />
+        <NavItem
+          handleClick={() => navigate(`/${id}/${name}/home`)}
+          name="Home"
+        />
         <NavItem
           handleClick={() => navigate(`/${id}/${name}/products`)}
           name="All Products"
         />
-        <NavItem handleClick={()=> navigate(`/${id}/${name}/about`)} name="About Us" />
+        <NavItem
+          handleClick={() => navigate(`/${id}/${name}/about`)}
+          name="About Us"
+        />
 
         <div className="relative group">
           <NavItem name="Account" />
-          <div className="absolute z-20 right-0 w-[250px] rounded-md bg-gray-200 shadow-custom opacity-0 pointer-events-none transition-opacity duration-300 group-hover:opacity-100 group-hover:pointer-events-auto">
-            <DropDownItem icon={`fa-solid fa-user`} name={userInfo.username} />
+          <div className="absolute z-20 right-0 w-[250px] rounded-md bg-gray-200 shadow-xl opacity-0 pointer-events-none transition-opacity duration-300 group-hover:opacity-100 group-hover:pointer-events-auto">
+            {IsLoggedIn && (
+              <DropDownItem
+                icon={`fa-solid fa-user`}
+                name={'My Account'}
+                handleClick={()=> userInfo?.role === 'seller' ? navigate('/admin') : navigate('/customer')}
+              />
+            )}
             <DropDownItem
               name="Back to Gulit"
               icon={`fa-solid fa-home`}
-              handleClick={() => navigate("/")}
+              handleClick={() => navigate("/stores")}
             />
-            <DropDownItem
+            {IsLoggedIn  ? <DropDownItem
               handleClick={logout_user}
               icon={`fa-solid fa-right-from-bracket`}
               name="Logout"
-            />
+            /> :
+            <DropDownItem
+              handleClick={() => navigate("/login")}
+              icon={`fa-solid fa-right-from-bracket`}
+              name="Login" /> }
           </div>
         </div>
         <div onClick={() => navigate(`/${id}/${name}/cart`)}>

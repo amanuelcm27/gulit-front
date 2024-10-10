@@ -43,15 +43,6 @@ function App() {
               <Route path="/" element={<PrivateRoute />}>
                 <Route path="/role" element={<Role />} />
 
-                <Route path="/:storeid/:store_name/" element={<StoreLayout />}>
-                  <Route path="home" element={<Home />} />
-                  <Route path="products" element={<Products />}></Route>
-                  <Route path="product" element={<ProductDetail />}></Route>
-                  <Route path="cart" element={<Cart />}></Route>
-                  <Route path="checkout" element={<Checkout />}></Route>
-                  <Route path="about" element={<About />} />
-                </Route>
-
                 <Route element={<CustomerDashBoard />} path="/customer">
                   <Route index element={<Navigate to="/customer/orders" />} />
                   <Route path="orders" element={<CustomerOrders />} />
@@ -69,6 +60,16 @@ function App() {
                   <Route path="coupon" element={<Coupon />}></Route>
                   <Route path="orders" element={<Orders />}></Route>
                   <Route path="analytics" element={<Analytics />}></Route>
+                </Route>
+              </Route>
+              <Route path="/:storeid/:store_name/" element={<StoreLayout />}>
+                <Route path="home" element={<Home />} />
+                <Route path="products" element={<Products />}></Route>
+                <Route path="product/:productId" element={<ProductDetail />} />
+                <Route path="about" element={<About />} />
+                <Route element={<PrivateRoute />}>
+                  <Route path="cart" element={<Cart />} />
+                  <Route path="checkout" element={<Checkout />} />
                 </Route>
               </Route>
               <Route index path="/" element={<OnBoarding />} />

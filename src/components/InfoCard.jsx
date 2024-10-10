@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-const InfoCard = ({ info, iserror }) => {
+const InfoCard = ({ info, iserror , infokey }) => {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
@@ -13,7 +13,7 @@ const InfoCard = ({ info, iserror }) => {
 
       return () => clearTimeout(timer);
     }
-  }, [info]); 
+  }, [info , infokey]); 
 
   return (
     <div

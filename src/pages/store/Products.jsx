@@ -168,9 +168,7 @@ const Products = () => {
                   products.map((product) => (
                     <Product
                       handleClick={() =>
-                        navigate(`/${id}/${name}/product`, {
-                          state: { productId: product.id },
-                        })
+                        navigate(`/${id}/${name}/product/${product.id}`)
                       }
                       key={product.id}
                       product={product}
