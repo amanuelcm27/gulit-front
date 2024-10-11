@@ -40,9 +40,9 @@ const ProductDetail = () => {
   const [quantity, setQuantity] = useState(1);
   const { storeid, productId } = useParams();
   const fetchProductDetail = async () => {
-    const response = await apiRequest("get", `product/${productId}/`);
+    const response = await apiRequest("get", `product/${storeid}/${productId}/`);
     if (response.success === false) {
-      setInfo("Error in fetching Data");
+      setInfo("couldn't load product");
       setError(true);
     } else {
       setLoading(false);
@@ -93,9 +93,11 @@ const ProductDetail = () => {
                 </span>
                 <span className="font-light text-2xl max-sm:mt-2 mt-8">
                   <span className="text-gray-400 line-through px-2">
-                    {product.price}
-                  </span>
                   {product.discount}
+
+                  </span>
+                  {product.price}
+
                 </span>
                 <div className="font-light mt-8 text-justify">
                   {product.description}
@@ -110,7 +112,7 @@ const ProductDetail = () => {
                   <SubmitButton
                     name="Add to cart"
                     otherStyles={`bg-black mx-2`}
-                    handleSubmit={IsLoggedIn ? addtocart : () => Navigate('/login')}
+                    handleSubmit={IsLoggedIn ? addtocart : () => navigate('/login')}
                   />
                 </div>
               </div>
@@ -132,9 +134,7 @@ const ProductDetail = () => {
             </span>
             <div className="flex max-sm:flex-col items-center ">
               {/* <Product />
-            <Product />
-            <Product />
-            <Product /> */}
+         */}
             </div>
           </div>
         </div>

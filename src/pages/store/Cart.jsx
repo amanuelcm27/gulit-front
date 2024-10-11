@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from "react";
-import StoreNavBar from "../../components/StoreNavBar";
-import StoreFooter from "../../components/StoreFooter";
 import images from "../../constants/images";
 import QuantityCounter from "../../components/QuantityCounter";
 import SubmitButton from "../../components/SubmitButton";
@@ -9,6 +7,8 @@ import { apiRequest } from "../../handlers/apiHandler";
 import InfoCard from "../../components/InfoCard";
 import LoadingCard from "../../components/LoadingCard";
 import EmptyCard from "../../components/EmptyCard";
+import CartItemMobile from "../../components/CartItemMobile";
+import CartItem from "../../components/CartItem";
 
 const Cart = () => {
   const navigate = useNavigate();
@@ -17,15 +17,11 @@ const Cart = () => {
   const [info, setInfo] = useState(null);
   const [infokey, setInfoKey] = useState(0); // re-trigger effect for infocard
   const [error, setError] = useState(false);
-  const [quantity, setQuantity] = useState(1);
   const [cart, setCart] = useState({});
-  const updateCart = async () => {};
-  const removeFromCart = async (productId) => {
+
+  const removeFromCart = async (itemId) => {
     setLoading(true);
-    const response = await apiRequest(
-      "delete",
-      `delete_cart_item/${productId}/`
-    );
+    const response = await apiRequest("delete", `delete_cart_item/${itemId}/`);
     if (response.success === false) {
       setInfo("Error in removing item from cart");
       setError(true);
@@ -47,16 +43,37 @@ const Cart = () => {
       setCart(response);
     }
   };
+  const updateQuantity = async (itemId, quantity, operation) => {
+    const updatedQuantity =
+      operation === "incr" ? quantity + 1 : Math.max(quantity - 1, 1);
+    if (operation !== "incr" && quantity === 1) {
+      return;
+    }
+    setLoading(true);
+    const response = await apiRequest("patch", `update_cart_item/${itemId}/`, {
+      quantity: updatedQuantity,
+    });
+    if (response.success === false) {
+      setInfo("Error in updating quantity");
+      setError(true);
+    } else {
+      setLoading(false);
+      setInfo("Quantity updated");
+      fetchCart();
+    }
+    setInfoKey(infokey + 1);
+  };
   useEffect(() => {
     fetchCart();
   }, []);
+
   return (
     <div>
       <InfoCard info={info} iserror={error} infokey={infokey} />
-      <div className=" m-10 max-sm:m-4 relative ">
-        <LoadingCard text="Cart" show={loading} />
+      <div className=" m-10 max-sm:m-4  ">
         <div className="flex max-sm:w-full max-sm:flex-col max-sm:h-auto h-[550px] ">
-          <div className="w-[65%] max-sm:w-full overflow-y-scroll  ">
+          <div className="w-[65%] max-sm:w-full overflow-y-scroll relative  ">
+            <LoadingCard text="Cart" show={loading} />
             <span className="font-bold text-xl m-4 max-sm:m-2">Your Cart</span>
             <div className=" max-sm:hidden flex justify-end items-center  h-[50px] mx-4 px-4 bg-gray-50 hover:bg-gray-100   ">
               <div className="flex items-center gap-10  ">
@@ -70,36 +87,13 @@ const Cart = () => {
 
             {cart.items?.length >= 1 ? (
               cart.items?.map((item) => (
-                <div
-                  key={item.product.id}
-                  className="max-sm:hidden flex items-center cursor-pointer h-[100px] mx-4  bg-gray-50 hover:bg-gray-100 p-2 rounded-md "
-                >
-                  <div className="flex-1  flex items-center ">
-                    <i
-                      onClick={() => removeFromCart(item.id)}
-                      class="hover:text-red-500 hover:scale-110 text-xl fa-solid fa-circle-xmark"
-                    ></i>
-                    <img src={item.product.image} className="w-16 h-full m-2" />
-                    <div  onClick={()=>navigate(`/${storeid}/${store_name}/product/${item.product.id}`)} className="font-bold w-1/2 truncate">
-                      {item.product.name}
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-10 b ">
-                    <span className="">{item.product.price}</span>
-                    <div className="flex">
-                      <div className="bg-gray-200 hover:bg-gray-400 cursor-pointer p-2">
-                        <i class="fa-solid fa-minus"></i>
-                      </div>
-                      <div className="bg-gray-100 p-2">
-                        <span>{item.quantity}</span>
-                      </div>
-                      <div className="bg-gray-200 hover:bg-gray-400 cursor-pointer p-2">
-                        <i class="fa-solid fa-plus"></i>
-                      </div>
-                    </div>
-                    <span className="font-light">{item.sub_total}</span>
-                  </div>
-                </div>
+                <CartItem
+                  item={item}
+                  removeFromCart={removeFromCart}
+                  updateQuantity={updateQuantity}
+                  storeid={storeid}
+                  store_name={store_name}
+                />
               ))
             ) : (
               <EmptyCard
@@ -114,36 +108,12 @@ const Cart = () => {
 
             {cart.items?.length >= 1 ? (
               cart.items?.map((item) => (
-                <div
-                  key={item.product.id}
-                  className="sm:hidden flex flex-col items-center w-full p-2 "
-                >
-                  <span className="ml-auto">
-                    <i
-                      onClick={() => removeFromCart(item.id)}
-                      class="  text-xl fa-solid fa-circle-xmark"
-                    ></i>
-                  </span>
-                  <img src={item.product.image} className="w-28" />
-                  <span className="text-xl w-1/2 truncate text-center">
-                    {item.product.name}
-                  </span>
-                  <div className="flex w-full m-4">
-                    <span>{item.product.price}</span>
-                    <span className="ml-auto">Price</span>
-                  </div>
-                  <div className="flex w-full m-4">
-                    <QuantityCounter
-                      quantity={item.quantity}
-                      otherStyles={`p-2`}
-                    />
-                    <span className="ml-auto">Quantity</span>
-                  </div>
-                  <div className="flex w-full m-4">
-                    <span>{item.sub_total}</span>
-                    <span className="ml-auto">Sub-Total</span>
-                  </div>
-                </div>
+                <CartItemMobile
+                  key={item.id}
+                  item={item}
+                  removeFromCart={removeFromCart}
+                  updateQuantity={updateQuantity}
+                />
               ))
             ) : (
               <EmptyCard
@@ -170,7 +140,9 @@ const Cart = () => {
               <SubmitButton
                 name={`Proceed to Checkout`}
                 otherStyles="bg-black"
-                handleSubmit={() => navigate("/checkout")}
+                handleSubmit={() =>
+                  navigate(`/${storeid}/${store_name}/checkout`)
+                }
               />
             </div>
           </div>
