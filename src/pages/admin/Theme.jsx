@@ -10,7 +10,7 @@ import StoreThemeForm from "../../components/StoreThemeForm";
 
 const Theme = () => {
   const [store, setStore] = useState(null);
-  const [ infoKey , setInfoKey] = useState(0);
+  const [infoKey, setInfoKey] = useState(0);
   const [formData, handleChange, setFormData] = useFormHandler({
     name: store?.name || "",
     logo: store?.logo || null,
@@ -82,16 +82,8 @@ const Theme = () => {
     setInfoKey(infoKey + 1);
   };
 
-  const [
-    ownsStore,
-    loading,
-    error,
-    info,
-    setInfo,
-    setError,
-    setLoading,
-    setOwnsStore,
-  ] = usecheckStoreOwnership(setStore);
+  const [ownsStore, loading, error, info, setInfo, setError] =
+    usecheckStoreOwnership(setStore);
 
   useEffect(() => {
     if (store) {
@@ -126,7 +118,6 @@ const Theme = () => {
       </div>
       <div className="w-[40%] h-[600px] overflow-y-scroll relative">
         <LoadingCard text="theme" show={loading} />
-
         <div className="text-center m-2 flex flex-col">
           <span className="font-light text-lg">your store theme </span>
           <span className="font-extralight">scroll to see more </span>

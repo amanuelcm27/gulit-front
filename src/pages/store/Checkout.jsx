@@ -1,17 +1,38 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import StoreNavBar from "../../components/StoreNavBar";
 import StoreFooter from "../../components/StoreFooter";
 import FormField from "../../components/FormField";
 import images from "../../constants/images";
 import SubmitButton from "../../components/SubmitButton";
+import { apiRequest } from "../../handlers/apiHandler";
+import { useParams } from "react-router-dom";
+import LoadingCard from "../../components/LoadingCard";
 
 const Checkout = () => {
+  const { storeid, store_name } = useParams();
+  const [cart, setCart] = useState([]);
+  const [loading , setLoading] = useState(true)
+  const fetchCart = async () => {
+    const response = await apiRequest("get", `cart_items/${storeid}/`);
+    if (response.success === false) {
+      setInfo("Couldn't load cart items");
+      setError(true);
+    } else {
+      setCart(response);
+      setLoading(false)
+    }
+  };
+  useEffect(() => {
+    fetchCart();
+  }, []);
   return (
     <div>
       <div className="border-2 max-sm:h-auto h-[600px]">
         <div className="flex max-sm:flex-col m-8 max-sm:m-2">
           <div className="w-[50%] max-sm:w-full ">
-            <span className="text-4xl max-sm:text-2xl font-extrabold">Billing information</span>
+            <span className="text-4xl max-sm:text-2xl font-extrabold">
+              Billing information
+            </span>
             <div className="flex items-center">
               <FormField
                 name={`fname`}
@@ -60,51 +81,32 @@ const Checkout = () => {
               />
             </div>
           </div>
-          <div className=" w-1/2 flex flex-col h-[550px] max-sm:w-full ">
-            <span className="p-8 max-sm:text-2xl max-sm:text-center font-extrabold text-4xl">Your Orders</span>
+          <div className=" w-1/2 flex flex-col h-[550px] max-sm:w-full relative ">
+            <LoadingCard text="Orders" show={loading}  />
+            <span className="p-8 max-sm:text-2xl max-sm:text-center font-extrabold text-4xl">
+              Your Orders
+            </span>
             <div className="overflow-y-scroll">
-              <div className="flex items-center h-[100px]">
-                <div className="flex-1 flex items-center">
-                  <img src={images.tech} className="w-24 max-sm:w-16" />
-                  <span className="font-bold text-xl w-1/2 truncate">
-                    Product name
-                  </span>
+              {cart.items?.map((item) => (
+                <div className="flex items-center h-[100px] mt-2">
+                  <div className="flex-1 flex items-center ">
+                    <img src={item.product.image} className="w-24 max-sm:w-16 rounded-lg" />
+                    <span className=" p-2 font-bold text-xl w-1/2 truncate">
+                      {item.product.name}
+                    </span>
+                  </div>
+                  <div className="flex m-4 items-center ">
+                    <span className="m-8 max-sm:m-1 font-bold">x{item.quantity}</span>
+                    <span className="m-4 font-light">{item.product.price}</span>
+                  </div>
                 </div>
-                <div className="flex m-4 items-center ">
-                  <span className="m-8 max-sm:m-1 font-bold">x2</span>
-                  <span className="m-4 font-light">599.99</span>
-                </div>
-              </div>
-              <div className="flex items-center h-[100px]">
-                <div className="flex-1 flex items-center">
-                  <img src={images.tech} className="w-24 max-sm:w-16" />
-                  <span className="font-bold text-xl w-1/2 truncate">
-                    Product name
-                  </span>
-                </div>
-                <div className="flex m-4 items-center ">
-                  <span className="m-8 max-sm:m-1 font-bold">x2</span>
-                  <span className="m-4 font-light">599.99</span>
-                </div>
-              </div>
-              <div className="flex items-center h-[100px]">
-                <div className="flex-1 flex items-center">
-                  <img src={images.tech} className="w-24 max-sm:w-16" />
-                  <span className="font-bold text-xl w-1/2 truncate">
-                    Product name
-                  </span>
-                </div>
-                <div className="flex m-4 items-center ">
-                  <span className="m-8 max-sm:m-1 font-bold">x2</span>
-                  <span className="m-4 font-light">599.99</span>
-                </div>
-              </div>
+              ))}
             </div>
 
             <div className="flex flex-col mt-auto m-4">
               <div className="flex text-2xl font-bold">
                 <span className="flex-1">Total</span>
-                <span className="">599.99</span>
+                <span className="">{cart?.total_price}</span>
               </div>
               <div className="ml-auto m-2 max-sm:m-1">
                 <span className="cursor-pointer hover:text-gray-700">
