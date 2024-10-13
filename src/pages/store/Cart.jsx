@@ -88,6 +88,7 @@ const Cart = () => {
             {cart.items?.length >= 1 ? (
               cart.items?.map((item) => (
                 <CartItem
+                  key={item.id}
                   item={item}
                   removeFromCart={removeFromCart}
                   updateQuantity={updateQuantity}

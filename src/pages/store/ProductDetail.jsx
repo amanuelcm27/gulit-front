@@ -58,8 +58,8 @@ const ProductDetail = () => {
     if (response.success === false) {
       setInfo("Error in adding to cart");
       setError(true);
-      console.log(response);
-    } else {
+    } 
+    else {
       if (response.message) {
         setInfo(response.message);
         setError(true)
