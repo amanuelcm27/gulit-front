@@ -29,6 +29,7 @@ import welcome  from "../assets/images/welcome.svg"
 import brand from "../assets/images/brand.png"
 import empty from "../assets/images/empty.svg"
 import loading from "../assets/images/loading.gif"  
+import trolly from '../assets/images/trolley.png'
 export default {
   logo,
   googleLogo,
@@ -60,6 +61,7 @@ export default {
   welcome ,
   brand, 
   empty ,
-  loading
+  loading ,
+  trolly ,
 };
 
