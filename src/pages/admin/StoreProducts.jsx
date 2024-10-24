@@ -22,8 +22,8 @@ const StoreProducts = () => {
   const navigate = useNavigate();
   const [formData, handleChange, clearForm, setFormData] = useFormHandler({
     name: "",
-    price: "",
-    discount: "",
+    price: null,
+    discount: null,
     description: "",
     category: "",
     quantity: "",

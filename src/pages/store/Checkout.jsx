@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
-import StoreNavBar from "../../components/StoreNavBar";
-import StoreFooter from "../../components/StoreFooter";
+import useFormHandler from "../../handlers/useFormHandler";
 import FormField from "../../components/FormField";
 import images from "../../constants/images";
 import SubmitButton from "../../components/SubmitButton";
@@ -17,6 +16,13 @@ const Checkout = () => {
   const [info, setInfo] = useState(null);
   const [error, setError] = useState(false);
   const [infokey, setInfoKey] = useState(0);
+  const [couponForm, setCouponForm] = useState(false);
+  const [couponLoading, setCouponLoading] = useState(false);
+  const [formData, handleChange, setFormData, clearForm] = useFormHandler({
+    store_id: storeid,
+    coupon_code: "",
+    cart: cart,
+  });
   const navigate = useNavigate();
   const fetchCart = async () => {
     const response = await apiRequest("get", `cart_items/${storeid}/`);
@@ -42,10 +48,46 @@ const Checkout = () => {
       setLoading(false);
       setTimeout(() => {
         navigate(`/${storeid}/${store_name}/cart`);
-      },2000)
+      }, 2000);
     }
     setInfoKey(infokey + 1);
   };
+  const validateCouponForm = () => {
+    if (formData.coupon_code === "") {
+      setError(true);
+      setInfo("Enter coupon code");
+      return false;
+    }
+    return formData;
+  };
+  const applyCoupon = async () => {
+    const validatedFormData = validateCouponForm();
+    if (validatedFormData) {
+      setCouponLoading(true);
+      const response = await apiRequest(
+        "post",
+        "apply_coupon/",
+        validatedFormData
+      );
+      if (response.success === false) {
+        setCouponLoading(false);
+        setInfo(response.error?.data?.message);
+        setError(true);
+      } else {
+        setCouponLoading(false);
+        setError(false);
+        setInfo("Coupon code successful");
+        setCart(response);
+      }
+    }
+    setInfoKey(infokey + 1);
+  };
+  useEffect(() => {
+    setFormData((prevData) => ({
+      ...prevData,
+      cart: cart,
+    }));
+  }, [cart]);
   useEffect(() => {
     fetchCart();
   }, []);
@@ -142,7 +184,13 @@ const Checkout = () => {
               ) : (
                 <div className="flex flex-col items-center justify-center h-full">
                   <span className="text-xl my-4"> No, Items in your Cart </span>
-                  <SubmitButton name="Add Products" otherStyles="bg-black w-1/4 rounded-xl" handleSubmit={()=>navigate(`/${storeid}/${store_name}/products`)} />
+                  <SubmitButton
+                    name="Add Products"
+                    otherStyles="bg-black w-1/4 rounded-xl"
+                    handleSubmit={() =>
+                      navigate(`/${storeid}/${store_name}/products`)
+                    }
+                  />
                 </div>
               )}
             </div>
@@ -152,21 +200,40 @@ const Checkout = () => {
                 <span className="flex-1">Total</span>
                 <span className="">{cart?.total_price}</span>
               </div>
-              <div className="ml-auto m-2 max-sm:m-1">
-                <span className="cursor-pointer hover:text-gray-700">
+              <div className=" m-2 max-sm:m-1">
+                <span
+                  onClick={() => setCouponForm(!couponForm)}
+                  className="cursor-pointer hover:text-gray-700"
+                >
                   Have a coupon/promo code ?
                 </span>
-                <div>
-                  <FormField
-                    name={`promo`}
-                    type={`text`}
-                    placeholder={`your promo code`}
-                  />
-                  <SubmitButton
-                    name="Apply Coupon"
-                    otherStyles={`bg-black p-2 m-2 rounded-xl`}
-                  />
-                </div>
+                {couponForm && (
+                  <div>
+                    <div className="text-red-400 text-[0.8rem]">
+                      Attention don't refresh this page after applying the
+                      coupon as you might lose your chance to buy this product
+                      at a discount.
+                    </div>
+
+                    <FormField
+                      name="coupon_code"
+                      type="text"
+                      placeholder="Your promo code"
+                      handleChange={handleChange}
+                      value={formData.coupon_code}
+                    />
+                    {couponLoading ? (
+                      <img src={images.loading} className="w-28" />
+                    ) : (
+                      <button
+                        onClick={applyCoupon}
+                        className="bg-black text-white p-4 m-2 rounded-lg"
+                      >
+                        Apply coupon
+                      </button>
+                    )}
+                  </div>
+                )}
               </div>
             </div>
           </div>

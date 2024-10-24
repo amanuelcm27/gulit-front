@@ -55,7 +55,7 @@ const Coupon = () => {
       if (response.success === false) {
         setError(true);
         setInfo(
-          "Error in creating coupon ensure you have not used this code before"
+          "ensure you have not used this code before"
         );
       } else {
         fetchCoupons();
@@ -76,6 +76,7 @@ const Coupon = () => {
       },
     });
     setSelectedProduct(product.name);
+
   };
   const fetchCoupons = async () => {
     const response = await apiRequest("get", "coupons/");
@@ -129,7 +130,7 @@ const Coupon = () => {
             product_image={coupon.product ? coupon.product.image : images.trolly}
             icon={`fa-solid fa-trash hover:text-red-700`}
             info={`${coupon.expired ? 'expired' : `active (expires ${formatDate(coupon.expiration_date)})`} coupon`}
-            additional={` "${coupon.code}" with discount of ${coupon.discount}%`}
+            additional={`Code "${coupon.code}" with discount of ${coupon.discount}%`}
             styles={` ${coupon.expired ? 'text-red-700' : 'text-green-500' }  font-extrabold`}
             handleClick={() => {setDeleteBox(!deleteBox) , setItemToDelete(coupon)}}
           />) :
