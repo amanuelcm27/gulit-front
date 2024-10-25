@@ -109,7 +109,7 @@ const Coupon = () => {
     <>
       <InfoCard info={info} iserror={error} infokey={infokey} />
       <div className="w-[85%] h-[600px] ">
-        <div className="h-full overflow-y-scroll">
+        <div className="h-full relative overflow-y-scroll">
           <div className=" border-b-2 flex m-8 items-center">
             <span className="flex-1 font-bold text-2xl">
               Products with Coupons
@@ -122,14 +122,13 @@ const Coupon = () => {
             </span>
           </div>
           <LoadingCard text="coupons" show={loading} />
-
           {coupons.length > 0 ? coupons?.map((coupon)=><AdminProductCard
             key={coupon.id}
             title="delete"
             product_name={coupon.product ? coupon.product.name : "All products in cart"}
             product_image={coupon.product ? coupon.product.image : images.trolly}
             icon={`fa-solid fa-trash hover:text-red-700`}
-            info={`${coupon.expired ? 'expired' : `active (expires ${formatDate(coupon.expiration_date)})`} coupon`}
+            info={`${coupon.expired ? 'expired coupon' : `active coupon (expires ${formatDate(coupon.expiration_date)})`}`}
             additional={`Code "${coupon.code}" with discount of ${coupon.discount}%`}
             styles={` ${coupon.expired ? 'text-red-700' : 'text-green-500' }  font-extrabold`}
             handleClick={() => {setDeleteBox(!deleteBox) , setItemToDelete(coupon)}}

@@ -18,10 +18,11 @@ const Checkout = () => {
   const [infokey, setInfoKey] = useState(0);
   const [couponForm, setCouponForm] = useState(false);
   const [couponLoading, setCouponLoading] = useState(false);
+  const [couponUsed , setCouponUsed] = useState(false);
   const [formData, handleChange, setFormData, clearForm] = useFormHandler({
     store_id: storeid,
     coupon_code: "",
-    cart: cart,
+    cart_id: cart?.id,
   });
   const navigate = useNavigate();
   const fetchCart = async () => {
@@ -38,6 +39,7 @@ const Checkout = () => {
     const response = await apiRequest("post", `create_order/`, {
       store_id: storeid,
       cart_id: cart?.id,
+      coupon_used: couponUsed,
     });
     if (response.success === false) {
       setInfo("Couldn't create order");
@@ -74,6 +76,7 @@ const Checkout = () => {
         setInfo(response.error?.data?.message);
         setError(true);
       } else {
+        setCouponUsed(validatedFormData.coupon_code);
         setCouponLoading(false);
         setError(false);
         setInfo("Coupon code successful");
@@ -209,11 +212,7 @@ const Checkout = () => {
                 </span>
                 {couponForm && (
                   <div>
-                    <div className="text-red-400 text-[0.8rem]">
-                      Attention don't refresh this page after applying the
-                      coupon as you might lose your chance to buy this product
-                      at a discount.
-                    </div>
+         
 
                     <FormField
                       name="coupon_code"
