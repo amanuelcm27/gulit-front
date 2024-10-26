@@ -8,7 +8,19 @@ import { apiRequest } from "../../handlers/apiHandler";
 import { useStoreContext } from "../../context/StoreContext";
 
 const Home = () => {
-  const {id ,name , slogan , p_image_1 , p_image_2  } = useStoreContext();
+  const { id, name, slogan, p_image_1, p_image_2 } = useStoreContext();
+  const [featuredProducts, setfeaturedProducts] = useState([]);
+  const fetchProducts = async () => {
+    const response = await apiRequest("get", `store/${id}/featured_products/`);
+    if (response.success === false) {
+      console.log('problem getting products');
+    } else {
+      setfeaturedProducts(response);
+    }
+  };
+  useEffect(() => {
+    fetchProducts();
+  }, []);
   const navigate = useNavigate();
   return (
     <div>
@@ -22,7 +34,10 @@ const Home = () => {
               <span className="max-sm:text-4xl max-sm:text-white text-7xl font-extrabold">
                 {slogan}
               </span>
-              <button onClick={()=> navigate(`/${id}/${name}/products`)} className="group active:bg-slate-700 text-left text-white p-5 mt-5 font-extrabold bg-black w-1/2 max-sm:w-full">
+              <button
+                onClick={() => navigate(`/${id}/${name}/products`)}
+                className="group active:bg-slate-700 text-left text-white p-5 mt-5 font-extrabold bg-black w-1/2 max-sm:w-full"
+              >
                 Start Shopping
                 <i className="fa-solid fa-cart-shopping opacity-0 group-hover:translate-x-2 group-hover:opacity-100  transition-all duration-300 transform translate-x-[-10px]"></i>
               </button>
@@ -43,9 +58,9 @@ const Home = () => {
           </span>
         </div>
         <div className=" flex max-sm:flex-col max-sm:m-4 m-12 justify-center items-center ">
-          {/* <Product />
-          <Product />
-          <Product /> */}
+          {featuredProducts?.map((product) => (
+            <Product product={product} showPrice={false}  handleClick={()=>navigate(`/${id}/${name}/product/${product.id}`)} />
+          ))}
         </div>
       </div>
       <div className=" max-sm:w-full  h-[100px] bg-black hover:bg-gray-900 max-sm:m-0 m-10 mx-16">
@@ -53,7 +68,10 @@ const Home = () => {
           <span className="flex-1 max-sm:text-sm text-xl font-extrabold">
             Get this limited time offer
           </span>
-          <span onClick={()=> navigate(`/${id}/${name}/products`)} className="font-bold  cursor-pointer  hover:translate-x-2 transition-all duration-200">
+          <span
+            onClick={() => navigate(`/${id}/${name}/products`)}
+            className="font-bold  cursor-pointer  hover:translate-x-2 transition-all duration-200"
+          >
             Order now <i className="fa-solid fa-angles-right"></i>
           </span>
         </div>
@@ -73,7 +91,10 @@ const Home = () => {
             </span>
           </div>
           <div className="group flex hover:bg-gray-900 cursor-pointer bg-black w-1/4 max-sm:w-1/2  max-sm:m-10 max-sm:px-4 m-10 p-4 text-2xl font-bold text-white rounded-lg">
-            <span onClick={()=> navigate(`/${id}/${name}/products`)} className="flex-1">
+            <span
+              onClick={() => navigate(`/${id}/${name}/products`)}
+              className="flex-1"
+            >
               Shop now
               <i className="fa-solid fa-angles-right opacity-0 group-hover:translate-x-2 group-hover:opacity-100  transition-all duration-300 transform translate-x-[-10px]"></i>
             </span>

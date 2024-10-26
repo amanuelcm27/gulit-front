@@ -6,6 +6,7 @@ const Product = ({
   handleClick,
   showEditButton,
   product: { name, price, discount, image, rating, category },
+  showPrice = true,
 }) => {
   return (
     <div
@@ -28,10 +29,10 @@ const Product = ({
           <i className="fa-solid fa-star "></i>
           <i className="fa-solid fa-star "></i>
         </span>
-        <span>
+        {showPrice && <span>
           <span className="text-gray-400 line-through ">{discount}</span>
           <span className="text-gray-600 px-2">{price}</span>
-        </span>
+        </span>}
         {showEditButton && <span
           onClick={setFormData}
           className={`${ "ml-auto px-4 hover:text-red-500"}`}

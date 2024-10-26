@@ -11,10 +11,10 @@ import { useGlobalContext } from "../../context/GlobalProvider";
 
 const ProductDetail = () => {
   const imageRef = useRef(null);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const { IsLoggedIn } = useGlobalContext();
   const [info, setInfo] = useState(null);
-  const [ infokey , setInfoKey ] = useState(0) // re-trigger effect for infocard
+  const [infokey, setInfoKey] = useState(0); // re-trigger effect for infocard
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const [product, setProduct] = useState([]);
@@ -38,9 +38,12 @@ const ProductDetail = () => {
     };
   }, []);
   const [quantity, setQuantity] = useState(1);
-  const { storeid, productId } = useParams();
+  const { storeid, store_name, productId } = useParams();
   const fetchProductDetail = async () => {
-    const response = await apiRequest("get", `product/${storeid}/${productId}/`);
+    const response = await apiRequest(
+      "get",
+      `product/${storeid}/${productId}/`
+    );
     if (response.success === false) {
       setInfo("couldn't load product");
       setError(true);
@@ -58,19 +61,33 @@ const ProductDetail = () => {
     if (response.success === false) {
       setInfo("Error in adding to cart");
       setError(true);
-    } 
-    else {
+    } else {
       if (response.message) {
         setInfo(response.message);
-        setError(true)
+        setError(true);
       } else {
         setInfo("Added to cart");
       }
     }
-    setInfoKey((prev)=>prev  + 1) 
+    setInfoKey((prev) => prev + 1);
   };
   useEffect(() => {
     fetchProductDetail();
+  }, [productId]);
+  const [featuredProducts, setfeaturedProducts] = useState([]);
+  const fetchProducts = async () => {
+    const response = await apiRequest(
+      "get",
+      `store/${storeid}/featured_products/`
+    );
+    if (response.success === false) {
+      console.log("problem getting products");
+    } else {
+      setfeaturedProducts(response);
+    }
+  };
+  useEffect(() => {
+    fetchProducts();
   }, []);
   return (
     <>
@@ -93,11 +110,9 @@ const ProductDetail = () => {
                 </span>
                 <span className="font-light text-2xl max-sm:mt-2 mt-8">
                   <span className="text-gray-400 line-through px-2">
-                  {product.discount}
-
+                    {product.discount}
                   </span>
                   {product.price}
-
                 </span>
                 <div className="font-light mt-8 text-justify">
                   {product.description}
@@ -112,7 +127,9 @@ const ProductDetail = () => {
                   <SubmitButton
                     name="Add to cart"
                     otherStyles={`bg-black mx-2`}
-                    handleSubmit={IsLoggedIn ? addtocart : () => navigate('/login')}
+                    handleSubmit={
+                      IsLoggedIn ? addtocart : () => navigate("/login")
+                    }
                   />
                 </div>
               </div>
@@ -132,9 +149,15 @@ const ProductDetail = () => {
             <span className="font-extrabold text-2xl max-sm:text-xl max-sm:font-light">
               Related products
             </span>
-            <div className="flex max-sm:flex-col items-center ">
-              {/* <Product />
-         */}
+            <div className="flex max-sm:flex-col items-center justify-center">
+              {featuredProducts?.map((product) => (
+                <Product
+                  product={product}
+                  handleClick={() =>
+                    navigate(`/${storeid}/${store_name}/product/${product.id}`)
+                  }
+                />
+              ))}
             </div>
           </div>
         </div>

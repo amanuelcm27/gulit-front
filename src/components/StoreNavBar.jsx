@@ -3,7 +3,7 @@ import images from "../constants/images";
 import NavItem from "./NavItem";
 import DropDownItem from "./DropDownItem";
 import { useGlobalContext } from "../context/GlobalProvider";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { logout } from "../utils/authentication";
 import { useStoreContext } from "../context/StoreContext";
 
@@ -12,6 +12,7 @@ const StoreNavBar = () => {
     useGlobalContext();
   const { id, name, logo } = useStoreContext();
   const navigate = useNavigate();
+  const location = useLocation();
   const logout_user = async () => {
     try {
       await logout();
@@ -46,31 +47,54 @@ const StoreNavBar = () => {
               name="Home"
             />
             <DropDownItem
-              handleClick={() => navigate(`/${id}/${name}/products`)}
+              handleClick={() => {
+                setMenuOpen(false), navigate(`/${id}/${name}/products`);
+              }}
               icon={`fa-solid fa-box-archive`}
               name="All products"
             />
             <DropDownItem
-              handleClick={() => navigate(`/${id}/${name}/cart`)}
+              handleClick={() =>{ setMenuOpen(false),  navigate(`/${id}/${name}/cart`)}}
               icon={`fa-solid fa-cart-shopping`}
               name="My Cart"
             />
+            {userInfo?.role === "buyer" ? (
+              <DropDownItem
+                handleClick={() => navigate("/customer")}
+                icon={`fa-solid fa-gear`}
+                name="My Account"
+              />
+            ) : (
+              <DropDownItem
+                handleClick={() => navigate("/admin")}
+                icon={`fa-solid fa-gear`}
+                name="My Account"
+              />
+            )}
+
             <DropDownItem
-              handleClick={() => navigate("/account")}
-              icon={`fa-solid fa-gear`}
-              name="My Account"
-            />
-            <DropDownItem
-              handleClick={() => navigate(`/${id}/${name}/about`)}
+              handleClick={() => {
+                setMenuOpen(false), navigate(`/${id}/${name}/about`);
+              }}
               icon={`fa-solid fa-info-circle`}
               name="About Us"
             />
-
             <DropDownItem
+              handleClick={() => navigate(`/stores`)}
+              icon={`fa-solid fa-store`}
+              name="Stores"
+            />
+            {IsLoggedIn ? <DropDownItem
               handleClick={logout_user}
               icon={`fa-solid fa-right-from-bracket`}
               name="Logout"
+            />:
+            <DropDownItem
+              handleClick={() => navigate("/login" , {state : {from : location.pathname}})}
+              icon={`fa-solid fa-right-from-bracket`}
+              name="Login"
             />
+            }
           </div>
         </div>
       )}
@@ -94,8 +118,12 @@ const StoreNavBar = () => {
             {IsLoggedIn && (
               <DropDownItem
                 icon={`fa-solid fa-user`}
-                name={'My Account'}
-                handleClick={()=> userInfo?.role === 'seller' ? navigate('/admin') : navigate('/customer')}
+                name={"My Account"}
+                handleClick={() =>
+                  userInfo?.role === "seller"
+                    ? navigate("/admin")
+                    : navigate("/customer")
+                }
               />
             )}
             <DropDownItem
@@ -103,15 +131,19 @@ const StoreNavBar = () => {
               icon={`fa-solid fa-home`}
               handleClick={() => navigate("/stores")}
             />
-            {IsLoggedIn  ? <DropDownItem
-              handleClick={logout_user}
-              icon={`fa-solid fa-right-from-bracket`}
-              name="Logout"
-            /> :
-            <DropDownItem
-              handleClick={() => navigate("/login")}
-              icon={`fa-solid fa-right-from-bracket`}
-              name="Login" /> }
+            {IsLoggedIn ? (
+              <DropDownItem
+                handleClick={logout_user}
+                icon={`fa-solid fa-right-from-bracket`}
+                name="Logout"
+              />
+            ) : (
+              <DropDownItem
+                handleClick={() => navigate("/login" , {state : {from : location.pathname}})}
+                icon={`fa-solid fa-right-from-bracket`}
+                name="Login"
+              />
+            )}
           </div>
         </div>
         <div onClick={() => navigate(`/${id}/${name}/cart`)}>

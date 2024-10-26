@@ -20,7 +20,7 @@ const CustomerDetails = () => {
           <div className="flex items-center p-4">
             <span>Email</span>
             <div className="mx-2 p-2 w-[200px] truncate bg-gray-200">
-              lorem@x.com
+              lorem@email.com
             </div>
           </div>
         </div>

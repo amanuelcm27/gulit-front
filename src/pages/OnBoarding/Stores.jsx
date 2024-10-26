@@ -55,7 +55,7 @@ const Stores = () => {
       <div className="flex max-sm:m-1 m-10 relative">
         <LoadingCard text="Stores" show={loading} />
 
-        <div className="flex flex-col w-[80%] ">
+        <div className="flex flex-col w-[80%] max-sm:w-full ">
           <div
             className={`absolute z-10  bg-white bg-opacity-95 max-sm:w-full w-1/4 h-full transition-transform duration-500 ${
               showFilterSideBar ? "translate-x-0" : "-translate-x-[500px]"
@@ -93,7 +93,7 @@ const Stores = () => {
               />
             </div>
           </div>
-          <div className="h-[80px] flex items-center p-2 bg-gray-100">
+          <div className="h-[80px] flex items-center  p-2 bg-gray-100">
             <div
               onClick={() => setShowFilterSideBar(true)}
               className="p-2 hover:bg-gray-200 cursor-pointer"
@@ -101,21 +101,21 @@ const Stores = () => {
               <i className="fa-solid fa-list"></i> Filter
             </div>
             <div className="p-2">
-              <span> Choose from over 3000 stores on our platfom</span>
+              <span className="max-sm:text-sm"> Choose from over {stores?.length} stores in gulit</span>
             </div>
           </div>
 
-          <div className="flex  flex-wrap  p-2 overflow-y-scroll cursor-pointer">
+          <div className="flex  max-sm:flex-col  flex-wrap  p-2 overflow-y-scroll cursor-pointer">
             {stores.length >= 1 ? (
               stores.map((store) => (
                 <div
                   onClick={() => navigate(`/${store.id}/${store.name}/home`)}
                   key={store.id}
-                  className=" w-[30%] h-[350px]  border-2 m-2  rounded-xl shadow-lg"
+                  className=" w-[30%] max-sm:w-full h-[350px]  border-2 m-2  rounded-xl shadow-lg"
                 >
                   <div
                     style={{ backgroundImage: `url(${store.logo})` }}
-                    className="w-full h-full bg-cover  bg-opacity-50 rounded-xl"
+                    className="w-full h-full bg-cover  bg-opacity-50 bg-center rounded-xl"
                   >
                     <div className="opacity-35 hover:opacity-100  transition-all duration-300 w-full h-full flex flex-col justify-end ">
                       <div className="bg-black flex flex-col rounded-xl  bg-opacity-70 p-8 text-center">
@@ -132,7 +132,7 @@ const Stores = () => {
               ))
             ) : (
               <EmptyCard
-                styles="w-full "
+                styles="w-full text-center"
                 text="No stores have been found ! "
                 btext="Search for stores"
                 handleClick={() => setShowFilterSideBar(true)}
@@ -142,7 +142,7 @@ const Stores = () => {
         </div>
         <div
           style={{ backgroundImage: `url(${images.brand})` }}
-          className="w-[20%] h-[700px] bg-cover sticky top-0"
+          className="w-[20%] h-[700px] bg-cover sticky top-0 max-sm:hidden"
         >
           <div className="w-full h-full bg-black bg-opacity-45 p-2">
             <span className="text-7xl font-extrabold text-white">

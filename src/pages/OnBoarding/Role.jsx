@@ -18,7 +18,7 @@ const Role = () => {
       setInfo("Error In setting your role");
       setError(true);
     } else {
-      console.log(response);
+      
       setInfo(`you have become a ${userRole}`);
       setError(false);
       setTimeout(() => {

@@ -1,17 +1,17 @@
 import React, { useEffect, useState } from "react";
 import images from "../constants/images";
 import NavItem from "./NavItem";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { useGlobalContext } from "../context/GlobalProvider";
 import DropDownItem from "./DropDownItem";
-import { logout } from "../utils/authentication";
+import { login, logout } from "../utils/authentication";
 import SubmitButton from "../components/SubmitButton";
 const NavBar = () => {
   const { userInfo, IsLoggedIn, setIsLoggedIn, setUserInfo } =
     useGlobalContext();
   const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState(false);
-
+  const location = useLocation();
   const logout_user = async () => {
     try {
       await logout();
@@ -53,16 +53,32 @@ const NavBar = () => {
               name="Stores"
             />
 
-            <DropDownItem
-              handleClick={() => navigate("/account")}
-              icon={`fa-solid fa-gear`}
-              name="My Account"
-            />
-            <DropDownItem
-              handleClick={logout_user}
-              icon={`fa-solid fa-right-from-bracket`}
-              name="Logout"
-            />
+            {userInfo?.role === "buyer" ? (
+              <DropDownItem
+                handleClick={() => navigate("/customer/")}
+                icon={`fa-solid fa-gear`}
+                name="My Account"
+              />
+            ) : (
+              <DropDownItem
+                handleClick={() => navigate("/admin/")}
+                icon={`fa-solid fa-gear`}
+                name="My Account"
+              />
+            )}
+            {IsLoggedIn ? (
+              <DropDownItem
+                handleClick={logout_user}
+                icon={`fa-solid fa-right-from-bracket`}
+                name="Logout"
+              />
+            ) : (
+              <DropDownItem
+                handleClick={()=> navigate("/login" , {state : {from : location.pathname}})}
+                icon={`fa-solid fa-right-from-bracket`}
+                name="Login"
+              />
+            )}
           </div>
         </div>
       )}
@@ -75,29 +91,42 @@ const NavBar = () => {
           handleClick={() => navigate("/customer/orders")}
           name="My Orders"
         />
-        {userInfo && <NavItem name={userInfo.email} />}
         <div className="relative text-black group">
-          <img src={images.user} className="w-10 cursor-pointer" />
-          <div className="absolute right-0 w-[250px] rounded-md z-30 bg-gray-200 shadow-custom opacity-0 pointer-events-none transition-opacity duration-300 group-hover:opacity-100 group-hover:pointer-events-auto">
-            <DropDownItem
-              handleClick={() => navigate("/customer/")}
-              icon={`fa-solid fa-user`}
-              name={`My Account`}
-            />
-            {IsLoggedIn ? (
-              <DropDownItem
-                handleClick={logout_user}
-                icon={`fa-solid fa-right-from-bracket`}
-                name="Logout"
-              />
-            ) : (
-              <DropDownItem
-                handleClick={() => navigate("/login")}
-                icon={`fa-solid fa-right-from-bracket`}
-                name="Login"
-              />
-            )}
-          </div>
+          {userInfo?.role === "buyer" ? (
+            <div>
+              <button
+                onClick={logout_user}
+                className="bg-white p-2 rounded-lg hover:bg-gray-200 "
+              >
+                <i className="fa-solid fa-right-from-bracket"></i> Logout
+              </button>
+            </div>
+          ) : (
+            <>
+              <img src={images.user} className="w-10 cursor-pointer" />
+              <div className="absolute right-0 w-[250px] rounded-md z-30 bg-gray-200 shadow-custom opacity-0 pointer-events-none transition-opacity duration-300 group-hover:opacity-100 group-hover:pointer-events-auto">
+                <DropDownItem
+                  handleClick={() => navigate("/admin/")}
+                  icon={`fa-solid fa-user`}
+                  name={`My Account`}
+                  additional={`${userInfo?.email}`}
+                />
+                {IsLoggedIn ? (
+                  <DropDownItem
+                    handleClick={logout_user}
+                    icon={`fa-solid fa-right-from-bracket`}
+                    name="Logout"
+                  />
+                ) : (
+                  <DropDownItem
+                  handleClick={() => navigate("/login" , {state : {from : location.pathname}})}
+                    icon={`fa-solid fa-right-from-bracket`}
+                    name="Login"
+                  />
+                )}
+              </div>
+            </>
+          )}
         </div>
       </div>
     </div>
