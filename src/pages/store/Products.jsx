@@ -19,18 +19,35 @@ const Products = () => {
   const [error, setError] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [priceRange, setPriceRange] = useState(0);
+  const [totalResults, setTotalResults] = useState(0);
+  const [page, setPage] = useState(1);
   const [formData, handleChange, setFormData] = useFormHandler({
     price: priceRange?.max_price || 0,
     rating: 0,
   });
   const fetchProducts = async () => {
-    const response = await apiRequest("get", `store/${id}/products/`);
+    setLoading(true);
+    const response = await apiRequest(
+      "get",
+      `store/${id}/products/?page=${page}`
+    );
     if (response.success === false) {
       setInfo("No products found");
       setError(true);
     } else {
       setLoading(false);
-      setProducts(response);
+      setTotalResults(response.count);
+      setProducts(response.results);
+    }
+  };
+  const nextPage = () => {
+    if (page < Math.ceil(totalResults / 6)) {
+      setPage(page + 1);
+    }
+  };
+  const prevPage = () => {
+    if (page > 1) {
+      setPage(page - 1);
     }
   };
   const submitSearch = async () => {
@@ -42,8 +59,10 @@ const Products = () => {
       setInfo("Error in Searching for products");
       setError(true);
     } else {
-      setProducts(response);
+      setProducts(response.results);
+      setTotalResults(response.count);
       setShowFilterSideBar(false);
+      console.log(response)
     }
   };
   const min_max_price_in_store = async () => {
@@ -60,18 +79,20 @@ const Products = () => {
       "get",
       `products/filter/${id}?price=${formData.price}&rating=${formData.rating}`
     );
+
     if (response.success === false) {
       setInfo("Error in fetching Data");
       setError(true);
     } else {
-      setProducts(response);
+      setProducts(response.results);
+      setTotalResults(response.count);
       setShowFilterSideBar(false);
     }
   };
   useEffect(() => {
     fetchProducts();
     min_max_price_in_store();
-  }, []);
+  }, [page]);
   useEffect(() => {
     setFormData({ ...formData, price: priceRange?.max_price });
   }, [priceRange]);
@@ -158,7 +179,7 @@ const Products = () => {
                 <i className="fa-solid fa-list"></i> Filter
               </div>
               <div className="p-2">
-                <span> Showing 1-6 of 20 results</span>
+                <span> Showing  {totalResults} result</span>
               </div>
             </div>
 
@@ -191,11 +212,17 @@ const Products = () => {
 
               {products.length >= 1 && (
                 <div className=" flex justify-center  items-center max-sm:mx-8 mx-28 font-light ">
-                  <button className=" m-2 max-sm:p-2 hover:bg-gray-200   p-4 rounded-lg">
+                  <button
+                    onClick={prevPage}
+                    className=" m-2 max-sm:p-2 hover:bg-gray-200   p-4 rounded-lg"
+                  >
                     Previous
                   </button>
-                  <span className="m-2">2 of 20</span>
-                  <button className=" m-2 max-sm:p-2 hover:bg-gray-200   px-8 p-4 rounded-lg">
+                  <span className="m-2">{page} of {Math.ceil(totalResults / 6)}</span>
+                  <button
+                    onClick={nextPage}
+                    className=" m-2 max-sm:p-2 hover:bg-gray-200   px-8 p-4 rounded-lg"
+                  >
                     Next
                   </button>
                 </div>
