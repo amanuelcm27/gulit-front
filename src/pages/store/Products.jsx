@@ -62,7 +62,6 @@ const Products = () => {
       setProducts(response.results);
       setTotalResults(response.count);
       setShowFilterSideBar(false);
-      console.log(response)
     }
   };
   const min_max_price_in_store = async () => {
@@ -169,6 +168,12 @@ const Products = () => {
                   name={`Apply filter`}
                   handleSubmit={filterProducts}
                 />
+                <SubmitButton
+                  otherStyles={`bg-black rounded-xl my-2`}
+                  name={`Clear filters`}
+                  handleSubmit={()=>{filterProducts() ,setShowFilterSideBar(false)} }
+                />
+
               </div>
             </div>
             <div className="h-[80px] flex items-center p-2 bg-gray-100">

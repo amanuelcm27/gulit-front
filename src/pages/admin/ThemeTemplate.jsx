@@ -1,18 +1,36 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import images from "../../constants/images";
 import Product from "../../components/Product";
 import StoreNavBar from "../../components/StoreNavBar";
 import StoreFooter from "../../components/StoreFooter";
 import NavItem from "../../components/NavItem";
+import { apiRequest } from "../../handlers/apiHandler";
 
-const ThemeTemplate = ({ logo, slogan, header, bottomImage }) => {
+const ThemeTemplate = ({ storeId, logo, slogan, header, bottomImage }) => {
+  const [loading, setLoading] = useState(true);
+  const [featured, setfeaturedProducts] = useState([]);
+  const fetchProducts = async () => {
+    if (storeId) {
+      const response = await apiRequest(
+        "get",
+        `store/${storeId}/featured_products/`
+      );
+      if (response.success === false) {
+        console.log("problem getting products");
+      } else {
+        setfeaturedProducts(response);
+      }
+    }
+  };
+  useEffect(() => {
+    fetchProducts();
+  }, [storeId]);
   return (
     <>
       <div className="w-full h-[80px] flex items-center shadow-lg  ">
         <div className="flex-1">
-          <img src={logo  || images.logo} className="w-[80px]" />
+          <img src={logo || images.logo} className="w-[80px]" />
         </div>
-
         <div className="max-sm:hidden flex items-center m-5">
           <NavItem name="Home" />
           <NavItem name="All Products" />
@@ -28,9 +46,7 @@ const ThemeTemplate = ({ logo, slogan, header, bottomImage }) => {
       </div>
       <div className="w-full h-[300px]">
         <div className="max-sm:block flex h-full items-center  max-sm:m-0 m-10 ">
-          <div
-            className="max-sm:w-full w-1/2  flex flex-col bg-[image:var(--image-url)] bg-cover sm:bg-none  max-sm:h-full  "
-          >
+          <div className="max-sm:w-full w-1/2  flex flex-col bg-[image:var(--image-url)] bg-cover sm:bg-none  max-sm:h-full  ">
             <div className="max-sm:h-full flex flex-col justify-center max-sm:p-4 max-sm:bg-black max-sm:bg-opacity-40 ">
               <span className="max-sm:text-4xl max-sm:text-white text-2xl font-extrabold">
                 {slogan || "your business slogan"}
@@ -56,9 +72,9 @@ const ThemeTemplate = ({ logo, slogan, header, bottomImage }) => {
           </span>
         </div>
         <div className=" flex max-sm:flex-col max-sm:m-4 justify-center items-center ">
-          {/* <Product />
-          <Product />
-          <Product /> */}
+          {featured?.map((product) => 
+            <Product product={product} />
+          )}
         </div>
       </div>
       <div className=" max-sm:w-full  h-[100px] bg-black hover:bg-gray-900 max-sm:m-0 m-10 mx-16">

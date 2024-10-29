@@ -90,7 +90,7 @@ const StoreNavBar = () => {
               name="Logout"
             />:
             <DropDownItem
-              handleClick={() => navigate("/login" , {state : {from : location.pathname}})}
+              handleClick={() => navigate("/login" , {state : {from : location}})}
               icon={`fa-solid fa-right-from-bracket`}
               name="Login"
             />
@@ -139,7 +139,7 @@ const StoreNavBar = () => {
               />
             ) : (
               <DropDownItem
-                handleClick={() => navigate("/login" , {state : {from : location.pathname}})}
+                handleClick={() => navigate("/login" , {state : {from : location}})}
                 icon={`fa-solid fa-right-from-bracket`}
                 name="Login"
               />

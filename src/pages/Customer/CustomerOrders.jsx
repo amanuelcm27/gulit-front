@@ -4,11 +4,14 @@ import { apiRequest } from "../../handlers/apiHandler";
 import { formatDate } from "../../utils/formatedDate";
 import EmptyCard from "../../components/EmptyCard";
 import { useNavigate } from "react-router-dom";
+import InfoCard from "../../components/InfoCard"
 const CustomerOrders = () => {
   const navigate = useNavigate()
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
+  const [info , setInfo] = useState("");
+
   const fetchOrders = async () => {
     const response = await apiRequest("get", "list_orders/");
     if (response.success === false) {
@@ -18,12 +21,24 @@ const CustomerOrders = () => {
       setLoading(false);
     }
   };
+  const filterOrders = async (filter_method) => {
+    const response = await apiRequest('get', `filter_orders_user/?filter_method=${filter_method}`)
+    if (response.success === false) {
+      setError(true)
+      setInfo("Couldn't load orders ")
+    }
+    else {
+      setLoading(false)
+      setOrders(response)
+    }
+  }
   useEffect(() => {
     fetchOrders();
   }, []);
 
   return (
     <div className="h-full  ">
+      <InfoCard   info={info} iserror = {error} />
       <div className="flex m-4 items-center  sticky top-0 bg-white p-4">
         <div className="flex-1 text-4xl font-extrabold ">Your Orders</div>
         <div className="relative group bg-gray-100 rounded-lg z-[1000]">
@@ -31,14 +46,17 @@ const CustomerOrders = () => {
             <i className="fa-solid fa-caret-down px-2"></i>Filter
           </span>
           <div className="absolute group-hover:opacity-100 opacity-0 pointer-events-none group-hover:pointer-events-auto cursor-pointer flex flex-col z-20 bg-white shadow-xl right-0 w-[200px] ">
-            <span className="p-4 hover:bg-gray-100">
+            <span onClick={()=>filterOrders('delivered')} className="p-4 hover:bg-gray-100">
               <i className="px-2 fa-solid fa-truck"></i>Delivered
             </span>
-            <span className="p-4 hover:bg-gray-100">
+            <span onClick={()=>filterOrders('pending')}  className="p-4 hover:bg-gray-100">
               <i className="px-2 fa-solid fa-spinner"></i>Pending
             </span>
-            <span className="p-4 hover:bg-gray-100">
+            <span onClick={()=>filterOrders('cancelled')} className="p-4 hover:bg-gray-100">
               <i className="px-2 fa-solid fa-ban"></i>Canceled
+            </span>
+            <span onClick={()=>filterOrders('shipped')}  className="p-4 hover:bg-gray-100">
+              <i className="px-2 fa-solid fa-ship"></i>Shipped
             </span>
           </div>
         </div>
@@ -58,7 +76,7 @@ const CustomerOrders = () => {
               <div className="flex p-4 bg-gray-50">
                 <div className="flex flex-col flex-1">
                   <span className="">
-                    Order id :{" "}
+                    Order id :
                     <span className="text-gray-400">{order.order_id}</span>
                   </span>
                   <span className="text-gray-400">Date : {formatDate(order.date_created)}</span>
@@ -89,7 +107,7 @@ const CustomerOrders = () => {
               </div>
             </div>
           )):
-          <EmptyCard text="You don't have any orders yet."  btext="visit stores" handleClick={()=>navigate(`/stores`)}/>}
+          <EmptyCard text="No orders found."  btext="visit stores" handleClick={()=>navigate(`/stores`)}/>}
         </div>
       )}
     </div>

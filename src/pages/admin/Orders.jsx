@@ -1,87 +1,157 @@
 import React, { useEffect, useState } from "react";
-import AdminProductCard from "../../components/AdminProductCard";
-import images from "../../constants/images";
+import LoadingCard from "../../components/LoadingCard";
 import { apiRequest } from "../../handlers/apiHandler";
-
+import { formatDate } from "../../utils/formatedDate";
+import EmptyCard from "../../components/EmptyCard";
+import { useNavigate } from "react-router-dom";
+import InfoCard from "../../components/InfoCard";
 const Orders = () => {
-  const [expandOrder, setExpandOrder] = useState(false);
   const [orders, setOrders] = useState([]);
-  const [ users , setUsers]  = useState([])
+  const [loading, setLoading] = useState(true);
+  const [info, setInfo] = useState("");
+  const [error, setError] = useState(false);
+  const navigate = useNavigate();
   const fetchOrders = async () => {
     const response = await apiRequest("get", "list_orders_for_store/");
     if (response.success === false) {
-      // setError(true);
-      console.log(response);
+      setError(true);
     } else {
+      setLoading(false);
       setOrders(response);
-      // setLoading(false);
-      console.log(response);
     }
   };
-
+  const filterOrders = async (filter_method) => {
+    const response = await apiRequest(
+      "get",
+      `filter_orders_store/?filter_method=${filter_method}`
+    );
+    if (response.success === false) {
+      setError(true);
+      setInfo("Couldn't load orders ");
+    } else {
+      setLoading(false);
+      setOrders(response);
+    }
+  };
   useEffect(() => {
     fetchOrders();
   }, []);
   return (
     <>
+      <InfoCard iserror={error} info={info} />
       <div className="w-[85%] h-[600px] ">
         <div className="h-full overflow-y-scroll">
           <div className=" border-b-2 flex m-8 items-center">
             <span className="flex-1 font-bold text-2xl">
               Orders from customers
             </span>
-            <div className="relative group rounded-lg m-2 cursor-pointer p-2">
-              <i className="fa-solid fa-caret-down"></i> Filter
-              <div className="opacity-0 pointer-events-none  group-hover:pointer-events-auto group-hover:opacity-100 absolute flex flex-col right-0 w-[200px] bg-gray-200  rounded-md ">
-                <span className=" hover:bg-gray-100 p-2">Latest</span>
-                <span className=" hover:bg-gray-100 p-2">Oldest</span>
-                <span className=" hover:bg-gray-100 p-2">Near delivery</span>
+            <div className="relative group bg-gray-100 rounded-lg z-[500]">
+              <span className="px-4">
+                <i className="fa-solid fa-caret-down px-2"></i>Filter
+              </span>
+              <div className="absolute group-hover:opacity-100 opacity-0 pointer-events-none group-hover:pointer-events-auto cursor-pointer flex flex-col z-20 bg-white shadow-xl right-0 w-[200px] ">
+                <span
+                  onClick={() => filterOrders("delivered")}
+                  className="p-4 hover:bg-gray-100"
+                >
+                  <i className="px-2 fa-solid fa-truck"></i> Delivered
+                </span>
+                <span
+                  onClick={() => filterOrders("pending")}
+                  className="p-4 hover:bg-gray-100"
+                >
+                  <i className="px-2 fa-solid fa-spinner"></i> Pending
+                </span>
+                <span
+                  onClick={() => filterOrders("cancelled")}
+                  className="p-4 hover:bg-gray-100"
+                >
+                  <i className="px-2 fa-solid fa-ban"></i> Canceled
+                </span>
+                <span
+                  onClick={() => filterOrders("shipped")}
+                  className="p-4 hover:bg-gray-100"
+                >
+                  <i className="px-2 fa-solid fa-ship"></i> Shipped
+                </span>
               </div>
             </div>
           </div>
-          <span className="mx-4 font-extralight">200 orders </span>
+          <span className="mx-8 font-extralight">{orders?.length} orders </span>
 
-            <AdminProductCard
-              product_image={images.tech}
-              product_name="Tech"
-              title="expand"
-              icon={`fa-solid fa-expand`}
-              info={`#${45} orders`}
-              styles={`font-light`}
-              handleClick={() => setExpandOrder(!expandOrder)}
-            />
+          {loading ? (
+            <div className="relative  h-full ">
+              <LoadingCard show={loading} text="orders" />
+            </div>
+          ) : (
+            <div className="m-4 flex flex-col  ">
+              {orders.length > 0 ? (
+                orders?.map((order) => (
+                  <div
+                    key={order.order_id}
+                    className="h-[350px] rounded-lg m-2 shadow-lg  "
+                  >
+                    <div className="flex p-4 bg-gray-50">
+                      <div className="flex flex-col flex-1">
+                        <span className="">
+                          Order id :
+                          <span className="text-gray-400">
+                            {order.order_id}
+                          </span>
+                        </span>
+                        <span className="text-gray-400">
+                          Date : {formatDate(order.date_created)}
+                        </span>
+                      </div>
+                      <div className="">
+                        <span className="text-green-400">
+                          Status : {order.status}
+                        </span>
+                      </div>
+                    </div>
+                    <div>
+                      <span className="p-4 font-light">
+                        Store : {order.store.name}
+                      </span>
+                    </div>
+
+                    <div className="w-full overflow-x-scroll flex items-center p-2  h-[150px] ">
+                      {order.cart?.items.map((item) => (
+                        <div
+                          key={item.id}
+                          className="flex w-[250px] flex-shrink-0 h-full "
+                        >
+                          <img
+                            src={item.product.image}
+                            className="w-1/2 h-full"
+                          />
+                          <div className="flex flex-col w-1/2 justify-center px-2 ">
+                            <span className="w-full truncate">
+                              {item.product.name}
+                            </span>
+                            <span>x {item.quantity}</span>
+                            <span>${item.sub_total}</span>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                    <div className="flex flex-col p-4 font-light ">
+                      <span>Order by : {order.creator?.username}</span>
+                      <span>Address : Yeka city , addis ababa </span>
+                    </div>
+                  </div>
+                ))
+              ) : (
+                <EmptyCard
+                  text="You don't have any orders yet."
+                  btext="Add more products"
+                  handleClick={() => navigate(`/admin/products`)}
+                />
+              )}
+            </div>
+          )}
         </div>
       </div>
-      {expandOrder && (
-        <div className="absolute flex justify-center items-center right-0 w-full h-[600px] bg-white bg-opacity-75">
-          <div className="w-[40%] h-[500px] overflow-y-scroll  bg-white shadow-custom border-2 rounded-md">
-            <div className="m-4 flex font-bold items-center">
-              <span className="flex-1">Customers ordering this product</span>{" "}
-              <i
-                onClick={() => setExpandOrder(!expandOrder)}
-                class="fa-regular hover:scale-110 cursor-pointer fa-circle-xmark"
-              ></i>
-            </div>
-            <div className="relative group flex p-4 items-center bg-gray-50 cursor-pointer hover:bg-gray-100">
-              <img src={images.tech} className="w-16 rounded-[50%] " />
-              <span>John mccahon</span>
-              <div className="absolute flex flex-col z-20 right-0 top-0 opacity-0 pointer-events-none  group-hover:opacity-100 group-hover:pointer-events-auto bg-gray-100 w-[300px] border-2">
-                <span className="p-2 font-bold w-full truncate">
-                  <i class="fa-solid fa-bookmark p-2"></i>Ordered : 10 product
-                </span>
-                <span className="p-2 font-bold w-full truncate">
-                  <i class="fa-solid fa-location-dot p-2"></i>5th street
-                  maryland
-                </span>
-                <span className="p-2 font-bold w-full truncate">
-                  <i class="fa-solid fa-hashtag p-2"></i>order-id : 233
-                </span>
-              </div>
-            </div>
-          
-          </div>
-        </div>
-      )}
     </>
   );
 };

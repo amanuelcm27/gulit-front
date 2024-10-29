@@ -24,10 +24,9 @@ const NavBar = () => {
   useEffect(() => {
     document.body.style.overflow = menuOpen ? "hidden" : "auto";
   }, [menuOpen]);
-
   return (
     <div className="relative w-full h-[80px] flex items-center bg-orange-400 shadow-xl">
-      <div className="flex-1">
+      <div onClick={()=>navigate('/')} className="flex-1">
         <img src={images.logo} className="w-[80px]" />
       </div>
       <div className="sm:hidden m-4">
@@ -74,7 +73,7 @@ const NavBar = () => {
               />
             ) : (
               <DropDownItem
-                handleClick={()=> navigate("/login" , {state : {from : location.pathname}})}
+                handleClick={()=> navigate("/login" , {state : {from : location}})}
                 icon={`fa-solid fa-right-from-bracket`}
                 name="Login"
               />
@@ -104,12 +103,12 @@ const NavBar = () => {
           ) : (
             <>
               <img src={images.user} className="w-10 cursor-pointer" />
-              <div className="absolute right-0 w-[250px] rounded-md z-30 bg-gray-200 shadow-custom opacity-0 pointer-events-none transition-opacity duration-300 group-hover:opacity-100 group-hover:pointer-events-auto">
+              <div className="absolute right-0 w-[250px] rounded-md z-[1000] bg-gray-200 shadow-custom opacity-0 pointer-events-none transition-opacity duration-300 group-hover:opacity-100 group-hover:pointer-events-auto">
                 <DropDownItem
                   handleClick={() => navigate("/admin/")}
                   icon={`fa-solid fa-user`}
                   name={`My Account`}
-                  additional={`${userInfo?.email}`}
+                  additional={`${userInfo?.email || ""}`}
                 />
                 {IsLoggedIn ? (
                   <DropDownItem
@@ -119,7 +118,7 @@ const NavBar = () => {
                   />
                 ) : (
                   <DropDownItem
-                  handleClick={() => navigate("/login" , {state : {from : location.pathname}})}
+                  handleClick={() => navigate("/login" , {state : {from : location}})}
                     icon={`fa-solid fa-right-from-bracket`}
                     name="Login"
                   />

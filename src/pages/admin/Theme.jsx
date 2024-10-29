@@ -19,7 +19,6 @@ const Theme = () => {
     p_image_2: store?.p_image_2 || null,
     description: store?.description || "",
   });
-
   const formValid = () => {
     const requiredFields = [
       "name",
@@ -66,7 +65,6 @@ const Theme = () => {
 
   const updateStore = async () => {
     const validatedData = formValid();
-    console.log(validatedData);
     const response = await apiRequest(
       "patch",
       `update_store/${store?.id}/`,
@@ -101,7 +99,7 @@ const Theme = () => {
   return (
     <>
       <InfoCard info={info} iserror={error} infokey={infoKey} />
-      <div className="w-[45%] h-[600px] overflow-y-scroll relative">
+      <div className="w-[35%] h-[600px] overflow-y-scroll relative">
         <LoadingCard text="theme" show={loading} />
         <div className="text-center m-2">
           <span className="font-bold text-4xl">
@@ -116,7 +114,7 @@ const Theme = () => {
           createStore={createStore}
         />
       </div>
-      <div className="w-[40%] h-[600px] overflow-y-scroll relative">
+      <div className="w-[50%] h-[600px] overflow-y-scroll relative">
         <LoadingCard text="theme" show={loading} />
         <div className="text-center m-2 flex flex-col">
           <span className="font-light text-lg">your store theme </span>
@@ -127,6 +125,7 @@ const Theme = () => {
           slogan={formData.slogan}
           header={createObjectURLIfObject(formData.p_image_1)}
           bottomImage={createObjectURLIfObject(formData.p_image_2)}
+          storeId = {store?.id}
         />
       </div>
     </>
