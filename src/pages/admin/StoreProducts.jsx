@@ -10,11 +10,6 @@ import { useNavigate } from "react-router-dom";
 import ProductForm from "../../components/ProductForm";
 
 const StoreProducts = () => {
-  const fileInputRef = useRef(null);
-  const handleImageClick = () => {
-    fileInputRef.current.click();
-  };
-  const [categories, setCategories] = useState([]);
   const [showProductForm, setProductForm] = useState(false);
   const [products, setProducts] = useState([]);
   const [editMode, setEditMode] = useState(false);

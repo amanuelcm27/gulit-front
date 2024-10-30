@@ -171,7 +171,7 @@ const Products = () => {
                 <SubmitButton
                   otherStyles={`bg-black rounded-xl my-2`}
                   name={`Clear filters`}
-                  handleSubmit={()=>{filterProducts() ,setShowFilterSideBar(false)} }
+                  handleSubmit={()=>{fetchProducts() ,setShowFilterSideBar(false)} }
                 />
 
               </div>

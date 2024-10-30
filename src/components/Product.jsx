@@ -1,5 +1,6 @@
 import React from "react";
 import images from "../constants/images";
+import RatingStar from "./RatingStar";
 
 const Product = ({
   setFormData,
@@ -22,23 +23,23 @@ const Product = ({
         <span className="font-bold text-2xl truncate w-90% text-center">
           {name}
         </span>
-        <span className="text-orange-400">
-          <i className="fa-solid fa-star "></i>
-          <i className="fa-solid fa-star "></i>
-          <i className="fa-solid fa-star "></i>
-          <i className="fa-solid fa-star "></i>
-          <i className="fa-solid fa-star "></i>
+        <span >
+          <RatingStar rating={rating} />
         </span>
-        {showPrice && <span>
-          <span className="text-gray-400 line-through ">{discount}</span>
-          <span className="text-gray-600 px-2">{price}</span>
-        </span>}
-        {showEditButton && <span
-          onClick={setFormData}
-          className={`${ "ml-auto px-4 hover:text-red-500"}`}
-        >
-          <i class="fa-regular fa-pen-to-square"></i>
-        </span>}
+        {showPrice && (
+          <span>
+            <span className="text-gray-400 line-through ">{discount}</span>
+            <span className="text-gray-600 px-2">{price}</span>
+          </span>
+        )}
+        {showEditButton && (
+          <span
+            onClick={setFormData}
+            className={`${"ml-auto px-4 hover:text-red-500"}`}
+          >
+            <i class="fa-regular fa-pen-to-square"></i>
+          </span>
+        )}
       </div>
     </div>
   );
