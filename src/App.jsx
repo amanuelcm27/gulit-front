@@ -31,6 +31,7 @@ import CustomerOrders from "./pages/Customer/CustomerOrders";
 import CustomerDetails from "./pages/Customer/CustomerDetails";
 import Stores from "./pages/OnBoarding/Stores";
 import NotFound from "./pages/default/NotFound";
+import PaymentMethod from "./pages/admin/Payment";
 function App() {
   const [count, setCount] = useState(0);
   const OauthId = import.meta.env.VITE_OAUTH_CLIENT_ID;
@@ -60,6 +61,8 @@ function App() {
                   <Route path="coupon" element={<Coupon />}></Route>
                   <Route path="orders" element={<Orders />}></Route>
                   <Route path="analytics" element={<Analytics />}></Route>
+                  <Route path="payment_method" element={<PaymentMethod />}></Route>
+
                 </Route>
               </Route>
               <Route path="/:storeid/:store_name/" element={<StoreLayout />}>

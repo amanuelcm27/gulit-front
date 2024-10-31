@@ -212,8 +212,6 @@ const Checkout = () => {
                 </span>
                 {couponForm && (
                   <div>
-         
-
                     <FormField
                       name="coupon_code"
                       type="text"

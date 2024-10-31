@@ -251,7 +251,7 @@ const ProductDetail = () => {
                           <RatingStar rating={review.rating} />
                         </div>
                       </div>
-                      <span className="bg-gray-50 font-light text-lg p-2 ">
+                      <span className="bg-gray-50 font-light text-[1rem] p-2 ">
                         {review.comment}
                       </span>
                     </div>

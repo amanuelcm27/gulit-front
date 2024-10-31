@@ -78,7 +78,10 @@ const Orders = () => {
             </div>
           </div>
           <span className="mx-8 font-extralight">{orders?.length} orders </span>
-
+          <div className="mx-8 text-orange-400">
+            <i className="fa-solid fa-circle-exclamation text-orange-400"></i>
+            <span className="px-2">Orders you see here have been paid</span> 
+          </div>
           {loading ? (
             <div className="relative  h-full ">
               <LoadingCard show={loading} text="orders" />
@@ -113,6 +116,7 @@ const Orders = () => {
                       <span className="p-4 font-light">
                         Store : {order.store.name}
                       </span>
+                      <span>Total paid : {order.total_price}</span>
                     </div>
 
                     <div className="w-full overflow-x-scroll flex items-center p-2  h-[150px] ">

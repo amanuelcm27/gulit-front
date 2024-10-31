@@ -69,6 +69,13 @@ const AdminSideBar = () => {
           icon="fa-solid fa-palette"
           title="Themes"
         />
+        <AdminSideBarItem
+          to="/admin/payment_method"
+          hide={minimize}
+          name="Payment Method"
+          icon="fa-solid fa-money-check-dollar"
+          title="Payment Method"
+        />
       </div>
     </div>
   );
