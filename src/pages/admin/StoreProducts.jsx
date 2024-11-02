@@ -116,7 +116,7 @@ const StoreProducts = () => {
   return (
     <>
       <InfoCard iserror={error} info={info} infokey={infoKey} />
-      <div className="w-[85%] h-[600px] relative">
+      <div className="h-[600px] relative">
         <LoadingCard text="Products" show={loading} />
         {showProductForm && (
           <ProductForm

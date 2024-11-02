@@ -48,13 +48,13 @@ const AdminSideBar = () => {
           icon="fa-solid fa-cart-shopping"
           title="Orders"
         />
-        <AdminSideBarItem
+        {/* <AdminSideBarItem
           to="/admin/analytics"
           hide={minimize}
           name="Analytics"
           icon="fa-solid fa-chart-simple"
           title="Analytics"
-        />
+        /> */}
         <AdminSideBarItem
           to="/admin/coupon"
           hide={minimize}

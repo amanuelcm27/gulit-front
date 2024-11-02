@@ -5,13 +5,12 @@ import { formatDate } from "../../utils/formatedDate";
 import EmptyCard from "../../components/EmptyCard";
 import { useNavigate } from "react-router-dom";
 import InfoCard from "../../components/InfoCard";
+import { usecheckStoreOwnership } from "../../handlers/checkOwnership";
 const Orders = () => {
   const [orders, setOrders] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [info, setInfo] = useState("");
-  const [error, setError] = useState(false);
   const navigate = useNavigate();
   const fetchOrders = async () => {
+    setLoading(true)
     const response = await apiRequest("get", "list_orders_for_store/");
     if (response.success === false) {
       setError(true);
@@ -21,6 +20,7 @@ const Orders = () => {
     }
   };
   const filterOrders = async (filter_method) => {
+    setLoading(true);
     const response = await apiRequest(
       "get",
       `filter_orders_store/?filter_method=${filter_method}`
@@ -33,60 +33,59 @@ const Orders = () => {
       setOrders(response);
     }
   };
-  useEffect(() => {
-    fetchOrders();
-  }, []);
+  const [ownsStore, loading, error, info, setInfo, setError, setLoading] =
+    usecheckStoreOwnership(fetchOrders);
   return (
     <>
       <InfoCard iserror={error} info={info} />
-      <div className="w-[85%] h-[600px] ">
-        <div className="h-full overflow-y-scroll">
-          <div className=" border-b-2 flex m-8 items-center">
-            <span className="flex-1 font-bold text-2xl">
-              Orders from customers
-            </span>
-            <div className="relative group bg-gray-100 rounded-lg z-[500]">
-              <span className="px-4">
-                <i className="fa-solid fa-caret-down px-2"></i>Filter
+      <div className="h-[600px] relative">
+        <LoadingCard show={loading} text="payment method" />
+
+        {ownsStore ? (
+          <div className="h-full overflow-y-scroll">
+            <div className=" border-b-2 flex m-8 items-center">
+              <span className="flex-1 font-bold text-2xl">
+                Orders from customers
               </span>
-              <div className="absolute group-hover:opacity-100 opacity-0 pointer-events-none group-hover:pointer-events-auto cursor-pointer flex flex-col z-20 bg-white shadow-xl right-0 w-[200px] ">
-                <span
-                  onClick={() => filterOrders("delivered")}
-                  className="p-4 hover:bg-gray-100"
-                >
-                  <i className="px-2 fa-solid fa-truck"></i> Delivered
+              <div className="relative group bg-gray-100 rounded-lg z-[500]">
+                <span className="px-4">
+                  <i className="fa-solid fa-caret-down px-2"></i>Filter
                 </span>
-                <span
-                  onClick={() => filterOrders("pending")}
-                  className="p-4 hover:bg-gray-100"
-                >
-                  <i className="px-2 fa-solid fa-spinner"></i> Pending
-                </span>
-                <span
-                  onClick={() => filterOrders("cancelled")}
-                  className="p-4 hover:bg-gray-100"
-                >
-                  <i className="px-2 fa-solid fa-ban"></i> Canceled
-                </span>
-                <span
-                  onClick={() => filterOrders("shipped")}
-                  className="p-4 hover:bg-gray-100"
-                >
-                  <i className="px-2 fa-solid fa-ship"></i> Shipped
-                </span>
+                <div className="absolute group-hover:opacity-100 opacity-0 pointer-events-none group-hover:pointer-events-auto cursor-pointer flex flex-col z-20 bg-white shadow-xl right-0 w-[200px] ">
+                  <span
+                    onClick={() => filterOrders("delivered")}
+                    className="p-4 hover:bg-gray-100"
+                  >
+                    <i className="px-2 fa-solid fa-truck"></i> Delivered
+                  </span>
+                  <span
+                    onClick={() => filterOrders("pending")}
+                    className="p-4 hover:bg-gray-100"
+                  >
+                    <i className="px-2 fa-solid fa-spinner"></i> Pending
+                  </span>
+                  <span
+                    onClick={() => filterOrders("cancelled")}
+                    className="p-4 hover:bg-gray-100"
+                  >
+                    <i className="px-2 fa-solid fa-ban"></i> Canceled
+                  </span>
+                  <span
+                    onClick={() => filterOrders("shipped")}
+                    className="p-4 hover:bg-gray-100"
+                  >
+                    <i className="px-2 fa-solid fa-ship"></i> Shipped
+                  </span>
+                </div>
               </div>
             </div>
-          </div>
-          <span className="mx-8 font-extralight">{orders?.length} orders </span>
-          <div className="mx-8 text-orange-400">
-            <i className="fa-solid fa-circle-exclamation text-orange-400"></i>
-            <span className="px-2">Orders you see here have been paid</span> 
-          </div>
-          {loading ? (
-            <div className="relative  h-full ">
-              <LoadingCard show={loading} text="orders" />
+            <span className="mx-8 font-extralight">
+              {orders?.length} orders{" "}
+            </span>
+            <div className="mx-8 text-orange-400">
+              <i className="fa-solid fa-circle-exclamation text-orange-400"></i>
+              <span className="px-2">Orders you see here have been paid</span>
             </div>
-          ) : (
             <div className="m-4 flex flex-col  ">
               {orders.length > 0 ? (
                 orders?.map((order) => (
@@ -119,7 +118,7 @@ const Orders = () => {
                       <span>Total paid : {order.total_price}</span>
                     </div>
 
-                    <div className="w-full overflow-x-scroll flex items-center p-2  h-[150px] ">
+                    <div className="w-full overflow-x-scroll  flex items-center p-2  h-[150px] ">
                       {order.cart?.items.map((item) => (
                         <div
                           key={item.id}
@@ -137,6 +136,7 @@ const Orders = () => {
                             <span>${item.sub_total}</span>
                           </div>
                         </div>
+                        
                       ))}
                     </div>
                     <div className="flex flex-col p-4 font-light ">
@@ -153,8 +153,15 @@ const Orders = () => {
                 />
               )}
             </div>
-          )}
-        </div>
+          </div>
+        ) : (
+          <EmptyCard
+            styles=" w-full h-full "
+            text="You don't own a store yet"
+            btext="Create Store"
+            handleClick={() => navigate("/admin/theme")}
+          />
+        )}
       </div>
     </>
   );

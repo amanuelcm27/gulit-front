@@ -37,7 +37,7 @@ const StoreNavBar = () => {
         </span>
       </div>
       {menuOpen && (
-        <div className="sm:hidden fixed inset-0 top-20  bg-white bg-opacity-95  z-50">
+        <div className="sm:hidden fixed inset-0 top-20  bg-white bg-opacity-95  z-[1000]">
           <div className="flex flex-col  m-2  h-full">
             <DropDownItem
               handleClick={() => {
@@ -114,7 +114,7 @@ const StoreNavBar = () => {
 
         <div className="relative group">
           <NavItem name="Account" />
-          <div className="absolute z-20 right-0 w-[250px] rounded-md bg-gray-200 shadow-xl opacity-0 pointer-events-none transition-opacity duration-300 group-hover:opacity-100 group-hover:pointer-events-auto">
+          <div className="absolute z-[1000] right-0 w-[250px] rounded-md bg-gray-200 shadow-xl opacity-0 pointer-events-none transition-opacity duration-300 group-hover:opacity-100 group-hover:pointer-events-auto">
             {IsLoggedIn && (
               <DropDownItem
                 icon={`fa-solid fa-user`}

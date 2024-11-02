@@ -6,21 +6,23 @@ import Footer from "../../components/Footer";
 import { useGlobalContext } from "../../context/GlobalProvider";
 
 const AdminDashboard = () => {
-  const { userInfo } = useGlobalContext()
-  const location = useLocation()
-  if ( userInfo?.role === 'buyer') { // prevents buyer from accessing admin dashboard
-    return <Navigate to="/customer" />
-  }
-
-  else if (!userInfo?.role ) { // prevents non-enrolled users from accessing admin dashboard
-    return <Navigate to="/role" />
+  const { userInfo } = useGlobalContext();
+  const location = useLocation();
+  if (userInfo?.role === "buyer") {
+    // prevents buyer from accessing admin dashboard
+    return <Navigate to="/customer" />;
+  } else if (!userInfo?.role) {
+    // prevents non-enrolled users from accessing admin dashboard
+    return <Navigate to="/role" />;
   }
   return (
     <div>
       <NavBar />
       <div className="m-4  flex">
         <AdminSideBar />
-        <Outlet />
+        <div className="flex-1 max-w-full">
+          <Outlet />
+        </div>
       </div>
       {/* <Footer /> */}
     </div>

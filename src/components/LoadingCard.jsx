@@ -5,7 +5,7 @@ const LoadingCard = ({ show , styles  , text }) => {
   return (
     <>
       {show && (
-        <div className={` absolute ${styles} w-full h-full z-50 bg-white  flex flex-col  items-center justify-center `}>
+        <div className={` absolute ${styles} w-full h-full z-[600] bg-white  flex flex-col  items-center justify-center `}>
           <img src={images.loading} className="w-[200px]" />
           <span className="text-2xl  font-bold">Loading {text}</span>
         </div>

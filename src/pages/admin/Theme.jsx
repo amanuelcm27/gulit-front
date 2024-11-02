@@ -65,17 +65,19 @@ const Theme = () => {
 
   const updateStore = async () => {
     const validatedData = formValid();
-    const response = await apiRequest(
-      "patch",
-      `update_store/${store?.id}/`,
-      validatedData
-    );
-    if (response.success === false) {
-      setInfo("Cannot update store data");
-      setError(true);
-    } else {
-      setInfo("Store has been updated");
-      setError(false);
+    if (validatedData) {
+      const response = await apiRequest(
+        "patch",
+        `update_store/${store?.id}/`,
+        validatedData
+      );
+      if (response.success === false) {
+        setInfo("Cannot update store data");
+        setError(true);
+      } else {
+        setInfo("Store has been updated");
+        setError(false);
+      }
     }
     setInfoKey(infoKey + 1);
   };
@@ -99,34 +101,36 @@ const Theme = () => {
   return (
     <>
       <InfoCard info={info} iserror={error} infokey={infoKey} />
-      <div className="w-[35%] h-[600px] overflow-y-scroll relative">
-        <LoadingCard text="theme" show={loading} />
-        <div className="text-center m-2">
-          <span className="font-bold text-4xl">
-            {ownsStore ? "Edit" : "Setup"} your store
-          </span>
+      <div className="flex">
+        <div className="w-[35%] h-[600px] overflow-y-scroll relative">
+          <LoadingCard text="theme" show={loading} />
+          <div className="text-center m-2">
+            <span className="font-bold text-4xl">
+              {ownsStore ? "Edit" : "Setup"} your store
+            </span>
+          </div>
+          <StoreThemeForm
+            formData={formData}
+            handleChange={handleChange}
+            ownsStore={ownsStore}
+            updateStore={updateStore}
+            createStore={createStore}
+          />
         </div>
-        <StoreThemeForm
-          formData={formData}
-          handleChange={handleChange}
-          ownsStore={ownsStore}
-          updateStore={updateStore}
-          createStore={createStore}
-        />
-      </div>
-      <div className="w-[50%] h-[600px] overflow-y-scroll relative">
-        <LoadingCard text="theme" show={loading} />
-        <div className="text-center m-2 flex flex-col">
-          <span className="font-light text-lg">your store theme </span>
-          <span className="font-extralight">scroll to see more </span>
+        <div className="flex-1  h-[600px] overflow-y-scroll relative">
+          <LoadingCard text="theme" show={loading} />
+          <div className="text-center m-2 flex flex-col">
+            <span className="font-light text-lg">your store theme </span>
+            <span className="font-extralight">scroll to see more </span>
+          </div>
+          <ThemeTemplate
+            logo={createObjectURLIfObject(formData.logo)}
+            slogan={formData.slogan}
+            header={createObjectURLIfObject(formData.p_image_1)}
+            bottomImage={createObjectURLIfObject(formData.p_image_2)}
+            storeId={store?.id}
+          />
         </div>
-        <ThemeTemplate
-          logo={createObjectURLIfObject(formData.logo)}
-          slogan={formData.slogan}
-          header={createObjectURLIfObject(formData.p_image_1)}
-          bottomImage={createObjectURLIfObject(formData.p_image_2)}
-          storeId = {store?.id}
-        />
       </div>
     </>
   );
