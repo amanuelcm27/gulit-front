@@ -105,10 +105,10 @@ const Coupon = () => {
   return (
     <>
       <InfoCard info={info} iserror={error} infokey={infokey} />
-      <div className="h-[600px] relative">
+      <div className="h-[600px]  relative">
         <LoadingCard text="coupons" show={loading} />
         {ownsStore ? (
-          <div className="h-full relative overflow-y-scroll">
+          <div className="h-full  overflow-y-scroll">
             <div className=" border-b-2 flex m-8 items-center">
               <span className="flex-1 font-bold text-2xl">
                 Products with Coupons

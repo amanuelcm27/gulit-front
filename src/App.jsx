@@ -32,6 +32,7 @@ import CustomerDetails from "./pages/Customer/CustomerDetails";
 import Stores from "./pages/OnBoarding/Stores";
 import NotFound from "./pages/default/NotFound";
 import PaymentMethod from "./pages/admin/Payment";
+import PaymentVerify from "./pages/store/PaymentVerify";
 function App() {
   const [count, setCount] = useState(0);
   const OauthId = import.meta.env.VITE_OAUTH_CLIENT_ID;
@@ -49,7 +50,6 @@ function App() {
                   <Route path="orders" element={<CustomerOrders />} />
                   <Route path="details" element={<CustomerDetails />} />
                 </Route>
-
                 <Route path="/admin" element={<AdminDashboard />}>
                   <Route index element={<Navigate to="/admin/products" />} />
                   <Route
@@ -64,7 +64,9 @@ function App() {
                   <Route path="payment_method" element={<PaymentMethod />}></Route>
 
                 </Route>
+                <Route path="/verify_payment" element = {<PaymentVerify />}/>
               </Route>
+
               <Route path="/:storeid/:store_name/" element={<StoreLayout />}>
                 <Route path="home" element={<Home />} />
                 <Route path="products" element={<Products />}></Route>

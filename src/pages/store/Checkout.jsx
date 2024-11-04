@@ -18,7 +18,7 @@ const Checkout = () => {
   const [infokey, setInfoKey] = useState(0);
   const [couponForm, setCouponForm] = useState(false);
   const [couponLoading, setCouponLoading] = useState(false);
-  const [couponUsed , setCouponUsed] = useState(false);
+  const [couponUsed, setCouponUsed] = useState(false);
   const [formData, handleChange, setFormData, clearForm] = useFormHandler({
     store_id: storeid,
     coupon_code: "",
@@ -34,6 +34,62 @@ const Checkout = () => {
       setCart(response);
       setLoading(false);
     }
+  };
+  const [billingForm, setBillingForm] = useState({
+    store_id: storeid,
+    cart_id: cart?.id,
+    fname: "",
+    lname: "",
+    email: "",
+    phone: "",
+    return_url: `http://localhost:5173/verify_payment`,
+  });
+  const handleBillingForm = (e) => {
+    const { name, value } = e.target;
+    setBillingForm((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+  const validateBillingForm = () => {
+    if (
+      billingForm.fname === "" ||
+      billingForm.lname === "" ||
+      billingForm.email === "" ||
+      billingForm.phone === ""
+    ) {
+      setError(true);
+      setInfo("Fill in all fields");
+      return false;
+    } else if (billingForm.phone.length < 10) {
+      setError(true);
+      setInfo("Enter a valid phone number");
+      return false;
+    }
+    return billingForm;
+  };
+  const initializePayment = async () => {
+    if (checkCartStatus()) {
+      const validatedBillingForm = validateBillingForm();
+      if (validatedBillingForm) {
+        setLoading(true);
+
+        const response = await apiRequest(
+          "post",
+          `initialize_payment/`,
+          validatedBillingForm
+        );
+        if (response.success === false) {
+          console.log(response);
+          setLoading(false);
+        } else {
+          setLoading(false);
+          console.log(response);
+          window.open(response.checkout_url, "_blank");
+        }
+      }
+    }
+    setInfoKey(infokey + 1);
   };
   const createOrder = async () => {
     const response = await apiRequest("post", `create_order/`, {
@@ -64,6 +120,7 @@ const Checkout = () => {
   };
   const applyCoupon = async () => {
     const validatedFormData = validateCouponForm();
+    console.log(validatedFormData);
     if (validatedFormData) {
       setCouponLoading(true);
       const response = await apiRequest(
@@ -73,8 +130,8 @@ const Checkout = () => {
       );
       if (response.success === false) {
         setCouponLoading(false);
-        setInfo(response.error?.data?.message);
         setError(true);
+        setInfo(response.error?.data?.message);
       } else {
         setCouponUsed(validatedFormData.coupon_code);
         setCouponLoading(false);
@@ -85,10 +142,26 @@ const Checkout = () => {
     }
     setInfoKey(infokey + 1);
   };
+  const checkCartStatus = () => {
+    if (
+      cart?.items?.length < 1 ||
+      cart?.items === undefined ||
+      cart?.items === null
+    ) {
+      setError(true);
+      setInfo("No items in cart");
+      return false;
+    }
+    return true;
+  };
   useEffect(() => {
     setFormData((prevData) => ({
       ...prevData,
-      cart: cart,
+      cart_id: cart?.id,
+    }));
+    setBillingForm((prevData) => ({
+      ...prevData,
+      cart_id: cart?.id,
     }));
   }, [cart]);
   useEffect(() => {
@@ -100,7 +173,9 @@ const Checkout = () => {
       <InfoCard info={info} iserror={error} infokey={infokey} />
       <div className="border-2 max-sm:h-auto h-[600px]">
         <div className="flex max-sm:flex-col m-8 max-sm:m-2">
-          <div className="w-[50%] max-sm:w-full ">
+          <div className="w-[50%] max-sm:w-full relative">
+            <LoadingCard text="Orders" show={loading} />
+
             <span className="text-4xl max-sm:text-2xl font-extrabold">
               Billing information
             </span>
@@ -110,38 +185,36 @@ const Checkout = () => {
                 type={`text`}
                 otherStyles={`max-sm:m-1 m-4 w-full`}
                 placeholder={`first name ...`}
+                handleChange={handleBillingForm}
               />
               <FormField
                 name={`lname`}
                 type={`text`}
                 otherStyles={`max-sm:m-1 m-4 w-full`}
                 placeholder={`Last name ...`}
+                handleChange={handleBillingForm}
               />
             </div>
             <FormField
-              name={`address`}
+              name={`email`}
               type={`email`}
               otherStyles={`max-sm:m-1 m-4`}
               placeholder={`Email...`}
+              handleChange={handleBillingForm}
             />
             <div className="flex items-center">
               <FormField
-                name={`postal`}
+                name={`phone`}
                 type={`text`}
                 otherStyles={`max-sm:m-1 m-4 w-full`}
-                placeholder={`Postal code`}
-              />
-              <FormField
-                name={`city`}
-                type={`text`}
-                otherStyles={`max-sm:m-1 m-4 w-full`}
-                placeholder={`City / Town...`}
+                placeholder={`phone number`}
+                handleChange={handleBillingForm}
               />
             </div>
             <div className="p-2 max-sm: flex flex-col">
               <span className="text-xl font-bold">Payment Methods</span>
               <SubmitButton
-                handleSubmit={createOrder}
+                handleSubmit={initializePayment}
                 name="Pay with Chapa"
                 otherStyles="m-4 max-sm:m-1 bg-green-400 p-4 rounded-md font-extrabold text-white"
               />

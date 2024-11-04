@@ -10,7 +10,7 @@ const Orders = () => {
   const [orders, setOrders] = useState([]);
   const navigate = useNavigate();
   const fetchOrders = async () => {
-    setLoading(true)
+    setLoading(true);
     const response = await apiRequest("get", "list_orders_for_store/");
     if (response.success === false) {
       setError(true);
@@ -38,7 +38,7 @@ const Orders = () => {
   return (
     <>
       <InfoCard iserror={error} info={info} />
-      <div className="h-[600px] relative">
+      <div className=" h-[600px] relative">
         <LoadingCard show={loading} text="payment method" />
 
         {ownsStore ? (
@@ -80,7 +80,7 @@ const Orders = () => {
               </div>
             </div>
             <span className="mx-8 font-extralight">
-              {orders?.length} orders{" "}
+              {orders?.length} orders
             </span>
             <div className="mx-8 text-orange-400">
               <i className="fa-solid fa-circle-exclamation text-orange-400"></i>
@@ -136,7 +136,6 @@ const Orders = () => {
                             <span>${item.sub_total}</span>
                           </div>
                         </div>
-                        
                       ))}
                     </div>
                     <div className="flex flex-col p-4 font-light ">

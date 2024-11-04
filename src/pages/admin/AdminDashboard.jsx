@@ -20,7 +20,7 @@ const AdminDashboard = () => {
       <NavBar />
       <div className="m-4  flex">
         <AdminSideBar />
-        <div className="flex-1 max-w-full">
+        <div className="flex-1">
           <Outlet />
         </div>
       </div>
