@@ -72,9 +72,12 @@ const ThemeTemplate = ({ storeId, logo, slogan, header, bottomImage }) => {
           </span>
         </div>
         <div className=" flex max-sm:flex-col max-sm:m-4 justify-center items-center ">
-          {featured?.map((product) => 
+          {featured?.length > 0 ? featured?.map((product) => 
             <Product product={product} />
-          )}
+          ):
+          <div className="flex flex-col items-center justify-center text-xl">
+            add some products to see this section 
+             </div>}
         </div>
       </div>
       <div className=" max-sm:w-full  h-[100px] bg-black hover:bg-gray-900 max-sm:m-0 m-10 mx-16">

@@ -10,7 +10,9 @@ import LoadingCard from "../../components/LoadingCard";
 import EmptyCard from "../../components/EmptyCard";
 import { formatDate } from "../../utils/formatedDate";
 import { usecheckStoreOwnership } from "../../handlers/checkOwnership";
+import { useNavigate } from "react-router-dom";
 const Coupon = () => {
+  const navigate = useNavigate();
   const [couponForm, setExpandCouponForm] = useState(false);
   const [deleteBox, setDeleteBox] = useState(false);
   const [products, setProducts] = useState([]);

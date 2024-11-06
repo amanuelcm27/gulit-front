@@ -19,6 +19,14 @@ const Theme = () => {
     p_image_2: store?.p_image_2 || null,
     description: store?.description || "",
   });
+  const [currentStep, setCurrentStep] = useState(1);
+  const handleNextStep = () => {
+    setCurrentStep((prevStep) => prevStep + 1);
+  };
+  const handlePrevioustStep = () => {
+    setCurrentStep((prevStep) => prevStep - 1);
+  };
+
   const formValid = () => {
     const requiredFields = [
       "name",
@@ -59,8 +67,12 @@ const Theme = () => {
         setInfo("Error in creating store");
       } else {
         setInfo("Store has been created");
+        setTimeout(() => {
+          handleNextStep();
+        }, 2000);
       }
     }
+    setInfoKey(infoKey + 1)
   };
 
   const updateStore = async () => {
@@ -111,6 +123,9 @@ const Theme = () => {
           </div>
           <StoreThemeForm
             formData={formData}
+            currentStep={ currentStep}
+            handleNextStep={handleNextStep}
+            handlePrevioustStep={handlePrevioustStep}
             handleChange={handleChange}
             ownsStore={ownsStore}
             updateStore={updateStore}

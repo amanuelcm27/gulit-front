@@ -109,6 +109,7 @@ const CustomerOrders = () => {
                 <span className="p-4 font-light">
                   From : {order.store.name}
                 </span>
+                <span className=" italic font-light  "> Total paid : {order.total_price}</span>
                 <div className="w-full overflow-x-scroll flex items-center p-2  h-[150px]">
                   {order.cart?.items.map((item) => (
                     <div

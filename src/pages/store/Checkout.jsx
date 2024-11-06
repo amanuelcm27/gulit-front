@@ -18,7 +18,7 @@ const Checkout = () => {
   const [infokey, setInfoKey] = useState(0);
   const [couponForm, setCouponForm] = useState(false);
   const [couponLoading, setCouponLoading] = useState(false);
-  const [couponUsed, setCouponUsed] = useState(false);
+  const [couponUsed, setCouponUsed] = useState("");
   const [formData, handleChange, setFormData, clearForm] = useFormHandler({
     store_id: storeid,
     coupon_code: "",
@@ -38,11 +38,11 @@ const Checkout = () => {
   const [billingForm, setBillingForm] = useState({
     store_id: storeid,
     cart_id: cart?.id,
+    coupon_used: couponUsed,
     fname: "",
     lname: "",
     email: "",
     phone: "",
-    return_url: `http://localhost:5173/verify_payment`,
   });
   const handleBillingForm = (e) => {
     const { name, value } = e.target;
@@ -51,7 +51,7 @@ const Checkout = () => {
       [name]: value,
     }));
   };
-  const validateBillingForm = () => {
+  const checkBillingForm = () => {
     if (
       billingForm.fname === "" ||
       billingForm.lname === "" ||
@@ -70,46 +70,26 @@ const Checkout = () => {
   };
   const initializePayment = async () => {
     if (checkCartStatus()) {
-      const validatedBillingForm = validateBillingForm();
+      const validatedBillingForm = checkBillingForm();
       if (validatedBillingForm) {
         setLoading(true);
-
         const response = await apiRequest(
           "post",
           `initialize_payment/`,
           validatedBillingForm
         );
+
         if (response.success === false) {
-          console.log(response);
-          setLoading(false);
+          setError(true)
+          setInfo("couldn't process payment")
         } else {
-          setLoading(false);
-          console.log(response);
-          window.open(response.checkout_url, "_blank");
+          window.location.href = response.checkout_url
         }
       }
     }
     setInfoKey(infokey + 1);
   };
-  const createOrder = async () => {
-    const response = await apiRequest("post", `create_order/`, {
-      store_id: storeid,
-      cart_id: cart?.id,
-      coupon_used: couponUsed,
-    });
-    if (response.success === false) {
-      setInfo("Couldn't create order");
-      setError(true);
-    } else {
-      setError(false);
-      setInfo("Order created successfully");
-      setLoading(false);
-      setTimeout(() => {
-        navigate(`/${storeid}/${store_name}/cart`);
-      }, 2000);
-    }
-    setInfoKey(infokey + 1);
-  };
+
   const validateCouponForm = () => {
     if (formData.coupon_code === "") {
       setError(true);
@@ -120,7 +100,6 @@ const Checkout = () => {
   };
   const applyCoupon = async () => {
     const validatedFormData = validateCouponForm();
-    console.log(validatedFormData);
     if (validatedFormData) {
       setCouponLoading(true);
       const response = await apiRequest(
@@ -165,6 +144,12 @@ const Checkout = () => {
     }));
   }, [cart]);
   useEffect(() => {
+    setBillingForm((prevData) => ({
+      ...prevData ,
+      coupon_used:couponUsed
+    }))
+  },[couponUsed])
+  useEffect(() => {
     fetchCart();
   }, []);
 
@@ -173,59 +158,6 @@ const Checkout = () => {
       <InfoCard info={info} iserror={error} infokey={infokey} />
       <div className="border-2 max-sm:h-auto h-[600px]">
         <div className="flex max-sm:flex-col m-8 max-sm:m-2">
-          <div className="w-[50%] max-sm:w-full relative">
-            <LoadingCard text="Orders" show={loading} />
-
-            <span className="text-4xl max-sm:text-2xl font-extrabold">
-              Billing information
-            </span>
-            <div className="flex items-center">
-              <FormField
-                name={`fname`}
-                type={`text`}
-                otherStyles={`max-sm:m-1 m-4 w-full`}
-                placeholder={`first name ...`}
-                handleChange={handleBillingForm}
-              />
-              <FormField
-                name={`lname`}
-                type={`text`}
-                otherStyles={`max-sm:m-1 m-4 w-full`}
-                placeholder={`Last name ...`}
-                handleChange={handleBillingForm}
-              />
-            </div>
-            <FormField
-              name={`email`}
-              type={`email`}
-              otherStyles={`max-sm:m-1 m-4`}
-              placeholder={`Email...`}
-              handleChange={handleBillingForm}
-            />
-            <div className="flex items-center">
-              <FormField
-                name={`phone`}
-                type={`text`}
-                otherStyles={`max-sm:m-1 m-4 w-full`}
-                placeholder={`phone number`}
-                handleChange={handleBillingForm}
-              />
-            </div>
-            <div className="p-2 max-sm: flex flex-col">
-              <span className="text-xl font-bold">Payment Methods</span>
-              <SubmitButton
-                handleSubmit={initializePayment}
-                name="Pay with Chapa"
-                otherStyles="m-4 max-sm:m-1 bg-green-400 p-4 rounded-md font-extrabold text-white"
-              />
-
-              <span className="text-center border-t-2 mx-4">or</span>
-              <SubmitButton
-                name="Pay with Stripe"
-                otherStyles="m-4 bg-black max-sm:m-1 p-4 rounded-md font-extrabold text-white"
-              />
-            </div>
-          </div>
           <div className=" w-1/2 flex flex-col h-[550px] max-sm:w-full relative ">
             <LoadingCard text="Orders" show={loading} />
             <span className="p-8 max-sm:text-2xl max-sm:text-center font-extrabold text-4xl">
@@ -305,6 +237,59 @@ const Checkout = () => {
                   </div>
                 )}
               </div>
+            </div>
+          </div>
+          <div className="w-[50%] max-sm:w-full relative">
+            <LoadingCard text="Orders" show={loading} />
+
+            <span className="text-4xl max-sm:text-2xl font-extrabold">
+              Billing information
+            </span>
+            <div className="flex items-center">
+              <FormField
+                name={`fname`}
+                type={`text`}
+                otherStyles={`max-sm:m-1 m-4 w-full`}
+                placeholder={`first name ...`}
+                handleChange={handleBillingForm}
+              />
+              <FormField
+                name={`lname`}
+                type={`text`}
+                otherStyles={`max-sm:m-1 m-4 w-full`}
+                placeholder={`Last name ...`}
+                handleChange={handleBillingForm}
+              />
+            </div>
+            <FormField
+              name={`email`}
+              type={`email`}
+              otherStyles={`max-sm:m-1 m-4`}
+              placeholder={`Email...`}
+              handleChange={handleBillingForm}
+            />
+            <div className="flex items-center">
+              <FormField
+                name={`phone`}
+                type={`text`}
+                otherStyles={`max-sm:m-1 m-4 w-full`}
+                placeholder={`phone number`}
+                handleChange={handleBillingForm}
+              />
+            </div>
+            <div className="p-2 max-sm: flex flex-col">
+              <span className="text-xl font-bold">Payment Methods</span>
+              <SubmitButton
+                handleSubmit={initializePayment}
+                name="Pay with Chapa"
+                otherStyles="m-4 max-sm:m-1 bg-green-400 p-4 rounded-md font-extrabold text-white"
+              />
+
+              <span className="text-center border-t-2 mx-4">or</span>
+              <SubmitButton
+                name="Pay with Stripe"
+                otherStyles="m-4 bg-black max-sm:m-1 p-4 rounded-md font-extrabold text-white"
+              />
             </div>
           </div>
         </div>

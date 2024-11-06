@@ -19,7 +19,7 @@ const AdminSideBar = () => {
       >
         <i
           class={`fa-solid ${
-            minimize ? "fa-circle-chevron-left" : "fa-circle-chevron-right"
+            minimize ? "fa-circle-chevron-right" : "fa-circle-chevron-left"
           }`}
         ></i>
       </div>

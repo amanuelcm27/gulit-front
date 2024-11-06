@@ -9,18 +9,15 @@ const StoreThemeForm = ({
   ownsStore,
   updateStore,
   createStore,
+  currentStep,
+  handleNextStep,
+  handlePrevioustStep,
 }) => {
   const logoInputRef = useRef(null);
   const pimage1Ref = useRef(null);
   const pimage2Ref = useRef(null);
   const navigate = useNavigate();
-  const [currentStep, setCurrentStep] = useState(1);
-  const handleNextStep = () => {
-    setCurrentStep((prevStep) => prevStep + 1);
-  };
-  const handlePrevioustStep = () => {
-    setCurrentStep((prevStep) => prevStep - 1);
-  };
+
   const handleImageClick = (inputRef) => {
     inputRef.current.click();
   };
@@ -156,16 +153,7 @@ const StoreThemeForm = ({
               <SubmitButton
                 name={`${ownsStore ? "Update" : "Create"} Store`}
                 otherStyles="bg-orange-400 w-[60%] mx-2"
-                handleSubmit={
-                  ownsStore
-                    ? updateStore
-                    : () => {
-                        createStore(),
-                          setTimeout(() => {
-                            handleNextStep();
-                          }, 2000);
-                      }
-                }
+                handleSubmit={ownsStore ? updateStore : createStore}
               />
             </div>
           </div>

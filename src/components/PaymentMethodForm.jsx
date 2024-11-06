@@ -76,8 +76,7 @@ const PaymentMethodForm = ({
       if (response.success === false) {
         setLoading(false);
         setError(true);
-        setInfo("Couldn't create payment method check your account number");
-        console.log(response)
+        setInfo("Wrong account number or already used ");
       } else {
         setLoading(false);
         setError(false);
