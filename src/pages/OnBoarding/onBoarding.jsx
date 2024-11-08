@@ -174,16 +174,7 @@ const OnBoarding = () => {
           </div>
         </div>
       </div>
-      {/* <div className="">
-        <div className="w-full text-center">
-          <span className="text-7xl font-extrabold">
-            Visit our top stores
-          </span>
-        </div>
-        <div>
 
-        </div>
-      </div> */}
       <div className="max-sm:mx-4 mx-10">
         <div className="max-sm:p-4 p-10 text-center">
           <span className=" max-sm:text-xl text-4xl font-extrabold">
@@ -253,6 +244,7 @@ const OnBoarding = () => {
       </div>
       <div className="m-10 text-center">
         <SubmitButton
+        handleSubmit={getStarted}
           name="Get Started"
           otherStyles={`w-1/2 bg-orange-400 font-extrabold rounded-xl`}
         />
