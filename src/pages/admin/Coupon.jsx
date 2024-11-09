@@ -76,7 +76,7 @@ const Coupon = () => {
     setSelectedProduct(product.name);
   };
   const fetchCoupons = async () => {
-    setLoading(true)
+    setLoading(true);
     const response = await apiRequest("get", "coupons/");
     if (response.success === false) {
       setError(true);
@@ -170,7 +170,7 @@ const Coupon = () => {
         )}
       </div>
       {couponForm && (
-        <div className="absolute flex justify-center items-center right-0 w-full h-[600px] bg-white bg-opacity-75">
+        <div className="fixed top-0 left-0 flex justify-center items-center w-full h-full z-40 backdrop-blur-[2px] bg-opacity-75">
           <div className="w-[40%] h-[500px] overflow-y-scroll  bg-white border-2 rounded-md">
             <div className="m-4 flex font-bold items-center">
               <span className="flex-1">Add a coupon</span>
@@ -265,7 +265,7 @@ const Coupon = () => {
         </div>
       )}
       {deleteBox && (
-        <div className="absolute flex justify-center items-center right-0 w-full h-[600px] bg-white bg-opacity-95">
+        <div className="fixed top-0 left-0 flex justify-center items-center w-full h-full z-40 backdrop-blur-[2px] bg-opacity-75">
           <div className="w-[40%] h-[200px] border-red-400  bg-white flex flex-col border-2 rounded-md">
             <div className="m-4 flex font-bold">
               <span className="flex-1">Are you sure to delete this coupon</span>

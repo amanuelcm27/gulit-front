@@ -38,7 +38,7 @@ const Orders = () => {
   return (
     <>
       <InfoCard iserror={error} info={info} />
-      <div className=" h-[600px] relative">
+      <div className="h-[600px] relative">
         <LoadingCard show={loading} text="payment method" />
 
         {ownsStore ? (
@@ -84,9 +84,9 @@ const Orders = () => {
             </span>
             <div className="mx-8 text-orange-400">
               <i className="fa-solid fa-circle-exclamation text-orange-400"></i>
-              <span className="px-2">Orders you see here have been paid</span>
+              <span className="px-2">Orders you see here have been paid for</span>
             </div>
-            <div className="m-4 flex flex-col  ">
+            <div className="  m-4 flex flex-col  ">
               {orders.length > 0 ? (
                 orders?.map((order) => (
                   <div
@@ -118,11 +118,12 @@ const Orders = () => {
                       <span>Total paid : {order.total_price}</span>
                     </div>
 
-                    <div className="w-full overflow-x-scroll  flex items-center p-2  h-[150px] ">
+                    <div className="w-full overflow-x-scroll flex flex-col flex-wrap p-2  h-[150px] ">
+                      
                       {order.cart?.items.map((item) => (
                         <div
                           key={item.id}
-                          className="flex w-[250px] flex-shrink-0 h-full "
+                          className="flex w-[260px] flex-shrink-0 h-full "
                         >
                           <img
                             src={item.product.image}
@@ -138,9 +139,10 @@ const Orders = () => {
                         </div>
                       ))}
                     </div>
+
                     <div className="flex flex-col p-4 font-light ">
-                      <span>Order by : {order.creator?.username}</span>
-                      <span>Address : Yeka city , addis ababa </span>
+                      <span>Order by : {order.creator?.profile?.first_name || "profile not set"}</span>
+                      <span>Address : {order.creator?.profile?.address || "address not set"} </span>
                     </div>
                   </div>
                 ))
