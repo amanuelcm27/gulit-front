@@ -113,8 +113,8 @@ const Theme = () => {
   return (
     <>
       <InfoCard info={info} iserror={error} infokey={infoKey} />
-      <div className="flex">
-        <div className="w-[35%] h-[600px] overflow-y-scroll relative">
+      <div className="flex max-sm:flex-col">
+        <div className="w-[35%] max-sm:w-full h-[600px] max-sm:h-auto overflow-y-scroll max-sm:overflow-hidden relative">
           <LoadingCard text="theme" show={loading} />
           <div className="text-center m-2">
             <span className="font-bold text-4xl">
@@ -132,7 +132,7 @@ const Theme = () => {
             createStore={createStore}
           />
         </div>
-        <div className="flex-1  h-[600px] overflow-y-scroll relative">
+        <div className="flex-1  h-[600px] max-sm:h-auto overflow-y-scroll relative">
           <LoadingCard text="theme" show={loading} />
           <div className="text-center m-2 flex flex-col">
             <span className="font-light text-lg">your store theme </span>

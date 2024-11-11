@@ -13,16 +13,16 @@ const CustomerDashBoard = () => {
   return (
     <div>
       <NavBar />
-      <div className="m-8">
-        <div className="font-light  ">
+      <div className="m-8 max-sm:m-2">
+        <div className="font-light max-sm:hidden  ">
           <span onClick={()=>naviagte(-1)} className=" p-2 px-8 group  cursor-pointer">
             <i className="fa-solid fa-left-long opacity-0 group-hover:-translate-x-2 group-hover:opacity-100  transition-all duration-300 transform translate-x-[10px]"></i>{" "}
             Go Back
           </span>
         </div>
-        <div className="flex ">
+        <div className="flex max-sm:flex-col">
           <CustomerDashBoardSideBar />
-          <div className="w-[75%] shadow-2xl ">
+          <div className="w-[75%] max-sm:w-full shadow-2xl ">
             <Outlet />
           </div>
         </div>

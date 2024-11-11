@@ -16,18 +16,18 @@ const StoreOnBoarding = () => {
 
   const [storeData, setStoreData] = useState();
   return (
-    <div className="w-[85%] h-[600px] ">
+    <div className="w-[85%] max-sm:w-full h-[600px] ">
       <div className="flex flex-col h-full justify-center items-center">
         <img src={images.welcome} className="h-1/2" />
-        <span className="text-4xl font-extrabold">WELCOME TO YOUR STORE</span>
-        <span className="text-xl font-light">
+        <span className="text-4xl max-sm:text-2xl  max-sm:text-center font-extrabold">WELCOME TO YOUR STORE</span>
+        <span className="text-xl max-sm:text-lg max-sm:text-center font-light">
           Seems like this is your first time start by telling us about your
           business
         </span>
         <SubmitButton
           handleSubmit={() => navigate("/admin/theme")}
           name="Let's Begin"
-          otherStyles="bg-orange-400 w-1/2 mt-2"
+          otherStyles="bg-orange-400 w-1/2 mt-2 "
         />
       </div>
     </div>

@@ -26,7 +26,7 @@ const StoreThemeForm = ({
       {currentStep === 1 && (
         <div className="flex flex-col  mt-8 ">
           <div className="flex flex-col h-full   ">
-            <div className="flex flex-col items-center m-4">
+            <div className="flex flex-col items-center m-4 max-sm:m-0">
               <span
                 className="text-7xl  text-orange-400 cursor-pointer hover:text-orange-200"
                 onClick={() => handleImageClick(logoInputRef)}
@@ -43,7 +43,7 @@ const StoreThemeForm = ({
                 hidden
               />
               <span className="text-xl font-light ">upload store logo </span>
-              <span className="font-extralight">
+              <span className="font-extralight max-sm:text-center">
                 (better if you upload logo with background removed)
               </span>
             </div>
@@ -51,13 +51,13 @@ const StoreThemeForm = ({
               type="text"
               name="name"
               placeholder={`your store name`}
-              otherStyles={" m-4 mx-8"}
+              otherStyles={" m-4 mx-8 max-sm:ml-2"}
               value={formData.name}
               handleChange={handleChange}
             />
             <SubmitButton
               name="Continue"
-              otherStyles="bg-orange-400  m-4 mx-8"
+              otherStyles="bg-orange-400  m-4 mx-8 max-sm:m-0 max-sm:mx-2"
               handleSubmit={handleNextStep}
             />
           </div>
@@ -83,7 +83,7 @@ const StoreThemeForm = ({
                   name="p_image_1"
                   hidden
                 />
-                <span className="text-xl font-light ">product image (1)</span>
+                <span className="text-xl font-light  max-sm:text-center">product image (1)</span>
               </div>
               <div className="flex flex-col items-center m-4">
                 <span
@@ -100,7 +100,7 @@ const StoreThemeForm = ({
                   name="p_image_2"
                   hidden
                 />
-                <span className="text-xl font-light ">product image (2)</span>
+                <span className="text-xl font-light max-sm:text-center ">product image (2)</span>
               </div>
             </div>
 
@@ -109,7 +109,7 @@ const StoreThemeForm = ({
               name="slogan"
               placeholder={`your store slogan`}
               value={formData.slogan}
-              otherStyles={"mx-8"}
+              otherStyles={"mx-8 max-sm:mx-4"}
               handleChange={handleChange}
             />
             <div className="flex items-center mt-4">
@@ -152,7 +152,7 @@ const StoreThemeForm = ({
               />
               <SubmitButton
                 name={`${ownsStore ? "Update" : "Create"} Store`}
-                otherStyles="bg-orange-400 w-[60%] mx-2"
+                otherStyles="bg-orange-400 w-[60%] mx-2 "
                 handleSubmit={ownsStore ? updateStore : createStore}
               />
             </div>

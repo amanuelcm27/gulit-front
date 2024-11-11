@@ -77,7 +77,7 @@ const PaymentMethod = () => {
           </div>
         ) : (
           <EmptyCard
-            styles=" w-full h-full "
+            styles=" w-full h-full max-sm:w-auto "
             text="You don't own a store yet"
             btext="Create Store"
             handleClick={() => navigate("/admin/theme")}

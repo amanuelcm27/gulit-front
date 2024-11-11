@@ -41,8 +41,8 @@ const CustomerOrders = () => {
   return (
     <div className="h-full  ">
       <InfoCard info={info} iserror={error} />
-      <div className="flex m-4 items-center  sticky top-0 bg-white p-4">
-        <div className="flex-1 text-4xl font-extrabold ">Your Orders</div>
+      <div className="flex m-4 max-sm:m-0 items-center  sticky top-0 bg-white p-4">
+        <div className="flex-1 text-4xl font-extrabold max-sm:text-xl">Your Orders</div>
         <div className="relative group bg-gray-100 rounded-lg z-[1000]">
           <span className="px-4">
             <i className="fa-solid fa-caret-down px-2"></i>Filter
@@ -83,16 +83,16 @@ const CustomerOrders = () => {
           </span>
         </div>
       ) : (
-        <div className="m-4 flex flex-col  ">
+        <div className="m-4 flex flex-col max-sm:m-0 max-sm:my-4  ">
           {orders.length > 0 ? (
             orders?.map((order) => (
               <div
                 key={order.order_id}
-                className="h-[300px] rounded-lg m-2 shadow-lg"
+                className="h-[300px] max-sm:h-auto rounded-lg m-2 shadow-lg"
               >
-                <div className="flex p-4 bg-gray-50">
+                <div className="flex max-sm:flex-col p-4 bg-gray-50">
                   <div className="flex flex-col flex-1">
-                    <span className="">
+                    <span className=" max-sm:text-sm">
                       Order id :
                       <span className="text-gray-400">{order.order_id}</span>
                     </span>

@@ -22,6 +22,7 @@ const Register = () => {
   const [authError, setAuthError] = useState(null);
   const { IsLoggedIn, loading, setIsLoggedIn, setUserInfo } =
     useGlobalContext();
+  const [registering , setRegistering] = useState(false);
   useEffect(() => {
     if (!loading && IsLoggedIn) {
       navigate("/");
@@ -39,7 +40,9 @@ const Register = () => {
     }
     try {
       await register(formData);
+      setRegistering(true);
       const response = await getAuthUser();
+      setRegistering(false);
       setUserInfo(response.data);
       setIsLoggedIn(true);
       navigate(from, { replace: true });
@@ -102,7 +105,17 @@ const Register = () => {
               type={`password`}
               name={`password`}
             />
-            <SubmitButton otherStyles={'w-80% bg-orange-400'} handleSubmit={handleSubmit} name={`Sign Up`} />
+            {registering ? (
+              <div className="w-80% flex justify-center items-center">
+                <img src={images.loading} className="w-32" />
+              </div>
+            ) : (
+              <SubmitButton
+                otherStyles={"w-80% bg-orange-400"}
+                handleSubmit={handleSubmit}
+                name={`Sign Up`}
+              />
+            )}
             <div className="max-sm:w-full w-80% m-2 ">
               <span>
                 Already have an account?

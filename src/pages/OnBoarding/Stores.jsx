@@ -7,6 +7,7 @@ import { apiRequest } from "../../handlers/apiHandler";
 import LoadingCard from "../../components/LoadingCard";
 import InfoCard from "../../components/InfoCard";
 import EmptyCard from "../../components/EmptyCard";
+import Footer from "../../components/Footer";
 
 const Stores = () => {
   const navigate = useNavigate();
@@ -151,6 +152,8 @@ const Stores = () => {
           </div>
         </div>
       </div>
+      <Footer />
+
     </div>
   );
 };

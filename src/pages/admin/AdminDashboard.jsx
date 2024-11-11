@@ -16,13 +16,13 @@ const AdminDashboard = () => {
   return (
     <div>
       <NavBar />
-      <div className="m-4  flex">
+      <div className="m-4 max-sm:m-0  flex max-sm:flex-col ">
         <AdminSideBar />
         <div className="flex-1">
           <Outlet />
         </div>
       </div>
-      {/* <Footer /> */}
+      <Footer />
     </div>
   );
 };

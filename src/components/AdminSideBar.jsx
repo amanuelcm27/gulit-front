@@ -11,11 +11,13 @@ const AdminSideBar = () => {
   const [ownsStore] = usecheckStoreOwnership(setUserOwnedStore);
   return (
     <div
-      className={`w-[15%] h-[600px]  sticky top-0  ${minimize && "w-auto"}  `}
+      className={`w-[15%] max-sm:w-full h-[600px] max-sm:h-auto py-4 max-sm:p-0 sticky  top-0 max-sm:bg-white  z-10 ${
+        minimize && "w-auto"
+      }  `}
     >
       <div
         onClick={() => setMinimize(!minimize)}
-        className="text-xl cursor-pointer hover:text-gray-700"
+        className=" max-sm:hidden text-xl cursor-pointer hover:text-gray-700"
       >
         <i
           class={`fa-solid ${
@@ -23,12 +25,23 @@ const AdminSideBar = () => {
           }`}
         ></i>
       </div>
-      <div className="flex-1 flex flex-col m-2 shadow-md  ">
+
+      <div className="flex flex-col max-sm:justify-center max-sm:flex-row m-2 max-sm:m-0 shadow-md ">
+ 
         <div
-          onClick={() =>navigate(ownsStore  ? `/${userOwnedStore?.id}/${userOwnedStore?.name}/home` : "/admin/theme") }
-          className={`flex mt-4 items-center p-2 hover:cursor-pointer`}>
-          <span className={`${minimize ? "hidden" : "flex-1"}`}>
-            Back to your store
+          onClick={() =>
+            navigate(
+              ownsStore
+                ? `/${userOwnedStore?.id}/${userOwnedStore?.name}/home`
+                : "/admin/theme"
+            )
+          }
+          className={
+            `flex mt-4 max-sm:ml-4 items-center p-2 hover:cursor-pointer`
+          }
+        >
+           <span className={`${minimize ? "hidden" : "flex-1 max-sm:hidden"}`}>
+            your store
           </span>
           <span title="Back to Store">
             <i className="fa-solid fa-house"></i>
@@ -48,13 +61,7 @@ const AdminSideBar = () => {
           icon="fa-solid fa-cart-shopping"
           title="Orders"
         />
-        {/* <AdminSideBarItem
-          to="/admin/analytics"
-          hide={minimize}
-          name="Analytics"
-          icon="fa-solid fa-chart-simple"
-          title="Analytics"
-        /> */}
+    
         <AdminSideBarItem
           to="/admin/coupon"
           hide={minimize}

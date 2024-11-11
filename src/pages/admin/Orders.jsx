@@ -43,8 +43,8 @@ const Orders = () => {
 
         {ownsStore ? (
           <div className="h-full overflow-y-scroll">
-            <div className=" border-b-2 flex m-8 items-center">
-              <span className="flex-1 font-bold text-2xl">
+            <div className=" border-b-2 flex m-8 max-sm:m-4 items-center">
+              <span className="flex-1 font-bold text-2xl max-sm:text-lg">
                 Orders from customers
               </span>
               <div className="relative group bg-gray-100 rounded-lg z-[500]">
@@ -79,23 +79,23 @@ const Orders = () => {
                 </div>
               </div>
             </div>
-            <span className="mx-8 font-extralight">
+            <span className="max-sm:mx-4 mx-8 font-extralight">
               {orders?.length} orders
             </span>
-            <div className="mx-8 text-orange-400">
+            <div className=" max-sm:mx-4 mx-8 text-orange-400">
               <i className="fa-solid fa-circle-exclamation text-orange-400"></i>
               <span className="px-2">Orders you see here have been paid for</span>
             </div>
-            <div className="  m-4 flex flex-col  ">
+            <div className=" max-sm:m-0 m-4 flex flex-col  ">
               {orders.length > 0 ? (
                 orders?.map((order) => (
                   <div
                     key={order.order_id}
-                    className="h-[350px] rounded-lg m-2 shadow-lg  "
+                    className="h-[350px] max-sm:h-auto rounded-lg m-2 shadow-lg  "
                   >
-                    <div className="flex p-4 bg-gray-50">
+                    <div className="flex max-sm:block p-4 bg-gray-50">
                       <div className="flex flex-col flex-1">
-                        <span className="">
+                        <span className="max-sm:text-[.8rem]">
                           Order id :
                           <span className="text-gray-400">
                             {order.order_id}
@@ -111,11 +111,11 @@ const Orders = () => {
                         </span>
                       </div>
                     </div>
-                    <div>
-                      <span className="p-4 font-light">
+                    <div className="max-sm:flex max-sm:flex-col">
+                      <span className="p-4 max-sm:pl-4 font-light">
                         Store : {order.store.name}
                       </span>
-                      <span>Total paid : {order.total_price}</span>
+                      <span className="max-sm:pl-4">Total paid : {order.total_price}</span>
                     </div>
 
                     <div className="w-full overflow-x-scroll flex flex-col flex-wrap p-2  h-[150px] ">
@@ -157,7 +157,7 @@ const Orders = () => {
           </div>
         ) : (
           <EmptyCard
-            styles=" w-full h-full "
+            styles=" w-full h-full max-sm:w-auto "
             text="You don't own a store yet"
             btext="Create Store"
             handleClick={() => navigate("/admin/theme")}

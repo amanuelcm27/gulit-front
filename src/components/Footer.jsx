@@ -1,15 +1,18 @@
 import React from 'react'
 import images from '../constants/images'
+import { useNavigate } from 'react-router-dom'
 
 const Footer = () => {
+  const navigate = useNavigate();
   return (
     <div className="flex max-sm:flex-col h-[400px] max-sm:h-auto  bg-orange-400">
     <div className="flex flex-col">
       <img src={images.logo} className="w-[40%] max-sm:w-[30%]" />
       <div className="m-10 flex-col flex text-white font-bold max-sm:text-xl max-sm:m-4 text-2xl cursor-pointer">
-        <span className=" hover:underline p-2">Stores</span>
-        <span className=" hover:underline p-2">Products</span>
-        <span className=" hover:underline p-2">About</span>
+        <span className=" hover:underline p-2" onClick={() => navigate('/stores')}>Stores</span>
+        <span className=" hover:underline p-2" onClick={() => navigate('/customer/details')}>Account</span>
+        <span className=" hover:underline p-2" onClick={() => navigate('/customer/orders')}>Orders</span>
+
       </div>
     </div>
     <div className="flex sm:hidden m-4 ">

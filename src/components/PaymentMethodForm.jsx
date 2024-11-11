@@ -104,7 +104,7 @@ const PaymentMethodForm = ({
       </div>
       <div className="flex flex-col mt-8">
         <div className="w-full">
-          <span>Business name </span>
+          <span className="max-sm:text-sm">Business name </span>
           <FormField
             name="business_name"
             type="text"
@@ -116,14 +116,14 @@ const PaymentMethodForm = ({
         </div>
 
         <div className="flex flex-col my-8">
-          <span>Choose your prefered payment method </span>
+          <span className="max-sm:text-sm">Choose your prefered payment method </span>
 
           <select
             id="bankSelect"
             name="bank_code"
             value={formData?.bank_code}
             onChange={handleChange}
-            className="w-full outline-none py-4 hover:bg-gray-100 cursor-pointer"
+            className="w-full max-sm:text-sm outline-none py-4 hover:bg-gray-100 cursor-pointer"
           >
             <option value="" disabled>
               Select a bank
@@ -135,9 +135,9 @@ const PaymentMethodForm = ({
             ))}
           </select>
         </div>
-        <div className="flex ">
+        <div className="flex max-sm:flex-col">
           <div className="w-full ">
-            <span>Account name </span>
+            <span className="max-sm:text-sm">Account name </span>
             <FormField
               name="account_name"
               type="text"
@@ -146,8 +146,8 @@ const PaymentMethodForm = ({
               handleChange={handleChange}
             />
           </div>
-          <div className="w-full mx-4">
-            <span>
+          <div className="w-full mx-4 max-sm:m-0">
+            <span className="max-sm:text-sm">
               Account Number (or Mobile number if you choose a wallet)
             </span>
             <FormField

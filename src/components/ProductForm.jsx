@@ -40,11 +40,11 @@ const ProductForm = ({
     fetchCategories();
   }, []);
   return (
-    <div className="h-full">
-      <span className="font-bold text-4xl m-10">{editMode ? 'Edit' : 'Add'} your Product</span>
+    <div className="h-[600px] overflow-y-scroll">
+      <div className="font-bold text-4xl max-sm:text-xl m-2">{editMode ? 'Edit' : 'Add'} your Product</div>
 
-      <div className="flex">
-        <div className="w-1/2 h-full flex-col m-10">
+      <div className="flex max-sm:flex-col max-sm:items-center">
+        <div className="w-1/2 max-sm:w-full h-full flex-col max-sm:m-2 m-10">
           <button
             onClick={() => {
               setEditMode(false), setProductForm(false);
@@ -120,21 +120,21 @@ const ProductForm = ({
               otherStyles={`bg-orange-400 w-full mt-2`}
             />
           ) : (
-            <div className="flex">
+            <div className="flex max-sm:block">
               <SubmitButton
                 name="Save & Add another"
-                otherStyles={`bg-black mx-2 mt-2 w-full`}
+                otherStyles={`bg-black sm:mx-2 mt-2 max-sm:mt-2  w-full`}
                 handleSubmit={() => createProduct("save&add")}
               />
               <SubmitButton
                 handleSubmit={createProduct}
                 name="Finish"
-                otherStyles={`bg-orange-400 w-full mt-2`}
+                otherStyles={`bg-orange-400  max-sm:mt-2 w-full mt-2`}
               />
             </div>
           )}
         </div>
-        <div className="w-1/2 h-[600px]">
+        <div className="w-1/2 max-sm:w-full max-sm:h-[250px] h-[600px]">
           <div className="flex flex-col justify-center items-center">
             <span
               className="text-7xl  text-orange-400 cursor-pointer hover:text-orange-200"
@@ -163,7 +163,7 @@ const ProductForm = ({
               (formData.image && createObjectURLIfObject(formData.image)) ||
               images.brand
             }
-            className="w-full h-full "
+            className="w-full h-full max-sm:object-cover"
           />
         </div>
       </div>

@@ -109,6 +109,7 @@ const OnBoarding = () => {
               <img src={images.store} className="w-full  object-contain" />
             </div>
             <SubmitButton
+              handleSubmit={getStarted}
               name={`Build Your Store`}
               otherStyles={"w-1/2 mt-16 text-xl max-sm:mt-4 bg-black "}
             />
@@ -119,6 +120,7 @@ const OnBoarding = () => {
               customers
             </span>
             <SubmitButton
+            handleSubmit={getStarted}
               name={`Build Your Store`}
               otherStyles={"w-1/2  mt-16 text-lg bg-orange-400 "}
             />
@@ -244,7 +246,7 @@ const OnBoarding = () => {
       </div>
       <div className="m-10 text-center">
         <SubmitButton
-        handleSubmit={getStarted}
+          handleSubmit={getStarted}
           name="Get Started"
           otherStyles={`w-1/2 bg-orange-400 font-extrabold rounded-xl`}
         />

@@ -112,7 +112,6 @@ const ThemeTemplate = ({ storeId, logo, slogan, header, bottomImage }) => {
           </div>
         </div>
       </div>
-      <StoreFooter />
     </>
   );
 };

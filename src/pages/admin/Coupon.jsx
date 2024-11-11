@@ -111,8 +111,8 @@ const Coupon = () => {
         <LoadingCard text="coupons" show={loading} />
         {ownsStore ? (
           <div className="h-full  overflow-y-scroll">
-            <div className=" border-b-2 flex m-8 items-center">
-              <span className="flex-1 font-bold text-2xl">
+            <div className=" border-b-2 flex m-8 max-sm:m-2 items-center">
+              <span className="flex-1 font-bold text-2xl max-sm:text-sm">
                 Products with Coupons
               </span>
               <span
@@ -162,7 +162,7 @@ const Coupon = () => {
           </div>
         ) : (
           <EmptyCard
-            styles=" w-full h-full "
+            styles=" w-full h-full max-sm:w-auto"
             text="You don't own a store yet"
             btext="Create Store"
             handleClick={() => navigate("/admin/theme")}
@@ -171,7 +171,7 @@ const Coupon = () => {
       </div>
       {couponForm && (
         <div className="fixed top-0 left-0 flex justify-center items-center w-full h-full z-40 backdrop-blur-[2px] bg-opacity-75">
-          <div className="w-[40%] h-[500px] overflow-y-scroll  bg-white border-2 rounded-md">
+          <div className="w-[40%] max-sm:w-full h-[500px] max-sm:h-auto overflow-y-scroll  bg-white border-2 rounded-md">
             <div className="m-4 flex font-bold items-center">
               <span className="flex-1">Add a coupon</span>
               <i
@@ -266,7 +266,7 @@ const Coupon = () => {
       )}
       {deleteBox && (
         <div className="fixed top-0 left-0 flex justify-center items-center w-full h-full z-40 backdrop-blur-[2px] bg-opacity-75">
-          <div className="w-[40%] h-[200px] border-red-400  bg-white flex flex-col border-2 rounded-md">
+          <div className="w-[40%] max-sm:w-full h-[200px] max-sm:h-auto border-orange-400  bg-white flex flex-col border-2 rounded-md">
             <div className="m-4 flex font-bold">
               <span className="flex-1">Are you sure to delete this coupon</span>
               <i
@@ -286,11 +286,11 @@ const Coupon = () => {
                 </span>
                 <span className="text-green-600">{itemToDelete.code}</span>
               </div>
-              <div className="flex mt-auto">
+              <div className="flex mt-auto max-sm:my-8">
                 <SubmitButton
                   handleSubmit={() => setDeleteBox(false)}
                   name={`Cancel`}
-                  otherStyles="bg-green-400 rounded-full"
+                  otherStyles="bg-green-400  rounded-full"
                 />
                 <SubmitButton
                   handleSubmit={() => {

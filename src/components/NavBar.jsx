@@ -47,20 +47,20 @@ const NavBar = () => {
               name="Home"
             />
             <DropDownItem
-              handleClick={() => navigate("/stores")}
+              handleClick={() => {setMenuOpen(false),navigate("/stores")}}
               icon={`fa-solid fa-store`}
               name="Stores"
             />
 
             {userInfo?.role === "buyer" ? (
               <DropDownItem
-                handleClick={() => navigate("/customer/")}
+                handleClick={() =>{ setMenuOpen(false),navigate("/customer/")}}
                 icon={`fa-solid fa-gear`}
                 name="My Account"
               />
             ) : (
               <DropDownItem
-                handleClick={() => navigate("/admin/")}
+                handleClick={() => {setMenuOpen(false),navigate("/admin/")}}
                 icon={`fa-solid fa-gear`}
                 name="My Account"
               />

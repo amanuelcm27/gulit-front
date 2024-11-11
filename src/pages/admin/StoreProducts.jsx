@@ -75,8 +75,9 @@ const StoreProducts = () => {
           setProductForm(flag === "save&add" ? true : false);
         }, 2000);
       }
-      setInfoKey(infoKey + 1);
     }
+    setInfoKey(infoKey + 1);
+
   };
 
   const fetchProducts = async () => {
@@ -116,7 +117,7 @@ const StoreProducts = () => {
   return (
     <>
       <InfoCard iserror={error} info={info} infokey={infoKey} />
-      <div className="h-[600px] relative">
+      <div className="h-[600px] max-sm:h-auto max-sm:my-4 relative">
         <LoadingCard text="Products" show={loading} />
         {showProductForm && (
           <ProductForm
@@ -132,15 +133,15 @@ const StoreProducts = () => {
         {ownsStore ? (
           !showProductForm && (
             <div className=" h-full overflow-y-scroll">
-              <div className=" border-b-2 flex m-8 items-center">
-                <span className="flex-1 font-bold text-2xl">
+              <div className=" border-b-2 flex m-8 max-sm:m-4 items-center">
+                <span className="flex-1 font-bold text-2xl max-sm:text-sm">
                   Availabe products in your store
                 </span>
                 <span
                   onClick={() => {
                     clearForm(), setProductForm(true);
                   }}
-                  className="hover:bg-gray-200 rounded-lg m-2 cursor-pointer p-2"
+                  className=" hover:bg-gray-200 rounded-lg m-2 cursor-pointer p-2"
                 >
                   <i className="fa-solid fa-plus"></i> New Product
                 </span>
@@ -178,7 +179,7 @@ const StoreProducts = () => {
           )
         ) : (
           <EmptyCard
-            styles=" w-full h-full "
+            styles=" w-full max-sm:w-auto h-full "
             text="You don't own a store yet"
             btext="Create Store"
             handleClick={() => navigate("/admin/theme")}

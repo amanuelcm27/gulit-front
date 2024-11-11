@@ -14,8 +14,9 @@ const Login = () => {
   const navigate = useNavigate();
   const { IsLoggedIn, loading, setIsLoggedIn, setUserInfo } =
     useGlobalContext();
-  const location = useLocation()
+  const location = useLocation();
   const from = location.state?.from?.pathname || "/";
+  const [signing, setSigning] = useState(false);
   const [formData, handleChange] = useFormHandler({
     email: "",
     password: "",
@@ -33,7 +34,9 @@ const Login = () => {
         return;
       }
       await login(formData.email, formData.password);
+      setSigning(true);
       const response = await getAuthUser();
+      setSigning(false);
       setUserInfo(response.data);
       setIsLoggedIn(true);
       navigate(from, { replace: true });
@@ -81,11 +84,17 @@ const Login = () => {
               type={`password`}
               name={`password`}
             />
-            <SubmitButton
-              otherStyles={"w-80% bg-orange-400"}
-              handleSubmit={handleSubmit}
-              name={`Sign In`}
-            />
+            {signing ? (
+              <div className="w-80% flex justify-center items-center">
+                <img src={images.loading} className="w-32" />
+              </div>
+            ) : (
+              <SubmitButton
+                otherStyles={"w-80% bg-orange-400"}
+                handleSubmit={handleSubmit}
+                name={`Sign In`}
+              />
+            )}
             <div className="max-sm:w-full w-80% m-2 ">
               <span>
                 Don't have an account ?{" "}
