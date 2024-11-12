@@ -59,7 +59,7 @@ const Home = () => {
         </div>
         <div className=" flex max-sm:flex-col max-sm:m-4 m-12 justify-center items-center ">
           {featuredProducts?.map((product) => (
-            <Product product={product} showPrice={false}  handleClick={()=>navigate(`/${id}/${name}/product/${product.id}`)} />
+            <Product key={product.id} product={product} showPrice={false}  handleClick={()=>navigate(`/${id}/${name}/product/${product.id}`)} />
           ))}
         </div>
       </div>
