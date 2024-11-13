@@ -36,6 +36,7 @@ import PaymentVerify from "./pages/store/PaymentVerify";
 function App() {
   const [count, setCount] = useState(0);
   const OauthId = import.meta.env.VITE_OAUTH_CLIENT_ID;
+  console.log(OauthId)
   return (
     <>
       <Router>
