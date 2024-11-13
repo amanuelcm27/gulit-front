@@ -4,11 +4,13 @@ import { api } from "./api";
 
 export const getAuthUser = async () => {
   const response = await api.get("get_user/");
+  console.log("error from get auth user function directly provider" , response)
   return response;
 };
 
 export async function getCsrfToken() {
   const response = await api.get("csrf-token/");
+  console.log(response)
   return response.data.csrfToken;
 }
 export async function login(email, password) {

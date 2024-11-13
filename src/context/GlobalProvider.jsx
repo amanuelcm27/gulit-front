@@ -13,11 +13,14 @@ const GlobalProvider = ({ children }) => {
       if (response.data.authenticated) {
         setIsLoggedIn(true);
         setUserInfo(response.data);
+        console.log("userinfo from global provider if authtenticated" , response)
+
       } else {
         setUserInfo(null);
         setIsLoggedIn(false);
       }
     } catch (error) {
+      console.log("error from global provider" , error)
       setIsLoggedIn(false);
     } finally {
       setIsLoading(false);
