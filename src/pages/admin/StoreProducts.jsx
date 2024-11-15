@@ -36,9 +36,15 @@ const StoreProducts = () => {
       "image",
     ];
     const isEmpty = requiredFields.some((field) => !formData[field]);
-
+    
     if (isEmpty) {
       setInfo("All fields are required");
+      setError(true);
+      return false;
+    }
+    // check if description is more than 850 characters
+    if (formData.description.length > 850) {
+      setInfo("Description is too long max 850 characters");
       setError(true);
       return false;
     }
