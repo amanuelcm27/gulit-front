@@ -73,7 +73,6 @@ const StoreProducts = () => {
       if (response.success === false) {
         setInfo("Error in creating product");
         setError(true);
-        console.log(response)
       } else {
         setInfo("Product has been created");
         flag === "save&add" && clearForm();
